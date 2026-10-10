@@ -5,12 +5,15 @@ import {
   Play, 
   Flame, 
   AlertTriangle, 
-  ArrowRight,
-  ShieldCheck,
-  Sparkles,
-  Clock,
-  RefreshCw,
-  ShoppingBag
+  ArrowRight, 
+  ShieldCheck, 
+  Sparkles, 
+  Clock, 
+  RefreshCw, 
+  ShoppingBag,
+  CheckCircle2,
+  ExternalLink,
+  Layers
 } from 'lucide-react';
 import { useTests } from '../context/TestContext';
 import IntentGraph from '../components/runner/IntentGraph';
@@ -36,99 +39,145 @@ export default function Dashboard() {
 
   return (
     <div className="w-full max-w-6xl mx-auto px-6 py-8 space-y-8">
-      {/* 1-Click Interactive Demo Hero (Zero Confusion) */}
-      <div className="card p-8 bg-gradient-to-br from-white via-surface to-brand-light/30 border-border shadow-card space-y-6">
-        <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-light text-brand border border-brand-border text-xs font-bold font-mono">
-            <span className="w-2 h-2 rounded-full bg-brand animate-pulse"></span>
-            HackWave 3.0 • E2E Autonomous Healer
-          </div>
-
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight">
-            Tests that Fix Themselves When Your UI Changes
-          </h1>
-
-          <p className="text-base text-ink-secondary max-w-2xl">
-            When button IDs, classes, or texts change, tests usually break. AutoHeal understands user intent and repairs broken selectors on-the-fly.
-          </p>
-        </div>
-
-        {/* 3-Step Simple Flow Visualizer */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-          <div className="p-3.5 rounded-xl bg-white border border-border flex items-center gap-3">
-            <span className="w-7 h-7 rounded-lg bg-red-100 text-danger text-sm font-bold flex items-center justify-center shrink-0">1</span>
-            <div>
-              <p className="text-xs font-bold text-ink">UI Changes</p>
-              <p className="text-xs text-ink-tertiary">Developer renames ID or classes</p>
+      {/* Hero Welcome Banner */}
+      <div className="card p-8 bg-gradient-to-br from-white via-surface to-brand-light/20 border-border shadow-card space-y-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1.5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-light text-brand border border-brand-border text-xs font-bold font-mono">
+              <span className="w-2 h-2 rounded-full bg-brand animate-pulse"></span>
+              HackWave 3.0 • Intent-Aware Autonomous E2E Testing
             </div>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight">
+              AutoHeal Studio
+            </h1>
+            <p className="text-sm text-ink-secondary max-w-2xl">
+              Playwright E2E tests that autonomously heal broken DOM selectors on the fly, and use Smart Triage to halt genuine bugs before production.
+            </p>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-white border border-border flex items-center gap-3">
-            <span className="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 text-sm font-bold flex items-center justify-center shrink-0">2</span>
-            <div>
-              <p className="text-xs font-bold text-ink">AI Auto-Heals</p>
-              <p className="text-xs text-ink-tertiary">Matches intent & repairs DOM node</p>
-            </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => handleLaunch('mutated')}
+              disabled={launching}
+              className="btn btn-primary text-sm px-6 py-3 font-bold shadow-md hover:shadow-lg flex items-center gap-2"
+            >
+              <Zap className="w-4 h-4 fill-current" />
+              <span>Launch Auto-Heal Demo</span>
+            </button>
           </div>
-
-          <div className="p-3.5 rounded-xl bg-white border border-border flex items-center gap-3">
-            <span className="w-7 h-7 rounded-lg bg-green-100 text-success text-sm font-bold flex items-center justify-center shrink-0">3</span>
-            <div>
-              <p className="text-xs font-bold text-ink">Test Passes</p>
-              <p className="text-xs text-ink-tertiary">Zero downtime & false alarms</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Big Action Launch Buttons */}
-        <div className="pt-2 flex flex-wrap items-center gap-3">
-          <button
-            onClick={() => handleLaunch('mutated')}
-            disabled={launching}
-            className="btn btn-primary text-sm px-6 py-3 font-bold shadow-md hover:shadow-lg flex items-center gap-2"
-          >
-            <Zap className="w-4 h-4 fill-current" />
-            <span>Launch Auto-Heal Demo (Recommended)</span>
-          </button>
-
-          <button
-            onClick={() => handleLaunch('standard')}
-            disabled={launching}
-            className="btn btn-secondary text-sm px-4 py-3 font-semibold"
-          >
-            <Play className="w-4 h-4 fill-current text-ink-secondary" />
-            <span>Standard Run</span>
-          </button>
-
-          <button
-            onClick={() => handleLaunch('chaos')}
-            disabled={launching}
-            className="btn bg-amber-500 hover:bg-amber-600 text-white text-sm px-4 py-3 font-semibold shadow-sm"
-          >
-            <Flame className="w-4 h-4" />
-            <span>Live Chaos</span>
-          </button>
-
-          <button
-            onClick={() => handleLaunch('bug_mode')}
-            disabled={launching}
-            className="btn bg-danger hover:bg-red-700 text-white text-sm px-4 py-3 font-semibold shadow-sm"
-          >
-            <AlertTriangle className="w-4 h-4" />
-            <span>Real Bug</span>
-          </button>
-
-          <Link
-            to="/demo-store"
-            className="btn btn-ghost text-sm px-4 py-3 text-brand font-semibold ml-auto"
-          >
-            <ShoppingBag className="w-4 h-4" />
-            <span>View Target App</span>
-          </Link>
         </div>
       </div>
 
-      {/* 4 Clean, Bold Stats (No clutter) */}
+      {/* 🚀 Quick Demo Showcase (How to test & Judge Guide) */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-brand"></span>
+            <h3 className="text-base font-bold text-ink">Choose a Demo to Run</h3>
+          </div>
+          <span className="text-xs text-ink-tertiary font-mono">1-Click Live Demonstrations</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Card 1: Auto-Heal Demo */}
+          <div className="card p-5 space-y-3 hover:border-brand transition shadow-card flex flex-col justify-between group">
+            <div className="space-y-2">
+              <div className="w-8 h-8 rounded-lg bg-indigo-50 border border-indigo-200 text-brand flex items-center justify-center font-bold">
+                <Zap className="w-4 h-4 fill-current" />
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-ink group-hover:text-brand transition">1. Auto-Heal Demo</h4>
+                <span className="text-[10px] font-mono font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">RECOMMENDED</span>
+              </div>
+              <p className="text-xs text-ink-secondary leading-relaxed">
+                App UI mutated IDs (<code className="text-ink font-mono font-bold">#btn-cart</code> ➔ <code className="text-brand font-mono font-bold">#btn_x89</code>). AI repairs all 5 selectors dynamically.
+              </p>
+            </div>
+            <button
+              onClick={() => handleLaunch('mutated')}
+              disabled={launching}
+              className="btn btn-primary btn-sm w-full font-bold"
+            >
+              <span>Run Auto-Heal</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {/* Card 2: Baseline Run */}
+          <div className="card p-5 space-y-3 hover:border-gray-400 transition shadow-card flex flex-col justify-between group">
+            <div className="space-y-2">
+              <div className="w-8 h-8 rounded-lg bg-gray-100 border border-gray-200 text-ink-secondary flex items-center justify-center font-bold">
+                <Play className="w-4 h-4 fill-current" />
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-ink">2. Baseline Run</h4>
+                <span className="text-[10px] font-mono font-bold text-gray-600 bg-gray-100 px-2 py-0.5 rounded">STANDARD</span>
+              </div>
+              <p className="text-xs text-ink-secondary leading-relaxed">
+                Executes clean baseline test against unmodified Version A store. All steps pass normally without healing.
+              </p>
+            </div>
+            <button
+              onClick={() => handleLaunch('standard')}
+              disabled={launching}
+              className="btn btn-secondary btn-sm w-full font-semibold"
+            >
+              <span>Run Baseline</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {/* Card 3: Live Chaos Mode */}
+          <div className="card p-5 space-y-3 hover:border-amber-400 transition shadow-card flex flex-col justify-between group">
+            <div className="space-y-2">
+              <div className="w-8 h-8 rounded-lg bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center font-bold">
+                <Flame className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-ink">3. Live Chaos</h4>
+                <span className="text-[10px] font-mono font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">FEATURE 1</span>
+              </div>
+              <p className="text-xs text-ink-secondary leading-relaxed">
+                Randomizes text, moves buttons, scrambles class names in real-time. Engine still detects goal and passes!
+              </p>
+            </div>
+            <button
+              onClick={() => handleLaunch('chaos')}
+              disabled={launching}
+              className="btn bg-amber-500 hover:bg-amber-600 text-white btn-sm w-full font-bold shadow-sm"
+            >
+              <span>Run Chaos Demo</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          {/* Card 4: Smart Bug Triage */}
+          <div className="card p-5 space-y-3 hover:border-red-400 transition shadow-card flex flex-col justify-between group">
+            <div className="space-y-2">
+              <div className="w-8 h-8 rounded-lg bg-red-50 border border-red-200 text-danger flex items-center justify-center font-bold">
+                <AlertTriangle className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-ink">4. Real Bug Triage</h4>
+                <span className="text-[10px] font-mono font-bold text-red-700 bg-red-100 px-2 py-0.5 rounded">FEATURE 3</span>
+              </div>
+              <p className="text-xs text-ink-secondary leading-relaxed">
+                Simulates $0 pricing corruption & 500 server crash. Engine halts test and refuses to false-heal!
+              </p>
+            </div>
+            <button
+              onClick={() => handleLaunch('bug_mode')}
+              disabled={launching}
+              className="btn bg-danger hover:bg-red-700 text-white btn-sm w-full font-bold shadow-sm"
+            >
+              <span>Test Bug Triage</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* 4 Clean Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="card p-5 space-y-1 bg-success-bg/40 border-success-border">
           <p className="text-xs font-bold uppercase tracking-wider text-success-text">Auto-Heal Rate</p>
@@ -185,7 +234,7 @@ export default function Dashboard() {
         <div className="card-header">
           <div className="flex items-center gap-2">
             <Clock className="w-4 h-4 text-ink-secondary" />
-            <h3 className="text-base font-bold text-ink">Recent Test Runs</h3>
+            <h3 className="text-base font-bold text-ink">Recent Test Executions</h3>
           </div>
           <button
             onClick={refreshAll}

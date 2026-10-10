@@ -6,7 +6,8 @@ import {
   CheckCircle2, 
   XCircle, 
   Cpu, 
-  FileCode
+  FileCode,
+  ArrowRight
 } from 'lucide-react';
 
 export default function DiffInspector({ selectedStep }) {
@@ -14,9 +15,9 @@ export default function DiffInspector({ selectedStep }) {
     return (
       <div className="card h-full flex flex-col items-center justify-center p-8 text-center bg-surface border-dashed">
         <FileCode className="w-8 h-8 text-ink-tertiary mb-2" />
-        <h4 className="text-base font-bold text-ink">Select a Step</h4>
+        <h4 className="text-base font-bold text-ink">Select a Step Above</h4>
         <p className="text-xs text-ink-secondary mt-1 max-w-xs">
-          Click any step above to inspect its selector diff and AI healing rationale.
+          Click any step node in the graph above to inspect its DOM selector repair diff.
         </p>
       </div>
     );
@@ -32,7 +33,7 @@ export default function DiffInspector({ selectedStep }) {
       {/* Header */}
       <div className="flex items-center justify-between pb-3 border-b border-border">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-brand-light border border-brand-border flex items-center justify-center text-brand">
+          <div className="w-8 h-8 rounded-lg bg-brand-light border border-brand-border flex items-center justify-center text-brand">
             <Cpu className="w-4 h-4" />
           </div>
           <div>
@@ -64,52 +65,47 @@ export default function DiffInspector({ selectedStep }) {
         </div>
       </div>
 
-      {/* Target User Intent (short & clear) */}
+      {/* Target User Intent */}
       <div className="bg-surface p-3 rounded-lg border border-border">
         <span className="text-xs font-mono uppercase text-ink-tertiary block mb-0.5 font-bold">
-          Goal:
+          User Goal:
         </span>
         <p className="text-sm text-ink font-semibold">"{selectedStep.intent}"</p>
       </div>
 
-      {/* Selector Mutation Diff Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {/* Baseline Selector */}
-        <div className="bg-danger-bg/40 p-3 rounded-xl border border-danger-border">
-          <span className="text-xs font-mono uppercase text-danger-text flex items-center gap-1 font-bold mb-1.5">
-            <XCircle className="w-3.5 h-3.5" /> Baseline (Broken)
-          </span>
-          <code className="text-xs font-mono text-danger font-bold break-all bg-white p-2.5 rounded-lg border border-danger-border block shadow-xs">
-            {selectedStep.originalSelector}
-          </code>
+      {/* GitHub/Linear Style Sleek Code Diff */}
+      <div className="bg-[#0f172a] text-slate-100 p-4 rounded-xl font-mono text-xs space-y-2.5 border border-slate-800 shadow-inner">
+        <div className="flex items-center justify-between text-slate-400 pb-2 border-b border-slate-800">
+          <span className="font-sans font-semibold text-slate-300">DOM Selector Repair Diff</span>
+          {isHealed && (
+            <span className="text-emerald-400 font-bold font-mono">
+              {confidence}% match confidence
+            </span>
+          )}
         </div>
 
-        {/* Resolved Dynamic Selector */}
-        <div className="bg-success-bg/40 p-3 rounded-xl border border-success-border">
-          <span className="text-xs font-mono uppercase text-success-text flex items-center gap-1 font-bold mb-1.5">
-            <CheckCircle2 className="w-3.5 h-3.5" /> Healed Selector
+        {/* Broken Selector (-) */}
+        <div className="bg-red-950/60 text-red-200 p-2.5 rounded-lg flex items-center gap-2 border border-red-900/50">
+          <span className="text-red-400 font-extrabold select-none text-sm">-</span>
+          <span className={`break-all font-mono ${isHealed ? 'line-through text-red-300' : 'text-red-200'}`}>
+            {selectedStep.originalSelector}
           </span>
-          <code className="text-xs font-mono text-success font-bold break-all bg-white p-2.5 rounded-lg border border-success-border block shadow-xs">
-            {selectedStep.resolvedSelector || (isBug ? 'NONE (HALTED TO PREVENT BUG)' : selectedStep.originalSelector)}
-          </code>
+          <span className="ml-auto text-[10px] bg-red-900/70 px-2 py-0.5 rounded text-red-200 font-sans font-bold shrink-0">
+            BROKEN
+          </span>
+        </div>
+
+        {/* Healed Replacement (+) */}
+        <div className="bg-emerald-950/60 text-emerald-200 p-2.5 rounded-lg flex items-center gap-2 border border-emerald-900/50">
+          <span className="text-emerald-400 font-extrabold select-none text-sm">+</span>
+          <span className="break-all font-mono font-bold text-emerald-300">
+            {selectedStep.resolvedSelector || (isBug ? 'NONE (HALTED AS REAL BUG)' : selectedStep.originalSelector)}
+          </span>
+          <span className="ml-auto text-[10px] bg-emerald-900/70 px-2 py-0.5 rounded text-emerald-200 font-sans font-bold shrink-0">
+            {isHealed ? 'AUTO-HEALED' : 'RESOLVED'}
+          </span>
         </div>
       </div>
-
-      {/* Confidence Score Bar */}
-      {isHealed && (
-        <div className="bg-surface p-3 rounded-xl border border-border">
-          <div className="flex items-center justify-between text-xs mb-1.5 font-mono">
-            <span className="text-ink-secondary font-semibold">AI Confidence:</span>
-            <span className="font-bold text-success-text text-xs">{confidence}% Match</span>
-          </div>
-          <div className="w-full h-2 rounded-full bg-border overflow-hidden">
-            <div 
-              className="h-full bg-success rounded-full transition-all duration-700"
-              style={{ width: `${confidence}%` }}
-            ></div>
-          </div>
-        </div>
-      )}
 
       {/* Natural Language AI Rationale */}
       <div className="bg-surface p-3.5 rounded-xl border border-border flex-1">
