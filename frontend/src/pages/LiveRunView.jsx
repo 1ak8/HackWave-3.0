@@ -49,30 +49,30 @@ export default function LiveRunView() {
   const percentComplete = Math.round((completedCount / total) * 100);
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 py-6 space-y-5">
+    <div className="w-full max-w-7xl mx-auto px-6 sm:px-8 py-8 space-y-6">
       {/* Top Controller Header */}
-      <div className="card p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-5">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className={`w-2 h-2 rounded-full ${activeRun?.status === 'running' ? 'bg-brand animate-pulse' : 'bg-success'}`}></span>
-            <span className="text-2xs font-mono text-brand uppercase font-bold tracking-wider">
+      <div className="card p-6 sm:p-7 flex flex-col lg:flex-row lg:items-center justify-between gap-6 shadow-card">
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-2.5">
+            <span className={`w-2.5 h-2.5 rounded-full ${activeRun?.status === 'running' ? 'bg-brand animate-pulse' : 'bg-success'}`}></span>
+            <span className="text-xs font-mono text-brand uppercase font-bold tracking-wider">
               Autonomous Orchestrator
             </span>
-            <span className="text-2xs text-ink-tertiary font-mono">• ID: {activeRun?._id ? String(activeRun._id).substring(0, 10) : 'Ready'}</span>
+            <span className="text-xs text-ink-tertiary font-mono">• Run ID: {activeRun?._id ? String(activeRun._id).substring(0, 12) : 'Ready'}</span>
           </div>
-          <h1 className="text-xl font-bold text-ink mt-1">
+          <h1 className="text-2xl font-bold text-ink tracking-tight">
             {activeRun?.testTitle || defaultTest?.title || 'E-Commerce End-to-End Test Suite'}
           </h1>
-          <p className="text-xs text-ink-secondary mt-0.5">
-            Target Endpoint: <code className="text-ink font-mono bg-surface px-1.5 py-0.5 rounded border border-border text-2xs">{defaultTest?.targetUrl || 'http://localhost:5173/demo-store'}</code>
+          <p className="text-sm text-ink-secondary">
+            Target Endpoint: <code className="text-ink font-mono bg-surface px-2 py-1 rounded border border-border text-xs font-semibold">{defaultTest?.targetUrl || 'http://localhost:5173/demo-store'}</code>
           </p>
         </div>
 
         {/* Action Controls */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-3">
           {/* Visual Browser Checkbox */}
-          <label className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-surface text-xs font-mono text-ink-secondary cursor-pointer hover:bg-gray-100 transition">
-            <Monitor className="w-3.5 h-3.5 text-ink-tertiary" />
+          <label className="flex items-center gap-2 px-3.5 py-2.5 rounded-lg border border-border bg-surface text-sm font-mono text-ink-secondary cursor-pointer hover:bg-gray-100 transition font-medium">
+            <Monitor className="w-4 h-4 text-ink-tertiary" />
             <input
               type="checkbox"
               checked={!headless}
@@ -85,47 +85,47 @@ export default function LiveRunView() {
           <button
             onClick={() => handleExecute('standard')}
             disabled={isRunning || activeRun?.status === 'running'}
-            className="btn btn-secondary btn-sm"
+            className="btn btn-secondary text-sm px-4 py-2.5"
           >
-            <Play className="w-3.5 h-3.5 fill-current text-ink-secondary" />
+            <Play className="w-4 h-4 fill-current text-ink-secondary" />
             <span>Version A</span>
           </button>
 
           <button
             onClick={() => handleExecute('mutated')}
             disabled={isRunning || activeRun?.status === 'running'}
-            className="btn btn-primary btn-sm"
+            className="btn btn-primary text-sm px-5 py-2.5"
           >
-            <Zap className="w-3.5 h-3.5 fill-current" />
+            <Zap className="w-4 h-4 fill-current" />
             <span>Version B (Heal)</span>
           </button>
 
           <button
             onClick={() => handleExecute('chaos')}
             disabled={isRunning || activeRun?.status === 'running'}
-            className="btn btn-sm bg-amber-500 hover:bg-amber-600 text-white shadow-sm"
+            className="btn bg-amber-500 hover:bg-amber-600 text-white text-sm px-4 py-2.5 shadow-sm"
           >
-            <Flame className="w-3.5 h-3.5" />
+            <Flame className="w-4 h-4" />
             <span>Chaos Mode</span>
           </button>
 
           <button
             onClick={() => handleExecute('bug_mode')}
             disabled={isRunning || activeRun?.status === 'running'}
-            className="btn btn-sm bg-danger hover:bg-red-700 text-white shadow-sm"
+            className="btn bg-danger hover:bg-red-700 text-white text-sm px-4 py-2.5 shadow-sm"
           >
-            <AlertTriangle className="w-3.5 h-3.5" />
+            <AlertTriangle className="w-4 h-4" />
             <span>Real Bug</span>
           </button>
         </div>
       </div>
 
       {/* Progress & Live Telemetry Bar */}
-      <div className="card p-3.5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono">
-        <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
+      <div className="card p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-5 text-sm font-mono shadow-card">
+        <div className="flex flex-wrap items-center gap-5 w-full sm:w-auto">
           <div className="flex items-center gap-2">
-            <span className="text-ink-secondary text-2xs uppercase tracking-wider">Mode:</span>
-            <span className={`badge ${
+            <span className="text-ink-secondary text-xs uppercase tracking-wider font-semibold">Mode:</span>
+            <span className={`badge text-xs font-bold ${
               activeRun?.mode === 'chaos' ? 'badge-warning' :
               activeRun?.mode === 'mutated' ? 'badge-brand' :
               activeRun?.mode === 'bug_mode' ? 'badge-danger' :
@@ -136,16 +136,16 @@ export default function LiveRunView() {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-ink-secondary text-2xs uppercase tracking-wider">Healed:</span>
-            <span className="badge badge-success font-bold font-mono">
+            <span className="text-ink-secondary text-xs uppercase tracking-wider font-semibold">Healed:</span>
+            <span className="badge badge-success font-bold font-mono text-xs">
               {activeRun?.healedCount || 0} repaired
             </span>
           </div>
 
           {activeRun?.triageClassification && activeRun.triageClassification !== 'Clean' && (
             <div className="flex items-center gap-2">
-              <span className="text-ink-secondary text-2xs uppercase tracking-wider">Triage:</span>
-              <span className={`badge ${
+              <span className="text-ink-secondary text-xs uppercase tracking-wider font-semibold">Triage:</span>
+              <span className={`badge text-xs font-bold ${
                 activeRun.triageClassification === 'Genuine_Bug_Halted' 
                   ? 'badge-danger' 
                   : 'badge-success'
@@ -157,19 +157,19 @@ export default function LiveRunView() {
         </div>
 
         {/* Clean Progress Bar */}
-        <div className="flex items-center gap-3 w-full sm:w-56">
-          <div className="flex-1 bg-gray-200 h-2 rounded-full overflow-hidden">
+        <div className="flex items-center gap-4 w-full sm:w-64">
+          <div className="flex-1 bg-gray-200 h-2.5 rounded-full overflow-hidden">
             <div 
               className="bg-brand h-full rounded-full transition-all duration-300"
               style={{ width: `${percentComplete}%` }}
             ></div>
           </div>
-          <span className="text-ink font-bold font-mono text-xs">{completedCount}/{total}</span>
+          <span className="text-ink font-bold font-mono text-sm">{completedCount}/{total}</span>
         </div>
       </div>
 
       {/* Feature 2: Interactive Intent Graph */}
-      <div className="card p-5">
+      <div className="card p-7 shadow-card">
         <IntentGraph
           steps={stepsToDisplay}
           selectedStep={selectedStep}
@@ -178,7 +178,7 @@ export default function LiveRunView() {
       </div>
 
       {/* Split Details Section: Step Diff Inspector + Live Telemetry Terminal */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-stretch">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
         <div className="h-full">
           <DiffInspector selectedStep={selectedStep || stepsToDisplay[0]} />
         </div>

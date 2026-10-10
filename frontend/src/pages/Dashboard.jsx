@@ -14,7 +14,7 @@ import {
   DollarSign,
   Activity,
   Layers,
-  Check
+  Sparkles
 } from 'lucide-react';
 import { useTests } from '../context/TestContext';
 import IntentGraph from '../components/runner/IntentGraph';
@@ -39,156 +39,196 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 py-6 space-y-6">
-      {/* Hero / Action Header */}
-      <div className="card p-6 bg-gradient-to-r from-white via-surface to-brand-light/30 border-border relative overflow-hidden">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
-          <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-brand-light border border-brand-border text-2xs font-semibold text-brand font-mono">
-              <span className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse"></span>
-              HackWave 3.0 • Intent-Aware Test Automation
+    <div className="w-full max-w-7xl mx-auto px-6 sm:px-8 py-8 space-y-8">
+      {/* Hero Action Header */}
+      <div className="card p-8 sm:p-10 bg-gradient-to-r from-white via-surface to-brand-light/40 border-border relative overflow-hidden">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 relative z-10">
+          <div className="space-y-3 max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-light border border-brand-border text-xs font-semibold text-brand font-mono">
+              <span className="w-2 h-2 rounded-full bg-brand animate-pulse"></span>
+              HackWave 3.0 • Intent-Aware Autonomous E2E Testing
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-ink tracking-tight">
-              Self-Healing E2E Testing for Fast-Moving Teams
+
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight leading-tight">
+              Testing that Survives UI Evolution
             </h1>
-            <p className="text-sm text-ink-secondary leading-relaxed">
-              Eliminate test maintenance. Our engine detects mutations, autonomously repairs dynamic DOM selectors based on intent, and stops true regressions before production.
+
+            <p className="text-base text-ink-secondary leading-relaxed">
+              Eliminate brittle selector maintenance. Our engine executes tests based on <strong className="text-ink font-semibold">user outcomes</strong>, autonomously heals altered DOM trees, and uses Smart Triage to block genuine regressions before release.
             </p>
           </div>
 
-          {/* Quick Launch Buttons */}
-          <div className="flex flex-wrap sm:flex-nowrap gap-2 shrink-0">
+          {/* Quick Demo Launchers */}
+          <div className="flex flex-wrap sm:flex-nowrap gap-3 shrink-0">
             <button
               onClick={() => handleLaunch('standard')}
               disabled={launching}
-              className="btn btn-secondary btn-sm"
+              className="btn btn-secondary text-sm px-4 py-2.5"
               title="Execute unmodified baseline test suite"
             >
-              <Play className="w-3.5 h-3.5 fill-current text-ink-secondary" />
-              <span>Version A</span>
+              <Play className="w-4 h-4 fill-current text-ink-secondary" />
+              <span>Version A (Base)</span>
             </button>
 
             <button
               onClick={() => handleLaunch('mutated')}
               disabled={launching}
-              className="btn btn-primary btn-sm"
+              className="btn btn-primary text-sm px-5 py-2.5"
               title="Test against mutated DOM with autonomous repair"
             >
-              <Zap className="w-3.5 h-3.5 fill-current" />
-              <span>Version B (Heal)</span>
+              <Zap className="w-4 h-4 fill-current" />
+              <span>Version B (Auto-Heal)</span>
             </button>
 
             <button
               onClick={() => handleLaunch('chaos')}
               disabled={launching}
-              className="btn btn-sm bg-amber-500 hover:bg-amber-600 text-white shadow-sm"
+              className="btn bg-amber-500 hover:bg-amber-600 text-white text-sm px-4 py-2.5 shadow-sm"
               title="Test with chaotic real-time DOM shuffling"
             >
-              <Flame className="w-3.5 h-3.5" />
-              <span>Chaos Run</span>
+              <Flame className="w-4 h-4" />
+              <span>Live Chaos</span>
             </button>
 
             <button
               onClick={() => handleLaunch('bug_mode')}
               disabled={launching}
-              className="btn btn-sm bg-danger hover:bg-red-700 text-white shadow-sm"
+              className="btn bg-danger hover:bg-red-700 text-white text-sm px-4 py-2.5 shadow-sm"
               title="Test with real bug to verify Smart Triage stops execution"
             >
-              <AlertTriangle className="w-3.5 h-3.5" />
-              <span>Bug Triage</span>
+              <AlertTriangle className="w-4 h-4" />
+              <span>Real Bug</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* KPI Metric Cards Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
-        {/* Total Runs */}
-        <div className="stat-card">
-          <span className="stat-label">Total Runs</span>
-          <span className="stat-value">{stats.totalRuns || runs.length || 18}</span>
-          <span className="stat-meta flex items-center gap-1 text-ink-secondary font-medium">
-            <Activity className="w-3 h-3 text-brand" /> Recorded runs
-          </span>
+      {/* Spacious KPI Metric Cards (3x2 Grid for Maximum Readability) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Total Test Runs */}
+        <div className="card p-6 flex flex-col justify-between space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-ink-tertiary uppercase tracking-wider">Total Test Executions</span>
+            <Activity className="w-4 h-4 text-brand" />
+          </div>
+          <div>
+            <span className="text-3xl sm:text-4xl font-extrabold text-ink font-mono tracking-tight">
+              {stats.totalRuns || runs.length || 18}
+            </span>
+            <p className="text-xs text-ink-secondary mt-1">Autonomous runs logged across environments</p>
+          </div>
         </div>
 
-        {/* Healing Success Rate */}
-        <div className="card p-5 flex flex-col gap-1 bg-success-bg border-success-border">
-          <span className="text-xs font-semibold text-success-text uppercase tracking-wider">Auto-Heal Rate</span>
-          <span className="stat-value text-success">{stats.healingSuccessRate || 98.4}%</span>
-          <span className="stat-meta text-success-text">Zero false-failures</span>
+        {/* Auto-Heal Success Rate */}
+        <div className="card p-6 flex flex-col justify-between space-y-3 bg-success-bg/40 border-success-border">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-success-text uppercase tracking-wider">Auto-Heal Success Rate</span>
+            <ShieldCheck className="w-4 h-4 text-success" />
+          </div>
+          <div>
+            <span className="text-3xl sm:text-4xl font-extrabold text-success font-mono tracking-tight">
+              {stats.healingSuccessRate || 98.4}%
+            </span>
+            <p className="text-xs text-success-text mt-1 font-medium">Zero false-positive test failures</p>
+          </div>
         </div>
 
         {/* Mutations Repaired */}
-        <div className="stat-card">
-          <span className="stat-label">Repaired Shifts</span>
-          <span className="stat-value text-amber-600">{stats.totalHeals || 34}</span>
-          <span className="stat-meta text-ink-secondary">Harmless mutations</span>
+        <div className="card p-6 flex flex-col justify-between space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-ink-tertiary uppercase tracking-wider">Mutations Repaired</span>
+            <Sparkles className="w-4 h-4 text-amber-500" />
+          </div>
+          <div>
+            <span className="text-3xl sm:text-4xl font-extrabold text-amber-600 font-mono tracking-tight">
+              {stats.totalHeals || 34}
+            </span>
+            <p className="text-xs text-ink-secondary mt-1">Harmless selector and UI changes adapted</p>
+          </div>
         </div>
 
-        {/* Regressions Caught */}
-        <div className="card p-5 flex flex-col gap-1 bg-danger-bg border-danger-border">
-          <span className="text-xs font-semibold text-danger-text uppercase tracking-wider">Regressions Blocked</span>
-          <span className="stat-value text-danger">{stats.genuineBugsBlocked || 6}</span>
-          <span className="stat-meta text-danger-text">Smart Triage halting</span>
+        {/* Regressions Blocked */}
+        <div className="card p-6 flex flex-col justify-between space-y-3 bg-danger-bg/40 border-danger-border">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-danger-text uppercase tracking-wider">Regressions Triaged</span>
+            <AlertTriangle className="w-4 h-4 text-danger" />
+          </div>
+          <div>
+            <span className="text-3xl sm:text-4xl font-extrabold text-danger font-mono tracking-tight">
+              {stats.genuineBugsBlocked || 6}
+            </span>
+            <p className="text-xs text-danger-text mt-1 font-medium">Smart Triage prevented false test passing</p>
+          </div>
         </div>
 
-        {/* Hours Saved */}
-        <div className="stat-card">
-          <span className="stat-label">Time Saved</span>
-          <span className="stat-value text-brand">{stats.hoursSaved || '119.0'}h</span>
-          <span className="stat-meta text-ink-secondary">Selector maintenance</span>
+        {/* Maintenance Hours Saved */}
+        <div className="card p-6 flex flex-col justify-between space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-ink-tertiary uppercase tracking-wider">Engineering Time Saved</span>
+            <Clock className="w-4 h-4 text-brand" />
+          </div>
+          <div>
+            <span className="text-3xl sm:text-4xl font-extrabold text-brand font-mono tracking-tight">
+              {stats.hoursSaved || '119.0'}h
+            </span>
+            <p className="text-xs text-ink-secondary mt-1">Manual selector upkeep and debug hours eliminated</p>
+          </div>
         </div>
 
-        {/* Cost ROI */}
-        <div className="stat-card">
-          <span className="stat-label">Cost ROI</span>
-          <span className="stat-value text-ink">${stats.costSaved || 5950}</span>
-          <span className="stat-meta text-ink-secondary">Dev hours preserved</span>
+        {/* Estimated Cost Savings */}
+        <div className="card p-6 flex flex-col justify-between space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-ink-tertiary uppercase tracking-wider">Est. Maintenance ROI</span>
+            <DollarSign className="w-4 h-4 text-ink" />
+          </div>
+          <div>
+            <span className="text-3xl sm:text-4xl font-extrabold text-ink font-mono tracking-tight">
+              ${stats.costSaved || 5950}
+            </span>
+            <p className="text-xs text-ink-secondary mt-1">Developer resource value preserved</p>
+          </div>
         </div>
       </div>
 
       {/* Primary Smoke Suite Preview */}
       {defaultTest && (
-        <div className="card space-y-4">
-          <div className="card-header">
+        <div className="card space-y-6 p-7">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border">
             <div>
-              <div className="flex items-center gap-2">
-                <span className="badge badge-brand">Smoke Suite</span>
+              <div className="flex items-center gap-2.5">
+                <span className="badge badge-brand text-xs">Smoke Suite</span>
                 <span className="text-xs font-mono text-ink-tertiary">{defaultTest.targetUrl}</span>
               </div>
-              <h2 className="text-base font-bold text-ink mt-1">{defaultTest.title}</h2>
-              <p className="text-xs text-ink-secondary">{defaultTest.description}</p>
+              <h2 className="text-xl font-bold text-ink mt-1.5">{defaultTest.title}</h2>
+              <p className="text-sm text-ink-secondary mt-0.5">{defaultTest.description}</p>
             </div>
 
             <Link
               to="/live"
-              className="btn btn-secondary btn-sm"
+              className="btn btn-secondary text-sm px-4 py-2 flex items-center gap-2"
             >
-              <span>Open in Runner</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <span>Open in Live Runner</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
-          <div className="p-5 pt-0">
-            {/* Render Active Intent Graph */}
-            <IntentGraph steps={activeRun?.steps || defaultTest.steps} />
-          </div>
+          {/* Render Active Intent Graph */}
+          <IntentGraph steps={activeRun?.steps || defaultTest.steps} />
         </div>
       )}
 
       {/* Execution History Table */}
       <div className="card overflow-hidden">
         <div className="card-header">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             <Clock className="w-4 h-4 text-ink-secondary" />
-            <h3 className="text-sm font-bold text-ink">Execution History</h3>
+            <h3 className="text-base font-bold text-ink">Recent Test Executions</h3>
           </div>
           <button
             onClick={refreshAll}
-            className="btn btn-ghost btn-xs flex items-center gap-1"
+            className="btn btn-ghost btn-sm flex items-center gap-1.5"
           >
-            <RefreshCw className="w-3 h-3 text-ink-tertiary" />
+            <RefreshCw className="w-3.5 h-3.5 text-ink-tertiary" />
             <span>Refresh</span>
           </button>
         </div>
@@ -209,7 +249,7 @@ export default function Dashboard() {
             <tbody>
               {runs.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="py-8 text-center text-ink-secondary">
+                  <td colSpan="7" className="py-10 text-center text-ink-secondary text-sm">
                     No runs recorded yet. Launch a test above to view execution logs.
                   </td>
                 </tr>
@@ -220,14 +260,14 @@ export default function Dashboard() {
 
                   return (
                     <tr key={r._id} className="transition-colors">
-                      <td className="font-mono text-xs text-ink-secondary font-semibold">
+                      <td className="font-mono text-xs text-ink-secondary font-bold">
                         {String(r._id).substring(0, 12)}
                       </td>
-                      <td className="font-medium text-ink">
+                      <td className="font-medium text-ink text-sm">
                         {r.testTitle}
                       </td>
                       <td>
-                        <span className={`badge ${
+                        <span className={`badge text-xs ${
                           r.mode === 'chaos' ? 'badge-warning' :
                           r.mode === 'mutated' ? 'badge-brand' :
                           r.mode === 'bug_mode' ? 'badge-danger' :
@@ -237,7 +277,7 @@ export default function Dashboard() {
                         </span>
                       </td>
                       <td>
-                        <span className={`badge ${
+                        <span className={`badge text-xs font-bold ${
                           isHealed ? 'badge-success' :
                           isPassed ? 'badge-success' :
                           'badge-danger'
@@ -245,7 +285,7 @@ export default function Dashboard() {
                           {r.status ? r.status.toUpperCase() : 'PENDING'}
                         </span>
                       </td>
-                      <td className="font-mono font-bold text-success-text">
+                      <td className="font-mono font-bold text-success-text text-sm">
                         {r.healedCount || 0}
                       </td>
                       <td className="font-mono text-xs text-ink-secondary">
@@ -254,7 +294,7 @@ export default function Dashboard() {
                       <td className="text-right">
                         <Link
                           to="/live"
-                          className="text-xs font-semibold text-brand hover:text-brand-hover inline-flex items-center gap-1"
+                          className="text-sm font-semibold text-brand hover:text-brand-hover inline-flex items-center gap-1"
                         >
                           View Details →
                         </Link>

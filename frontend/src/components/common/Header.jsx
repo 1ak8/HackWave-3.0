@@ -25,20 +25,20 @@ export default function Header() {
   const { section, title } = getPageInfo(location.pathname);
 
   return (
-    <header className="h-14 bg-canvas border-b border-border sticky top-0 z-30 px-6 flex items-center justify-between">
+    <header className="h-16 bg-white border-b border-border sticky top-0 z-30 px-6 sm:px-8 flex items-center justify-between shadow-xs">
       {/* Breadcrumb Navigation */}
-      <div className="flex items-center gap-2 text-xs">
-        <span className="font-semibold text-ink-tertiary uppercase tracking-wider text-2xs">{section}</span>
-        <ChevronRight className="w-3.5 h-3.5 text-ink-tertiary" />
-        <span className="font-semibold text-ink text-sm">{title}</span>
+      <div className="flex items-center gap-2.5">
+        <span className="font-bold text-ink-tertiary uppercase tracking-wider text-xs">{section}</span>
+        <ChevronRight className="w-4 h-4 text-ink-tertiary" />
+        <span className="font-bold text-ink text-base tracking-tight">{title}</span>
       </div>
 
       {/* Right Controls */}
       <div className="flex items-center gap-3">
         {activeRun && activeRun.status === 'running' && (
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-light border border-brand-border text-xs font-mono font-medium text-brand animate-pulse">
-            <Zap className="w-3 h-3 fill-current" />
-            <span>Test In Flight</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-brand-light border border-brand-border text-xs font-mono font-semibold text-brand animate-pulse">
+            <Zap className="w-3.5 h-3.5 fill-current" />
+            <span>Test In Flight...</span>
           </div>
         )}
 
@@ -47,7 +47,7 @@ export default function Header() {
           className="btn btn-secondary btn-sm"
           title="Refresh Data"
         >
-          <RefreshCw className="w-3.5 h-3.5 text-ink-secondary" />
+          <RefreshCw className="w-4 h-4 text-ink-secondary" />
           <span>Sync</span>
         </button>
 
@@ -55,9 +55,9 @@ export default function Header() {
           to="/demo-store"
           className="btn btn-primary btn-sm"
         >
-          <ShoppingBag className="w-3.5 h-3.5" />
-          <span>Target App</span>
-          <ExternalLink className="w-3 h-3 text-white/70" />
+          <ShoppingBag className="w-4 h-4" />
+          <span>Sandbox Store</span>
+          <ExternalLink className="w-3.5 h-3.5 text-white/70" />
         </Link>
       </div>
     </header>
