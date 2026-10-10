@@ -4,14 +4,8 @@ import {
   Trash2, 
   Save, 
   Layers, 
-  Sparkles, 
   Play, 
-  Check, 
-  ArrowRight,
-  Code2,
-  MousePointer,
-  Edit3,
-  Search
+  Check
 } from 'lucide-react';
 import { useTests } from '../context/TestContext';
 import apiClient from '../api/apiClient';
@@ -91,11 +85,11 @@ export default function TestStudio() {
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <Layers className="w-4 h-4 text-emerald-400" />
-            <span className="text-xs font-mono text-emerald-400 uppercase font-semibold">Intent-to-Test Studio</span>
+            <Layers className="w-4 h-4 text-brand-600" />
+            <span className="text-xs font-mono text-brand-700 uppercase font-bold">Intent-to-Test Studio</span>
           </div>
-          <h1 className="text-2xl font-extrabold text-white mt-1">Author Intent-Driven Test Suites</h1>
-          <p className="text-xs text-slate-400">
+          <h1 className="text-2xl font-extrabold text-slate-900 mt-1">Author Intent-Driven Test Suites</h1>
+          <p className="text-xs text-slate-500">
             Define high-level user outcomes. Selectors are treated as dynamic baselines that auto-heal if modified.
           </p>
         </div>
@@ -103,36 +97,36 @@ export default function TestStudio() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left: Test Creator Form */}
-        <div className="lg:col-span-2 bg-obsidian-900 border border-white/10 rounded-2xl p-6 shadow-xl space-y-6">
+        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
           <form onSubmit={handleSave} className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-mono text-slate-300 mb-1.5">Suite Title *</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">Suite Title *</label>
                 <input
                   type="text"
                   required
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g. VIP Subscription Checkout Flow"
-                  className="w-full bg-obsidian-950 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-sans"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-brand-600 font-sans"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-mono text-slate-300 mb-1.5">Target Web Endpoint *</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">Target Web Endpoint *</label>
                 <input
                   type="url"
                   required
                   value={targetUrl}
                   onChange={(e) => setTargetUrl(e.target.value)}
                   placeholder="http://localhost:5173/demo-store"
-                  className="w-full bg-obsidian-950 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-brand-600 font-mono"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-mono text-slate-300 mb-1.5">
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                 Primary Goal / Business Intent *
               </label>
               <textarea
@@ -140,20 +134,20 @@ export default function TestStudio() {
                 value={intent}
                 onChange={(e) => setIntent(e.target.value)}
                 placeholder="Describe user outcome: Complete purchase of hardware package with standard shipping and payment confirmation"
-                className="w-full bg-obsidian-950 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-sans"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-brand-600 font-sans"
               />
             </div>
 
             {/* Steps Definition Section */}
             <div>
               <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-mono font-semibold text-white uppercase">
+                <span className="text-xs font-bold text-slate-800 uppercase font-mono">
                   Execution Steps ({steps.length})
                 </span>
                 <button
                   type="button"
                   onClick={handleAddStep}
-                  className="flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300 font-mono font-medium"
+                  className="flex items-center gap-1 text-xs text-brand-600 hover:text-brand-700 font-bold"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   Add Step
@@ -162,10 +156,10 @@ export default function TestStudio() {
 
               <div className="space-y-3">
                 {steps.map((st, idx) => (
-                  <div key={idx} className="p-3.5 bg-obsidian-950 border border-white/5 rounded-xl space-y-3">
+                  <div key={idx} className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded bg-obsidian-800 text-[10px] font-mono font-bold flex items-center justify-center text-slate-300">
+                        <span className="w-5 h-5 rounded bg-white text-[10px] font-mono font-bold flex items-center justify-center text-slate-700 border border-slate-200">
                           {st.order}
                         </span>
                         <input
@@ -173,7 +167,7 @@ export default function TestStudio() {
                           value={st.name}
                           onChange={(e) => handleStepChange(idx, 'name', e.target.value)}
                           placeholder="Step Name"
-                          className="bg-transparent border-b border-white/10 text-xs font-bold text-white focus:outline-none focus:border-emerald-500 px-1 py-0.5"
+                          className="bg-transparent border-b border-slate-300 text-xs font-bold text-slate-900 focus:outline-none focus:border-brand-600 px-1 py-0.5"
                         />
                       </div>
 
@@ -181,7 +175,7 @@ export default function TestStudio() {
                         <select
                           value={st.action}
                           onChange={(e) => handleStepChange(idx, 'action', e.target.value)}
-                          className="bg-obsidian-850 text-[11px] font-mono text-slate-300 border border-white/10 rounded px-2 py-1"
+                          className="bg-white text-[11px] font-mono text-slate-800 border border-slate-200 rounded px-2 py-1 font-semibold"
                         >
                           <option value="click">click</option>
                           <option value="fill">fill</option>
@@ -190,7 +184,7 @@ export default function TestStudio() {
                         <button
                           type="button"
                           onClick={() => handleRemoveStep(idx)}
-                          className="text-slate-500 hover:text-red-400 transition"
+                          className="text-slate-400 hover:text-red-600 transition"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -199,37 +193,37 @@ export default function TestStudio() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                       <div>
-                        <label className="text-[10px] font-mono text-slate-500 block mb-0.5">Step Intent</label>
+                        <label className="text-[10px] font-mono text-slate-500 block mb-0.5 font-medium">Step Intent</label>
                         <input
                           type="text"
                           value={st.intent}
                           onChange={(e) => handleStepChange(idx, 'intent', e.target.value)}
                           placeholder="What does this step achieve?"
-                          className="w-full bg-obsidian-900 border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-slate-200"
+                          className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800"
                         />
                       </div>
 
                       <div>
-                        <label className="text-[10px] font-mono text-slate-500 block mb-0.5">Baseline Selector</label>
+                        <label className="text-[10px] font-mono text-slate-500 block mb-0.5 font-medium">Baseline Selector</label>
                         <input
                           type="text"
                           value={st.selector}
                           onChange={(e) => handleStepChange(idx, 'selector', e.target.value)}
                           placeholder="#btn-id or .class"
-                          className="w-full bg-obsidian-900 border border-white/10 rounded-lg px-2.5 py-1.5 text-xs font-mono text-emerald-300"
+                          className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs font-mono text-brand-700 font-bold"
                         />
                       </div>
                     </div>
 
                     {st.action === 'fill' && (
                       <div>
-                        <label className="text-[10px] font-mono text-slate-500 block mb-0.5">Input Text Value</label>
+                        <label className="text-[10px] font-mono text-slate-500 block mb-0.5 font-medium">Input Text Value</label>
                         <input
                           type="text"
                           value={st.value}
                           onChange={(e) => handleStepChange(idx, 'value', e.target.value)}
                           placeholder="Text to type"
-                          className="w-full bg-obsidian-900 border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 font-mono"
+                          className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 font-mono"
                         />
                       </div>
                     )}
@@ -241,7 +235,7 @@ export default function TestStudio() {
             <button
               type="submit"
               disabled={saving}
-              className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-obsidian-950 font-bold text-xs flex items-center justify-center gap-2 transition shadow-lg disabled:opacity-50"
+              className="w-full py-3 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-md shadow-brand-500/20 disabled:opacity-50"
             >
               {saveSuccess ? (
                 <>
@@ -259,8 +253,8 @@ export default function TestStudio() {
         </div>
 
         {/* Right: Existing Test Suites List */}
-        <div className="bg-obsidian-900 border border-white/10 rounded-2xl p-6 shadow-xl space-y-4">
-          <h3 className="text-sm font-bold text-white uppercase font-mono tracking-wider">
+        <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+          <h3 className="text-sm font-bold text-slate-900 uppercase font-mono tracking-tight">
             Configured Suites ({tests.length})
           </h3>
 
@@ -268,24 +262,24 @@ export default function TestStudio() {
             {tests.map((t) => (
               <div
                 key={t._id}
-                className="p-4 bg-obsidian-950 border border-white/5 rounded-xl hover:border-emerald-500/30 transition space-y-2 group"
+                className="p-4 bg-slate-50 border border-slate-200 rounded-2xl hover:border-brand-300 transition space-y-2 group"
               >
                 <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-bold text-white group-hover:text-emerald-300 transition">
+                  <h4 className="text-xs font-bold text-slate-900 group-hover:text-brand-600 transition">
                     {t.title}
                   </h4>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400">
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-brand-50 text-brand-700 border border-brand-200">
                     {t.steps?.length || 0} steps
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-400 line-clamp-2">{t.intent || t.description}</p>
+                <p className="text-[11px] text-slate-500 line-clamp-2">{t.intent || t.description}</p>
                 <div className="pt-2 flex items-center justify-between">
-                  <span className="text-[10px] font-mono text-slate-500 truncate max-w-[150px]">
+                  <span className="text-[10px] font-mono text-slate-400 truncate max-w-[150px]">
                     {t.targetUrl}
                   </span>
                   <button
                     onClick={() => triggerRun(t._id, 'mutated', true)}
-                    className="flex items-center gap-1 text-[11px] font-bold text-emerald-400 hover:text-emerald-300"
+                    className="flex items-center gap-1 text-[11px] font-bold text-brand-600 hover:text-brand-700"
                   >
                     <span>Run</span>
                     <Play className="w-3 h-3 fill-current" />

@@ -23,6 +23,23 @@ const runController = {
         return res.status(404).json({ error: 'No test suite available to execute' });
       }
 
+      const runSteps = (targetTest.steps || []).map(s => ({
+        order: s.order,
+        name: s.name,
+        intent: s.intent,
+        action: s.action,
+        originalSelector: s.selector,
+        resolvedSelector: s.selector,
+        status: 'pending',
+        durationMs: 0,
+        healingDetails: {
+          wasHealed: false,
+          confidence: 0,
+          reasoning: '',
+          classification: ''
+        }
+      }));
+
       // Create initial run record
       const initialRun = await store.createRun({
         testId: targetTest._id,
@@ -31,10 +48,10 @@ const runController = {
         mode,
         durationMs: 0,
         healedCount: 0,
-        totalSteps: targetTest.steps ? targetTest.steps.length : 0,
+        totalSteps: runSteps.length,
         passedSteps: 0,
         failedSteps: 0,
-        steps: []
+        steps: runSteps
       });
 
       // Fire and forget Playwright execution in background so client gets instant runId

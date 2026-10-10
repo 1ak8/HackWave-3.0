@@ -158,6 +158,7 @@ export function TestProvider({ children }) {
 
     socket.on('run_completed', (payload) => {
       addTerminalLog('success', `🎉 E2E Test Run Completed! Status: ${payload.status.toUpperCase()} (${payload.durationMs}ms, Healed Steps: ${payload.healedCount})`);
+      setActiveRun(prev => prev ? { ...prev, status: payload.status, durationMs: payload.durationMs, healedCount: payload.healedCount } : prev);
       refreshAll();
     });
 

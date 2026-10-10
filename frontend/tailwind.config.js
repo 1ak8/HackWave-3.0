@@ -8,46 +8,50 @@ export default {
   theme: {
     extend: {
       colors: {
-        obsidian: {
-          950: '#06070a',
-          900: '#0a0c10',
-          850: '#0e1117',
-          800: '#141721',
-          700: '#1c212f',
-          600: '#282f42',
+        brand: {
+          50: '#eef2ff',
+          100: '#e0e7ff',
+          200: '#c7d2fe',
+          500: '#6366f1',
+          600: '#4f46e5',
+          700: '#4338ca',
+          900: '#312e81',
         },
-        emerald: {
-          glow: '#059669',
-          accent: '#10b981',
-          bright: '#34d399',
-          surface: 'rgba(16, 185, 129, 0.08)',
+        surface: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          card: '#ffffff',
         },
-        amber: {
-          glow: '#d97706',
-          accent: '#f59e0b',
-          bright: '#fbbf24',
-          surface: 'rgba(245, 158, 11, 0.08)',
+        heal: {
+          light: '#ecfdf5',
+          border: '#a7f3d0',
+          accent: '#059669',
+          text: '#065f46',
         },
-        crimson: {
-          glow: '#dc2626',
-          accent: '#ef4444',
-          bright: '#f87171',
-          surface: 'rgba(239, 68, 68, 0.08)',
+        warning: {
+          light: '#fffbeb',
+          border: '#fde68a',
+          accent: '#d97706',
+          text: '#92400e',
+        },
+        danger: {
+          light: '#fef2f2',
+          border: '#fecaca',
+          accent: '#dc2626',
+          text: '#991b1b',
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'Fira Code', 'monospace']
       },
-      animation: {
-        'pulse-subtle': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'glow-pulse': 'glow 2s ease-in-out infinite alternate',
-      },
-      keyframes: {
-        glow: {
-          '0%': { boxShadow: '0 0 10px rgba(16, 185, 129, 0.2)' },
-          '100%': { boxShadow: '0 0 25px rgba(16, 185, 129, 0.5)' },
-        }
+      boxShadow: {
+        'card': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05)',
+        'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04)',
+        'glow-brand': '0 0 20px -3px rgba(79, 70, 229, 0.25)',
+        'glow-heal': '0 0 20px -3px rgba(16, 185, 129, 0.3)',
       }
     },
   },
