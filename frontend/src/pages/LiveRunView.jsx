@@ -7,7 +7,6 @@ import {
   Monitor, 
   CheckCircle2,
   Activity,
-  Layers,
   ArrowRight
 } from 'lucide-react';
 import { useTests } from '../context/TestContext';
@@ -49,29 +48,28 @@ export default function LiveRunView() {
   const percentComplete = Math.round((completedCount / total) * 100);
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 sm:px-8 py-8 space-y-6">
+    <div className="w-full max-w-6xl mx-auto px-6 py-8 space-y-6">
       {/* Top Controller Header */}
-      <div className="card p-6 sm:p-7 flex flex-col lg:flex-row lg:items-center justify-between gap-6 shadow-card">
-        <div className="space-y-1.5">
-          <div className="flex items-center gap-2.5">
+      <div className="card p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-6 shadow-card">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
             <span className={`w-2.5 h-2.5 rounded-full ${activeRun?.status === 'running' ? 'bg-brand animate-pulse' : 'bg-success'}`}></span>
             <span className="text-xs font-mono text-brand uppercase font-bold tracking-wider">
-              Autonomous Orchestrator
+              {activeRun?.status === 'running' ? 'Running Live Test' : 'Test Runner Ready'}
             </span>
-            <span className="text-xs text-ink-tertiary font-mono">• Run ID: {activeRun?._id ? String(activeRun._id).substring(0, 12) : 'Ready'}</span>
           </div>
-          <h1 className="text-2xl font-bold text-ink tracking-tight">
+          <h1 className="text-2xl font-bold text-ink">
             {activeRun?.testTitle || defaultTest?.title || 'E-Commerce End-to-End Test Suite'}
           </h1>
-          <p className="text-sm text-ink-secondary">
-            Target Endpoint: <code className="text-ink font-mono bg-surface px-2 py-1 rounded border border-border text-xs font-semibold">{defaultTest?.targetUrl || 'http://localhost:5173/demo-store'}</code>
+          <p className="text-xs text-ink-secondary">
+            Target: <code className="text-ink font-mono bg-surface px-2 py-0.5 rounded border border-border text-xs font-semibold">{defaultTest?.targetUrl || 'http://localhost:5173/demo-store'}</code>
           </p>
         </div>
 
         {/* Action Controls */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5">
           {/* Visual Browser Checkbox */}
-          <label className="flex items-center gap-2 px-3.5 py-2.5 rounded-lg border border-border bg-surface text-sm font-mono text-ink-secondary cursor-pointer hover:bg-gray-100 transition font-medium">
+          <label className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-surface text-xs font-mono text-ink-secondary cursor-pointer hover:bg-gray-100 transition font-medium">
             <Monitor className="w-4 h-4 text-ink-tertiary" />
             <input
               type="checkbox"
@@ -83,36 +81,40 @@ export default function LiveRunView() {
           </label>
 
           <button
-            onClick={() => handleExecute('standard')}
+            onClick={() => handleExecute('mutated')}
             disabled={isRunning || activeRun?.status === 'running'}
-            className="btn btn-secondary text-sm px-4 py-2.5"
+            className="btn btn-primary text-sm px-5 py-2.5 font-bold shadow-sm"
+            title="Run test against mutated elements with auto-healing"
           >
-            <Play className="w-4 h-4 fill-current text-ink-secondary" />
-            <span>Version A</span>
+            <Zap className="w-4 h-4 fill-current" />
+            <span>Auto-Heal Run</span>
           </button>
 
           <button
-            onClick={() => handleExecute('mutated')}
+            onClick={() => handleExecute('standard')}
             disabled={isRunning || activeRun?.status === 'running'}
-            className="btn btn-primary text-sm px-5 py-2.5"
+            className="btn btn-secondary text-sm px-4 py-2.5 font-semibold"
+            title="Run standard test"
           >
-            <Zap className="w-4 h-4 fill-current" />
-            <span>Version B (Heal)</span>
+            <Play className="w-4 h-4 fill-current text-ink-secondary" />
+            <span>Standard</span>
           </button>
 
           <button
             onClick={() => handleExecute('chaos')}
             disabled={isRunning || activeRun?.status === 'running'}
-            className="btn bg-amber-500 hover:bg-amber-600 text-white text-sm px-4 py-2.5 shadow-sm"
+            className="btn bg-amber-500 hover:bg-amber-600 text-white text-sm px-4 py-2.5 font-semibold shadow-sm"
+            title="Randomize UI elements during run"
           >
             <Flame className="w-4 h-4" />
-            <span>Chaos Mode</span>
+            <span>Chaos</span>
           </button>
 
           <button
             onClick={() => handleExecute('bug_mode')}
             disabled={isRunning || activeRun?.status === 'running'}
-            className="btn bg-danger hover:bg-red-700 text-white text-sm px-4 py-2.5 shadow-sm"
+            className="btn bg-danger hover:bg-red-700 text-white text-sm px-4 py-2.5 font-semibold shadow-sm"
+            title="Trigger a genuine bug to test Smart Triage"
           >
             <AlertTriangle className="w-4 h-4" />
             <span>Real Bug</span>
@@ -121,10 +123,10 @@ export default function LiveRunView() {
       </div>
 
       {/* Progress & Live Telemetry Bar */}
-      <div className="card p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-5 text-sm font-mono shadow-card">
-        <div className="flex flex-wrap items-center gap-5 w-full sm:w-auto">
+      <div className="card p-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm font-mono shadow-card">
+        <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
           <div className="flex items-center gap-2">
-            <span className="text-ink-secondary text-xs uppercase tracking-wider font-semibold">Mode:</span>
+            <span className="text-ink-secondary text-xs font-semibold">Mode:</span>
             <span className={`badge text-xs font-bold ${
               activeRun?.mode === 'chaos' ? 'badge-warning' :
               activeRun?.mode === 'mutated' ? 'badge-brand' :
@@ -136,7 +138,7 @@ export default function LiveRunView() {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-ink-secondary text-xs uppercase tracking-wider font-semibold">Healed:</span>
+            <span className="text-ink-secondary text-xs font-semibold">Healed:</span>
             <span className="badge badge-success font-bold font-mono text-xs">
               {activeRun?.healedCount || 0} repaired
             </span>
@@ -144,7 +146,7 @@ export default function LiveRunView() {
 
           {activeRun?.triageClassification && activeRun.triageClassification !== 'Clean' && (
             <div className="flex items-center gap-2">
-              <span className="text-ink-secondary text-xs uppercase tracking-wider font-semibold">Triage:</span>
+              <span className="text-ink-secondary text-xs font-semibold">Triage:</span>
               <span className={`badge text-xs font-bold ${
                 activeRun.triageClassification === 'Genuine_Bug_Halted' 
                   ? 'badge-danger' 
@@ -157,7 +159,7 @@ export default function LiveRunView() {
         </div>
 
         {/* Clean Progress Bar */}
-        <div className="flex items-center gap-4 w-full sm:w-64">
+        <div className="flex items-center gap-3 w-full sm:w-60">
           <div className="flex-1 bg-gray-200 h-2.5 rounded-full overflow-hidden">
             <div 
               className="bg-brand h-full rounded-full transition-all duration-300"
@@ -168,8 +170,8 @@ export default function LiveRunView() {
         </div>
       </div>
 
-      {/* Feature 2: Interactive Intent Graph */}
-      <div className="card p-7 shadow-card">
+      {/* Interactive Intent Graph */}
+      <div className="card p-6 shadow-card">
         <IntentGraph
           steps={stepsToDisplay}
           selectedStep={selectedStep}

@@ -14,21 +14,21 @@ export default function App() {
     <BrowserRouter>
       <TestProvider>
         <Routes>
-          {/* Dedicated full-viewport route for the Target Sandbox Demo Store */}
+          {/* Target Sandbox Demo Store */}
           <Route path="/demo-store" element={<DemoStore />} />
 
-          {/* Core SaaS Suite Layout with Left Sidebar + Top Header */}
+          {/* Main App Layout with Fixed Locked Sidebar */}
           <Route
             path="*"
             element={
-              <div className="min-h-screen bg-surface text-ink flex font-sans selection:bg-brand-light selection:text-brand">
-                {/* Left Fixed Sidebar */}
+              <div className="min-h-screen bg-surface text-ink font-sans selection:bg-brand-light selection:text-brand">
+                {/* 100% Fixed Locked Left Sidebar */}
                 <Sidebar />
 
-                {/* Main View Area */}
-                <div className="flex-1 flex flex-col min-w-0">
+                {/* Right Content Area with Left Offset */}
+                <div className="pl-64 min-h-screen flex flex-col min-w-0">
                   <Header />
-                  <main className="flex-1 pb-16 overflow-y-auto">
+                  <main className="flex-1 pb-16">
                     <Routes>
                       <Route path="/" element={<Dashboard />} />
                       <Route path="/live" element={<LiveRunView />} />
