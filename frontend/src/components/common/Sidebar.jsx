@@ -9,8 +9,6 @@ import {
   Play, 
   Flame, 
   AlertTriangle, 
-  CheckCircle2, 
-  ExternalLink,
   ChevronRight,
   Database,
   Radio,
@@ -41,40 +39,40 @@ export default function Sidebar() {
   };
 
   const navLinks = [
-    { to: '/', label: 'Overview', icon: Activity, description: 'Metrics & health' },
-    { to: '/live', label: 'Live Runner', icon: Zap, description: 'Intent Graph & console', badge: 'Active' },
-    { to: '/studio', label: 'Test Studio', icon: Layers, description: 'Author test suites' },
-    { to: '/audit', label: 'Audit Trail', icon: FileText, description: 'Healed selectors log' },
-    { to: '/demo-store', label: 'Target Demo Store', icon: ShoppingBag, description: 'E-commerce sandbox', highlight: true }
+    { to: '/', label: 'Overview', icon: Activity },
+    { to: '/live', label: 'Live Runner', icon: Zap, badge: 'Live' },
+    { to: '/studio', label: 'Test Studio', icon: Layers },
+    { to: '/audit', label: 'Audit Trail', icon: FileText },
+    { to: '/demo-store', label: 'Demo Store', icon: ShoppingBag, isApp: true }
   ];
 
   return (
-    <aside className="w-64 bg-white border-r border-slate-200 min-h-screen flex flex-col justify-between shrink-0 z-40 select-none shadow-[1px_0_3px_rgba(0,0,0,0.02)]">
+    <aside className="w-64 bg-white/70 backdrop-blur-2xl border-r border-black/[0.06] min-h-screen flex flex-col justify-between shrink-0 z-40 select-none shadow-[1px_0_12px_rgba(0,0,0,0.02)]">
       {/* Top Brand Section */}
       <div>
-        <div className="h-16 border-b border-slate-200 px-5 flex items-center justify-between">
+        <div className="h-16 px-5 flex items-center justify-between border-b border-black/[0.04]">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center text-white shadow-md shadow-brand-500/25">
-              <Zap className="w-5 h-5 fill-current" />
+            <div className="w-8 h-8 rounded-xl bg-apple-blue flex items-center justify-center text-white shadow-md shadow-apple-blue/20">
+              <Zap className="w-4 h-4 fill-current" />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-base tracking-tight text-slate-900">
+                <span className="font-bold text-[15px] tracking-tight text-apple-text">
                   AutoHeal
                 </span>
-                <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-brand-50 text-brand-700 border border-brand-200">
-                  v3.0
+                <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded-full bg-apple-blue/10 text-apple-blue">
+                  3.0
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 font-medium -mt-0.5">Intent-Aware E2E</p>
+              <p className="text-[11px] text-apple-secondary font-normal -mt-0.5">Intent-Aware Suite</p>
             </div>
           </div>
         </div>
 
-        {/* Navigation Section */}
+        {/* Navigation Links (macOS Sidebar style) */}
         <div className="px-3 py-4 space-y-1">
-          <span className="px-3 text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 block mb-2">
-            Platform Navigation
+          <span className="px-3 text-[10px] font-mono font-semibold uppercase tracking-wider text-apple-tertiary block mb-2">
+            Workspace
           </span>
           {navLinks.map((item) => {
             const Icon = item.icon;
@@ -83,117 +81,120 @@ export default function Sidebar() {
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
-                  `flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all group ${
+                  `flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all group ${
                     isActive
-                      ? 'bg-brand-50 text-brand-700 shadow-sm border border-brand-200/80 font-bold'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                      ? 'bg-apple-blue text-white shadow-[0_2px_8px_rgba(0,113,227,0.25)] font-semibold'
+                      : 'text-apple-secondary hover:text-apple-text hover:bg-black/[0.03]'
                   }`
                 }
               >
-                <div className="flex items-center gap-2.5">
-                  <Icon className={`w-4 h-4 transition-colors ${item.highlight ? 'text-brand-600' : 'text-slate-500 group-hover:text-slate-800'}`} />
-                  <div>
-                    <span className="block">{item.label}</span>
-                  </div>
-                </div>
-                {item.badge && (
-                  <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
-                    {item.badge}
-                  </span>
-                )}
-                {item.highlight && (
-                  <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-brand-100 text-brand-800 border border-brand-200">
-                    APP
-                  </span>
+                {({ isActive }) => (
+                  <>
+                    <div className="flex items-center gap-2.5">
+                      <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-apple-secondary group-hover:text-apple-text'}`} />
+                      <span>{item.label}</span>
+                    </div>
+                    {item.badge && (
+                      <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-full ${
+                        isActive ? 'bg-white/20 text-white' : 'bg-apple-green-light text-apple-green border border-apple-green/20'
+                      }`}>
+                        {item.badge}
+                      </span>
+                    )}
+                    {item.isApp && (
+                      <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-full ${
+                        isActive ? 'bg-white/20 text-white' : 'bg-black/[0.04] text-apple-secondary'
+                      }`}>
+                        TARGET
+                      </span>
+                    )}
+                  </>
                 )}
               </NavLink>
             );
           })}
         </div>
 
-        {/* Quick Execution Launcher Section */}
-        <div className="px-3 py-3 border-t border-slate-100">
-          <span className="px-3 text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 block mb-2.5">
-            Quick Launch Tests
+        {/* Quick Launch Control Center */}
+        <div className="px-3 py-3 border-t border-black/[0.04]">
+          <span className="px-3 text-[10px] font-mono font-semibold uppercase tracking-wider text-apple-tertiary block mb-2.5">
+            Quick Runs
           </span>
           <div className="space-y-1.5">
             <button
               onClick={() => handleQuickRun('standard')}
               disabled={quickRunning}
-              className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-800 transition flex items-center justify-between group disabled:opacity-50"
+              className="w-full text-left px-3.5 py-2 rounded-xl text-xs font-medium bg-black/[0.02] hover:bg-black/[0.05] text-apple-text transition flex items-center justify-between group active:scale-[0.98] disabled:opacity-50"
             >
               <div className="flex items-center gap-2">
-                <Play className="w-3.5 h-3.5 text-slate-600 fill-current" />
+                <Play className="w-3.5 h-3.5 text-apple-secondary fill-current" />
                 <span>Version A (Base)</span>
               </div>
-              <span className="text-[10px] font-mono text-slate-400 group-hover:text-slate-600 font-bold">PASS</span>
+              <span className="text-[10px] font-mono text-apple-tertiary font-medium">PASS</span>
             </button>
 
             <button
               onClick={() => handleQuickRun('mutated')}
               disabled={quickRunning}
-              className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold bg-brand-50 hover:bg-brand-100 text-brand-800 border border-brand-200/80 transition flex items-center justify-between group disabled:opacity-50"
+              className="w-full text-left px-3.5 py-2 rounded-xl text-xs font-medium bg-apple-blue/5 hover:bg-apple-blue/10 text-apple-blue border border-apple-blue/15 transition flex items-center justify-between group active:scale-[0.98] disabled:opacity-50"
             >
               <div className="flex items-center gap-2">
-                <Zap className="w-3.5 h-3.5 text-brand-600 fill-current" />
+                <Zap className="w-3.5 h-3.5 text-apple-blue fill-current" />
                 <span>Version B (Heal)</span>
               </div>
-              <span className="text-[10px] font-mono font-bold text-brand-600">AUTO</span>
+              <span className="text-[10px] font-mono font-bold text-apple-blue">AUTO</span>
             </button>
 
             <button
               onClick={() => handleQuickRun('chaos')}
               disabled={quickRunning}
-              className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200/80 transition flex items-center justify-between group disabled:opacity-50"
+              className="w-full text-left px-3.5 py-2 rounded-xl text-xs font-medium bg-apple-orange-light hover:bg-apple-orange/15 text-apple-orange border border-apple-orange/20 transition flex items-center justify-between group active:scale-[0.98] disabled:opacity-50"
             >
               <div className="flex items-center gap-2">
-                <Flame className="w-3.5 h-3.5 text-rose-600" />
+                <Flame className="w-3.5 h-3.5 text-apple-orange" />
                 <span>Live Chaos Mode</span>
               </div>
-              <span className="text-[10px] font-mono font-bold text-rose-600">FEAT 1</span>
+              <span className="text-[10px] font-mono font-bold text-apple-orange">FEAT 1</span>
             </button>
 
             <button
               onClick={() => handleQuickRun('bug_mode')}
               disabled={quickRunning}
-              className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold bg-red-50 hover:bg-red-100 text-red-800 border border-red-200/80 transition flex items-center justify-between group disabled:opacity-50"
+              className="w-full text-left px-3.5 py-2 rounded-xl text-xs font-medium bg-apple-red-light hover:bg-apple-red/15 text-apple-red border border-apple-red/20 transition flex items-center justify-between group active:scale-[0.98] disabled:opacity-50"
             >
               <div className="flex items-center gap-2">
-                <AlertTriangle className="w-3.5 h-3.5 text-red-600" />
+                <AlertTriangle className="w-3.5 h-3.5 text-apple-red" />
                 <span>Real Bug Mode</span>
               </div>
-              <span className="text-[10px] font-mono font-bold text-red-600">FEAT 3</span>
+              <span className="text-[10px] font-mono font-bold text-apple-red">FEAT 3</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Bottom Status Panel */}
-      <div className="p-4 border-t border-slate-200 bg-slate-50/80 space-y-3">
-        {/* Socket Status */}
+      {/* Bottom Frosted Status Widget */}
+      <div className="p-3.5 m-3 rounded-2xl bg-white/80 border border-black/[0.04] shadow-sm space-y-2">
         <div className="flex items-center justify-between text-xs font-mono">
-          <span className="text-slate-500 text-[11px] font-medium">Socket Stream:</span>
+          <span className="text-apple-secondary text-[11px]">Telemetry:</span>
           <div className="flex items-center gap-1.5">
-            <span className={`w-2 h-2 rounded-full ${socketConnected ? 'bg-emerald-500 animate-pulse' : 'bg-red-400'}`}></span>
-            <span className={`font-bold text-[11px] ${socketConnected ? 'text-emerald-700' : 'text-red-600'}`}>
-              {socketConnected ? 'LIVE' : 'OFFLINE'}
+            <span className={`w-2 h-2 rounded-full ${socketConnected ? 'bg-apple-green animate-pulse' : 'bg-apple-red'}`}></span>
+            <span className={`font-semibold text-[11px] ${socketConnected ? 'text-apple-green' : 'text-apple-red'}`}>
+              {socketConnected ? 'Connected' : 'Offline'}
             </span>
           </div>
         </div>
 
-        {/* Engine Badge */}
         <div className="flex items-center justify-between text-xs font-mono">
-          <span className="text-slate-500 text-[11px] font-medium">Engine Mode:</span>
-          <span className="text-brand-700 font-bold text-[11px] bg-brand-50 px-1.5 py-0.5 rounded border border-brand-200">
-            Heuristic + AI
+          <span className="text-apple-secondary text-[11px]">AI Model:</span>
+          <span className="text-apple-blue font-semibold text-[11px]">
+            Heuristic + LLM
           </span>
         </div>
 
-        {/* Database Engine */}
         <div className="flex items-center justify-between text-xs font-mono">
-          <span className="text-slate-500 text-[11px] font-medium">Storage:</span>
-          <span className="text-slate-700 font-bold text-[11px]">
-            {systemHealth?.db?.connected ? 'MongoDB' : 'Memory Engine'}
+          <span className="text-apple-secondary text-[11px]">Storage:</span>
+          <span className="text-apple-text font-semibold text-[11px]">
+            {systemHealth?.db?.connected ? 'MongoDB' : 'Memory Store'}
           </span>
         </div>
       </div>

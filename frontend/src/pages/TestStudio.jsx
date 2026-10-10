@@ -80,16 +80,18 @@ export default function TestStudio() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-6 sm:px-8 py-8 space-y-8">
       {/* Studio Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <Layers className="w-4 h-4 text-brand-600" />
-            <span className="text-xs font-mono text-brand-700 uppercase font-bold">Intent-to-Test Studio</span>
+            <Layers className="w-4 h-4 text-apple-blue" />
+            <span className="text-xs font-mono text-apple-blue uppercase font-bold tracking-wider">
+              Intent-to-Test Studio
+            </span>
           </div>
-          <h1 className="text-2xl font-extrabold text-slate-900 mt-1">Author Intent-Driven Test Suites</h1>
-          <p className="text-xs text-slate-500">
+          <h1 className="text-2xl font-bold text-apple-text mt-1 tracking-tight">Author Test Specifications</h1>
+          <p className="text-xs text-apple-secondary">
             Define high-level user outcomes. Selectors are treated as dynamic baselines that auto-heal if modified.
           </p>
         </div>
@@ -97,36 +99,36 @@ export default function TestStudio() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left: Test Creator Form */}
-        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+        <div className="lg:col-span-2 bg-white/80 backdrop-blur-2xl border border-black/[0.06] rounded-3xl p-6 sm:p-8 shadow-apple-card space-y-6">
           <form onSubmit={handleSave} className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">Suite Title *</label>
+                <label className="block text-xs font-semibold text-apple-text mb-1.5">Suite Title *</label>
                 <input
                   type="text"
                   required
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g. VIP Subscription Checkout Flow"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-brand-600 font-sans"
+                  className="w-full bg-white border border-black/[0.08] rounded-xl px-4 py-2.5 text-xs text-apple-text focus:outline-none focus:border-apple-blue shadow-apple-sm"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">Target Web Endpoint *</label>
+                <label className="block text-xs font-semibold text-apple-text mb-1.5">Target Endpoint *</label>
                 <input
                   type="url"
                   required
                   value={targetUrl}
                   onChange={(e) => setTargetUrl(e.target.value)}
                   placeholder="http://localhost:5173/demo-store"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-brand-600 font-mono"
+                  className="w-full bg-white border border-black/[0.08] rounded-xl px-4 py-2.5 text-xs text-apple-text focus:outline-none focus:border-apple-blue font-mono shadow-apple-sm"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+              <label className="block text-xs font-semibold text-apple-text mb-1.5">
                 Primary Goal / Business Intent *
               </label>
               <textarea
@@ -134,20 +136,20 @@ export default function TestStudio() {
                 value={intent}
                 onChange={(e) => setIntent(e.target.value)}
                 placeholder="Describe user outcome: Complete purchase of hardware package with standard shipping and payment confirmation"
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-brand-600 font-sans"
+                className="w-full bg-white border border-black/[0.08] rounded-xl px-4 py-2.5 text-xs text-apple-text focus:outline-none focus:border-apple-blue shadow-apple-sm"
               />
             </div>
 
             {/* Steps Definition Section */}
             <div>
               <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-bold text-slate-800 uppercase font-mono">
+                <span className="text-xs font-bold text-apple-text uppercase font-mono">
                   Execution Steps ({steps.length})
                 </span>
                 <button
                   type="button"
                   onClick={handleAddStep}
-                  className="flex items-center gap-1 text-xs text-brand-600 hover:text-brand-700 font-bold"
+                  className="flex items-center gap-1 text-xs text-apple-blue hover:text-apple-blue-hover font-semibold active:scale-95"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   Add Step
@@ -156,10 +158,10 @@ export default function TestStudio() {
 
               <div className="space-y-3">
                 {steps.map((st, idx) => (
-                  <div key={idx} className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
+                  <div key={idx} className="p-4 bg-black/[0.02] border border-black/[0.04] rounded-2xl space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded bg-white text-[10px] font-mono font-bold flex items-center justify-center text-slate-700 border border-slate-200">
+                        <span className="w-5 h-5 rounded-md bg-white text-[10px] font-mono font-bold flex items-center justify-center text-apple-secondary border border-black/[0.06] shadow-apple-sm">
                           {st.order}
                         </span>
                         <input
@@ -167,7 +169,7 @@ export default function TestStudio() {
                           value={st.name}
                           onChange={(e) => handleStepChange(idx, 'name', e.target.value)}
                           placeholder="Step Name"
-                          className="bg-transparent border-b border-slate-300 text-xs font-bold text-slate-900 focus:outline-none focus:border-brand-600 px-1 py-0.5"
+                          className="bg-transparent border-b border-black/[0.1] text-xs font-bold text-apple-text focus:outline-none focus:border-apple-blue px-1 py-0.5"
                         />
                       </div>
 
@@ -175,7 +177,7 @@ export default function TestStudio() {
                         <select
                           value={st.action}
                           onChange={(e) => handleStepChange(idx, 'action', e.target.value)}
-                          className="bg-white text-[11px] font-mono text-slate-800 border border-slate-200 rounded px-2 py-1 font-semibold"
+                          className="bg-white text-[11px] font-mono text-apple-text border border-black/[0.08] rounded-lg px-2 py-1 font-semibold shadow-apple-sm"
                         >
                           <option value="click">click</option>
                           <option value="fill">fill</option>
@@ -184,7 +186,7 @@ export default function TestStudio() {
                         <button
                           type="button"
                           onClick={() => handleRemoveStep(idx)}
-                          className="text-slate-400 hover:text-red-600 transition"
+                          className="text-apple-secondary hover:text-apple-red transition p-1"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -193,37 +195,37 @@ export default function TestStudio() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                       <div>
-                        <label className="text-[10px] font-mono text-slate-500 block mb-0.5 font-medium">Step Intent</label>
+                        <label className="text-[10px] font-mono text-apple-tertiary block mb-0.5 font-medium">Step Intent</label>
                         <input
                           type="text"
                           value={st.intent}
                           onChange={(e) => handleStepChange(idx, 'intent', e.target.value)}
                           placeholder="What does this step achieve?"
-                          className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800"
+                          className="w-full bg-white border border-black/[0.06] rounded-xl px-2.5 py-1.5 text-xs text-apple-text shadow-apple-sm"
                         />
                       </div>
 
                       <div>
-                        <label className="text-[10px] font-mono text-slate-500 block mb-0.5 font-medium">Baseline Selector</label>
+                        <label className="text-[10px] font-mono text-apple-tertiary block mb-0.5 font-medium">Baseline Selector</label>
                         <input
                           type="text"
                           value={st.selector}
                           onChange={(e) => handleStepChange(idx, 'selector', e.target.value)}
                           placeholder="#btn-id or .class"
-                          className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs font-mono text-brand-700 font-bold"
+                          className="w-full bg-white border border-black/[0.06] rounded-xl px-2.5 py-1.5 text-xs font-mono text-apple-blue font-bold shadow-apple-sm"
                         />
                       </div>
                     </div>
 
                     {st.action === 'fill' && (
                       <div>
-                        <label className="text-[10px] font-mono text-slate-500 block mb-0.5 font-medium">Input Text Value</label>
+                        <label className="text-[10px] font-mono text-apple-tertiary block mb-0.5 font-medium">Input Text Value</label>
                         <input
                           type="text"
                           value={st.value}
                           onChange={(e) => handleStepChange(idx, 'value', e.target.value)}
                           placeholder="Text to type"
-                          className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 font-mono"
+                          className="w-full bg-white border border-black/[0.06] rounded-xl px-2.5 py-1.5 text-xs text-apple-text font-mono shadow-apple-sm"
                         />
                       </div>
                     )}
@@ -235,7 +237,7 @@ export default function TestStudio() {
             <button
               type="submit"
               disabled={saving}
-              className="w-full py-3 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-md shadow-brand-500/20 disabled:opacity-50"
+              className="w-full py-3 rounded-full bg-apple-blue hover:bg-apple-blue-hover text-white font-semibold text-xs flex items-center justify-center gap-2 transition shadow-sm active:scale-[0.98] disabled:opacity-50"
             >
               {saveSuccess ? (
                 <>
@@ -253,8 +255,8 @@ export default function TestStudio() {
         </div>
 
         {/* Right: Existing Test Suites List */}
-        <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
-          <h3 className="text-sm font-bold text-slate-900 uppercase font-mono tracking-tight">
+        <div className="bg-white/80 backdrop-blur-2xl border border-black/[0.06] rounded-3xl p-6 shadow-apple-card space-y-4">
+          <h3 className="text-xs font-bold text-apple-text uppercase font-mono tracking-tight">
             Configured Suites ({tests.length})
           </h3>
 
@@ -262,24 +264,24 @@ export default function TestStudio() {
             {tests.map((t) => (
               <div
                 key={t._id}
-                className="p-4 bg-slate-50 border border-slate-200 rounded-2xl hover:border-brand-300 transition space-y-2 group"
+                className="p-4 bg-black/[0.02] border border-black/[0.04] rounded-2xl hover:border-apple-blue/30 transition space-y-2 group"
               >
                 <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-bold text-slate-900 group-hover:text-brand-600 transition">
+                  <h4 className="text-xs font-bold text-apple-text group-hover:text-apple-blue transition">
                     {t.title}
                   </h4>
-                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-brand-50 text-brand-700 border border-brand-200">
+                  <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-apple-blue/10 text-apple-blue">
                     {t.steps?.length || 0} steps
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-500 line-clamp-2">{t.intent || t.description}</p>
+                <p className="text-[11px] text-apple-secondary line-clamp-2">{t.intent || t.description}</p>
                 <div className="pt-2 flex items-center justify-between">
-                  <span className="text-[10px] font-mono text-slate-400 truncate max-w-[150px]">
+                  <span className="text-[10px] font-mono text-apple-tertiary truncate max-w-[140px]">
                     {t.targetUrl}
                   </span>
                   <button
                     onClick={() => triggerRun(t._id, 'mutated', true)}
-                    className="flex items-center gap-1 text-[11px] font-bold text-brand-600 hover:text-brand-700"
+                    className="flex items-center gap-1 text-[11px] font-bold text-apple-blue hover:text-apple-blue-hover active:scale-95"
                   >
                     <span>Run</span>
                     <Play className="w-3 h-3 fill-current" />
