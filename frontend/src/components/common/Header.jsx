@@ -1,62 +1,63 @@
 import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { ShoppingBag, ExternalLink, RotateCcw, Zap } from 'lucide-react';
+import { ShoppingBag, ExternalLink, RefreshCw, Zap, ChevronRight } from 'lucide-react';
 import { useTests } from '../../context/TestContext';
 
 export default function Header() {
   const location = useLocation();
   const { activeRun, refreshAll } = useTests();
 
-  const getPageTitle = (pathname) => {
+  const getPageInfo = (pathname) => {
     switch (pathname) {
       case '/':
-        return { title: 'Overview', subtitle: 'Autonomous E2E Testing Dashboard' };
+        return { section: 'Dashboard', title: 'Test Orchestration Overview' };
       case '/live':
-        return { title: 'Live Runner', subtitle: 'Real-time telemetry and dynamic healing' };
+        return { section: 'Execution', title: 'Real-time Autonomous Runner' };
       case '/studio':
-        return { title: 'Test Studio', subtitle: 'Author intent-based test suites' };
+        return { section: 'Authoring', title: 'Intent Specification Studio' };
       case '/audit':
-        return { title: 'Audit Trail', subtitle: 'Permanent record of healed selectors and triage logs' };
+        return { section: 'Compliance', title: 'Repair Audit Log & Triage' };
       default:
-        return { title: 'AutoHeal Studio', subtitle: 'Intent-Aware E2E Testing Platform' };
+        return { section: 'App', title: 'AutoHeal Studio' };
     }
   };
 
-  const { title, subtitle } = getPageTitle(location.pathname);
+  const { section, title } = getPageInfo(location.pathname);
 
   return (
-    <header className="h-16 bg-[#f5f5f7]/80 backdrop-blur-2xl border-b border-black/[0.05] sticky top-0 z-30 px-6 sm:px-8 flex items-center justify-between">
-      {/* Title & Subtitle */}
-      <div>
-        <h2 className="text-base font-bold text-apple-text tracking-tight">{title}</h2>
-        <p className="text-[11px] text-apple-secondary font-normal -mt-0.5 hidden sm:block">{subtitle}</p>
+    <header className="h-14 bg-canvas border-b border-border sticky top-0 z-30 px-6 flex items-center justify-between">
+      {/* Breadcrumb Navigation */}
+      <div className="flex items-center gap-2 text-xs">
+        <span className="font-semibold text-ink-tertiary uppercase tracking-wider text-2xs">{section}</span>
+        <ChevronRight className="w-3.5 h-3.5 text-ink-tertiary" />
+        <span className="font-semibold text-ink text-sm">{title}</span>
       </div>
 
       {/* Right Controls */}
       <div className="flex items-center gap-3">
         {activeRun && activeRun.status === 'running' && (
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-apple-blue-light border border-apple-blue/20 text-xs font-mono font-semibold text-apple-blue animate-pulse">
-            <Zap className="w-3.5 h-3.5 fill-current" />
-            <span>Test In Flight...</span>
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-light border border-brand-border text-xs font-mono font-medium text-brand animate-pulse">
+            <Zap className="w-3 h-3 fill-current" />
+            <span>Test In Flight</span>
           </div>
         )}
 
         <button
           onClick={refreshAll}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-black/[0.08] bg-white/80 hover:bg-white text-apple-text text-xs font-medium transition shadow-apple-sm active:scale-95"
+          className="btn btn-secondary btn-sm"
           title="Refresh Data"
         >
-          <RotateCcw className="w-3 h-3 text-apple-secondary" />
+          <RefreshCw className="w-3.5 h-3.5 text-ink-secondary" />
           <span>Sync</span>
         </button>
 
         <Link
           to="/demo-store"
-          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-apple-blue hover:bg-apple-blue-hover text-white text-xs font-semibold transition shadow-sm active:scale-95"
+          className="btn btn-primary btn-sm"
         >
           <ShoppingBag className="w-3.5 h-3.5" />
-          <span>Sandbox Store</span>
-          <ExternalLink className="w-3 h-3 opacity-75" />
+          <span>Target App</span>
+          <ExternalLink className="w-3 h-3 text-white/70" />
         </Link>
       </div>
     </header>

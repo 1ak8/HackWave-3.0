@@ -21,7 +21,7 @@ export default function App() {
           <Route
             path="*"
             element={
-              <div className="min-h-screen bg-slate-50 text-slate-900 flex font-sans selection:bg-brand-500/20 selection:text-brand-800">
+              <div className="min-h-screen bg-surface text-ink flex font-sans selection:bg-brand-light selection:text-brand">
                 {/* Left Fixed Sidebar */}
                 <Sidebar />
 

@@ -5,7 +5,9 @@ import {
   Save, 
   Layers, 
   Play, 
-  Check
+  Check,
+  FileCode,
+  Globe
 } from 'lucide-react';
 import { useTests } from '../context/TestContext';
 import apiClient from '../api/apiClient';
@@ -80,88 +82,86 @@ export default function TestStudio() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 sm:px-8 py-8 space-y-8">
+    <div className="w-full max-w-7xl mx-auto px-6 py-6 space-y-6">
       {/* Studio Header */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <Layers className="w-4 h-4 text-apple-blue" />
-            <span className="text-xs font-mono text-apple-blue uppercase font-bold tracking-wider">
-              Intent-to-Test Studio
-            </span>
-          </div>
-          <h1 className="text-2xl font-bold text-apple-text mt-1 tracking-tight">Author Test Specifications</h1>
-          <p className="text-xs text-apple-secondary">
-            Define high-level user outcomes. Selectors are treated as dynamic baselines that auto-heal if modified.
-          </p>
+      <div className="card p-5">
+        <div className="flex items-center gap-2">
+          <Layers className="w-4 h-4 text-brand" />
+          <span className="text-2xs font-mono text-brand uppercase font-bold tracking-wider">
+            Intent-to-Test Studio
+          </span>
         </div>
+        <h1 className="text-xl font-bold text-ink mt-1">Author Intent Test Suites</h1>
+        <p className="text-xs text-ink-secondary mt-0.5">
+          Define tests based on user goals rather than static CSS selectors. Selectors act as dynamic baselines that auto-heal if modified by product updates.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left: Test Creator Form */}
-        <div className="lg:col-span-2 bg-white/80 backdrop-blur-2xl border border-black/[0.06] rounded-3xl p-6 sm:p-8 shadow-apple-card space-y-6">
-          <form onSubmit={handleSave} className="space-y-6">
+        <div className="lg:col-span-2 card p-6 space-y-5">
+          <form onSubmit={handleSave} className="space-y-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-apple-text mb-1.5">Suite Title *</label>
+                <label className="block text-xs font-semibold text-ink mb-1">Suite Title *</label>
                 <input
                   type="text"
                   required
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="e.g. VIP Subscription Checkout Flow"
-                  className="w-full bg-white border border-black/[0.08] rounded-xl px-4 py-2.5 text-xs text-apple-text focus:outline-none focus:border-apple-blue shadow-apple-sm"
+                  placeholder="e.g. Premium Checkout Flow"
+                  className="input text-xs"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-apple-text mb-1.5">Target Endpoint *</label>
+                <label className="block text-xs font-semibold text-ink mb-1">Target Endpoint *</label>
                 <input
                   type="url"
                   required
                   value={targetUrl}
                   onChange={(e) => setTargetUrl(e.target.value)}
                   placeholder="http://localhost:5173/demo-store"
-                  className="w-full bg-white border border-black/[0.08] rounded-xl px-4 py-2.5 text-xs text-apple-text focus:outline-none focus:border-apple-blue font-mono shadow-apple-sm"
+                  className="input input-mono"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-apple-text mb-1.5">
-                Primary Goal / Business Intent *
+              <label className="block text-xs font-semibold text-ink mb-1">
+                Primary User Outcome / Goal *
               </label>
               <textarea
                 rows={2}
                 value={intent}
                 onChange={(e) => setIntent(e.target.value)}
                 placeholder="Describe user outcome: Complete purchase of hardware package with standard shipping and payment confirmation"
-                className="w-full bg-white border border-black/[0.08] rounded-xl px-4 py-2.5 text-xs text-apple-text focus:outline-none focus:border-apple-blue shadow-apple-sm"
+                className="input text-xs"
               />
             </div>
 
-            {/* Steps Definition Section */}
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-bold text-apple-text uppercase font-mono">
+            {/* Steps Section */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between pb-2 border-b border-border">
+                <span className="text-xs font-bold text-ink uppercase font-mono">
                   Execution Steps ({steps.length})
                 </span>
                 <button
                   type="button"
                   onClick={handleAddStep}
-                  className="flex items-center gap-1 text-xs text-apple-blue hover:text-apple-blue-hover font-semibold active:scale-95"
+                  className="btn btn-secondary btn-xs flex items-center gap-1 text-brand font-semibold"
                 >
                   <Plus className="w-3.5 h-3.5" />
-                  Add Step
+                  <span>Add Step</span>
                 </button>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {steps.map((st, idx) => (
-                  <div key={idx} className="p-4 bg-black/[0.02] border border-black/[0.04] rounded-2xl space-y-3">
+                  <div key={idx} className="p-3.5 bg-surface border border-border rounded-lg space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-md bg-white text-[10px] font-mono font-bold flex items-center justify-center text-apple-secondary border border-black/[0.06] shadow-apple-sm">
+                        <span className="w-5 h-5 rounded bg-white border border-border text-2xs font-mono font-bold flex items-center justify-center text-ink-secondary">
                           {st.order}
                         </span>
                         <input
@@ -169,7 +169,7 @@ export default function TestStudio() {
                           value={st.name}
                           onChange={(e) => handleStepChange(idx, 'name', e.target.value)}
                           placeholder="Step Name"
-                          className="bg-transparent border-b border-black/[0.1] text-xs font-bold text-apple-text focus:outline-none focus:border-apple-blue px-1 py-0.5"
+                          className="bg-transparent border-b border-border text-xs font-bold text-ink focus:outline-none focus:border-brand px-1 py-0.5"
                         />
                       </div>
 
@@ -177,7 +177,7 @@ export default function TestStudio() {
                         <select
                           value={st.action}
                           onChange={(e) => handleStepChange(idx, 'action', e.target.value)}
-                          className="bg-white text-[11px] font-mono text-apple-text border border-black/[0.08] rounded-lg px-2 py-1 font-semibold shadow-apple-sm"
+                          className="bg-white text-xs font-mono text-ink border border-border rounded px-2 py-1 font-semibold"
                         >
                           <option value="click">click</option>
                           <option value="fill">fill</option>
@@ -186,7 +186,8 @@ export default function TestStudio() {
                         <button
                           type="button"
                           onClick={() => handleRemoveStep(idx)}
-                          className="text-apple-secondary hover:text-apple-red transition p-1"
+                          className="text-ink-tertiary hover:text-danger transition p-1"
+                          title="Remove step"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -195,37 +196,37 @@ export default function TestStudio() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                       <div>
-                        <label className="text-[10px] font-mono text-apple-tertiary block mb-0.5 font-medium">Step Intent</label>
+                        <label className="text-2xs font-mono text-ink-tertiary block mb-0.5 font-medium">Step Intent</label>
                         <input
                           type="text"
                           value={st.intent}
                           onChange={(e) => handleStepChange(idx, 'intent', e.target.value)}
                           placeholder="What does this step achieve?"
-                          className="w-full bg-white border border-black/[0.06] rounded-xl px-2.5 py-1.5 text-xs text-apple-text shadow-apple-sm"
+                          className="input text-xs"
                         />
                       </div>
 
                       <div>
-                        <label className="text-[10px] font-mono text-apple-tertiary block mb-0.5 font-medium">Baseline Selector</label>
+                        <label className="text-2xs font-mono text-ink-tertiary block mb-0.5 font-medium">Baseline Selector</label>
                         <input
                           type="text"
                           value={st.selector}
                           onChange={(e) => handleStepChange(idx, 'selector', e.target.value)}
                           placeholder="#btn-id or .class"
-                          className="w-full bg-white border border-black/[0.06] rounded-xl px-2.5 py-1.5 text-xs font-mono text-apple-blue font-bold shadow-apple-sm"
+                          className="input input-mono text-brand font-bold"
                         />
                       </div>
                     </div>
 
                     {st.action === 'fill' && (
                       <div>
-                        <label className="text-[10px] font-mono text-apple-tertiary block mb-0.5 font-medium">Input Text Value</label>
+                        <label className="text-2xs font-mono text-ink-tertiary block mb-0.5 font-medium">Input Value</label>
                         <input
                           type="text"
                           value={st.value}
                           onChange={(e) => handleStepChange(idx, 'value', e.target.value)}
                           placeholder="Text to type"
-                          className="w-full bg-white border border-black/[0.06] rounded-xl px-2.5 py-1.5 text-xs text-apple-text font-mono shadow-apple-sm"
+                          className="input input-mono"
                         />
                       </div>
                     )}
@@ -237,11 +238,11 @@ export default function TestStudio() {
             <button
               type="submit"
               disabled={saving}
-              className="w-full py-3 rounded-full bg-apple-blue hover:bg-apple-blue-hover text-white font-semibold text-xs flex items-center justify-center gap-2 transition shadow-sm active:scale-[0.98] disabled:opacity-50"
+              className="btn btn-primary w-full"
             >
               {saveSuccess ? (
                 <>
-                  <Check className="w-4 h-4" />
+                  <Check className="w-4 h-4 text-green-300" />
                   <span>Suite Saved Successfully!</span>
                 </>
               ) : (
@@ -255,33 +256,35 @@ export default function TestStudio() {
         </div>
 
         {/* Right: Existing Test Suites List */}
-        <div className="bg-white/80 backdrop-blur-2xl border border-black/[0.06] rounded-3xl p-6 shadow-apple-card space-y-4">
-          <h3 className="text-xs font-bold text-apple-text uppercase font-mono tracking-tight">
-            Configured Suites ({tests.length})
-          </h3>
+        <div className="card p-5 space-y-4 h-fit">
+          <div className="flex items-center justify-between pb-2 border-b border-border">
+            <h3 className="text-xs font-bold text-ink uppercase font-mono tracking-wider">
+              Configured Suites ({tests.length})
+            </h3>
+          </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {tests.map((t) => (
               <div
                 key={t._id}
-                className="p-4 bg-black/[0.02] border border-black/[0.04] rounded-2xl hover:border-apple-blue/30 transition space-y-2 group"
+                className="p-3.5 bg-surface border border-border rounded-lg hover:border-brand/40 transition space-y-2 group"
               >
                 <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-bold text-apple-text group-hover:text-apple-blue transition">
+                  <h4 className="text-xs font-bold text-ink group-hover:text-brand transition">
                     {t.title}
                   </h4>
-                  <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-apple-blue/10 text-apple-blue">
+                  <span className="badge badge-brand text-2xs font-mono">
                     {t.steps?.length || 0} steps
                   </span>
                 </div>
-                <p className="text-[11px] text-apple-secondary line-clamp-2">{t.intent || t.description}</p>
-                <div className="pt-2 flex items-center justify-between">
-                  <span className="text-[10px] font-mono text-apple-tertiary truncate max-w-[140px]">
+                <p className="text-xs text-ink-secondary line-clamp-2">{t.intent || t.description}</p>
+                <div className="pt-2 border-t border-border/40 flex items-center justify-between text-xs">
+                  <span className="text-2xs font-mono text-ink-tertiary truncate max-w-[140px]">
                     {t.targetUrl}
                   </span>
                   <button
                     onClick={() => triggerRun(t._id, 'mutated', true)}
-                    className="flex items-center gap-1 text-[11px] font-bold text-apple-blue hover:text-apple-blue-hover active:scale-95"
+                    className="btn btn-primary btn-xs flex items-center gap-1"
                   >
                     <span>Run</span>
                     <Play className="w-3 h-3 fill-current" />

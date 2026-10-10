@@ -4,59 +4,82 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        apple: {
-          bg: '#f5f5f7',
-          surface: '#ffffff',
-          border: 'rgba(0, 0, 0, 0.07)',
-          'border-subtle': 'rgba(0, 0, 0, 0.04)',
-          text: '#1d1d1f',
-          secondary: '#6e6e73',
-          tertiary: '#86868b',
-          blue: '#0071e3',
-          'blue-hover': '#0077ed',
-          'blue-light': '#f0f6ff',
-          green: '#34c759',
-          'green-light': '#ecfdf3',
-          orange: '#ff9500',
-          'orange-light': '#fff8eb',
-          red: '#ff3b30',
-          'red-light': '#fef2f2',
-          purple: '#af52de',
-        }
+        // Core neutrals — clean whites and grays
+        canvas: '#ffffff',
+        surface: '#fafafa',
+        'surface-raised': '#ffffff',
+        border: '#e5e7eb',
+        'border-strong': '#d1d5db',
+
+        // Text hierarchy
+        ink: '#111827',
+        'ink-secondary': '#6b7280',
+        'ink-tertiary': '#9ca3af',
+        'ink-disabled': '#d1d5db',
+
+        // Sidebar — deep charcoal, Vercel/Linear style
+        sidebar: {
+          bg: '#111827',
+          hover: '#1f2937',
+          active: '#1f2937',
+          border: '#1f2937',
+          text: '#e5e7eb',
+          'text-muted': '#6b7280',
+          'text-active': '#ffffff',
+        },
+
+        // Accent — Vercel-style indigo/violet
+        brand: '#6366f1',
+        'brand-hover': '#4f46e5',
+        'brand-light': '#eef2ff',
+        'brand-border': '#c7d2fe',
+
+        // Semantic colors — crisp and unambiguous
+        success: '#16a34a',
+        'success-bg': '#f0fdf4',
+        'success-border': '#bbf7d0',
+        'success-text': '#15803d',
+
+        warning: '#d97706',
+        'warning-bg': '#fffbeb',
+        'warning-border': '#fde68a',
+        'warning-text': '#b45309',
+
+        danger: '#dc2626',
+        'danger-bg': '#fef2f2',
+        'danger-border': '#fecaca',
+        'danger-text': '#b91c1c',
+
+        info: '#2563eb',
+        'info-bg': '#eff6ff',
+        'info-border': '#bfdbfe',
+        'info-text': '#1d4ed8',
       },
       fontFamily: {
-        sans: [
-          '-apple-system',
-          'BlinkMacSystemFont',
-          '"SF Pro Display"',
-          '"SF Pro Text"',
-          '"Plus Jakarta Sans"',
-          '"Helvetica Neue"',
-          'sans-serif'
-        ],
-        mono: [
-          '"SF Mono"',
-          'Menlo',
-          'Monaco',
-          '"JetBrains Mono"',
-          'Consolas',
-          'monospace'
-        ]
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+      },
+      fontSize: {
+        '2xs': ['0.625rem', { lineHeight: '0.875rem' }],
       },
       boxShadow: {
-        'apple-sm': '0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02)',
-        'apple-card': '0 4px 20px -2px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02)',
-        'apple-elevated': '0 16px 40px -6px rgba(0, 0, 0, 0.07), 0 6px 16px -3px rgba(0, 0, 0, 0.03)',
-        'apple-glass': '0 8px 32px 0 rgba(0, 0, 0, 0.06)'
+        card: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+        'card-md': '0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06)',
+        'card-lg': '0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05)',
+        'inner-sm': 'inset 0 1px 2px 0 rgb(0 0 0 / 0.05)',
       },
       borderRadius: {
-        'apple-xl': '18px',
-        'apple-2xl': '24px',
-        'apple-3xl': '32px'
+        DEFAULT: '0.375rem',
+        md: '0.5rem',
+        lg: '0.75rem',
+        xl: '1rem',
+        '2xl': '1.25rem',
+      },
+      animation: {
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       }
     },
   },
