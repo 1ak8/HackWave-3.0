@@ -1,0 +1,20 @@
+{
+  "name": "hackwave-3.0-self-healing-tests",
+  "version": "1.0.0",
+  "description": "Intent-Aware E2E Testing Suite that Survives UI Changes with Smart Triage and Intent Graph",
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:frontend": "npm --prefix frontend run build",
+    "test:engine": "npm --prefix backend run start -- tests/engineTest.js"
+  },
+  "keywords": [
+    "self-healing-tests",
+    "intent-graph",
+    "playwright",
+    "ai-testing",
+    "smart-triage"
+  ],
+  "author": "HackWave 3.0 Team",
+  "license": "MIT"
+}

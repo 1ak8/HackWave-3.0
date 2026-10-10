@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased min-h-screen relative;
+    background-image: radial-gradient(at 100% 0%, hsla(210, 100%, 93%, 1) 0px, transparent 50%),
+                      radial-gradient(at 0% 0%, hsla(250, 100%, 95%, 1) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+}
+
+.glass-card {
+  @apply bg-white/80 backdrop-blur-md border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl;
+}
+
+.btn-primary-gradient {
+  @apply bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-[0_4px_14px_0_rgb(79,70,229,0.39)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.23)] hover:-translate-y-0.5 transition-all duration-200;
+}
+

@@ -1,0 +1,170 @@
+const { callLLM } = require('../config/aiConfig');
+const logger = require('../utils/logger');
+
+/**
+ * Semantic Heuristic Engine (Ultra-reliable fallback & fast local evaluator)
+ */
+const evaluateHeuristically = (intent, brokenSelector, domData, mode = 'standard') => {
+  const { elements, pageSnippet } = domData;
+  const intentLower = (intent || '').toLowerCase();
+  const selectorLower = (brokenSelector || '').toLowerCase();
+
+  // 1. SMART TRIAGE CHECK: Genuine Bug vs Harmless UI Change
+  // If mode is 'bug_mode' or page indicates critical crash / disabled state:
+  if (mode === 'bug_mode' || pageSnippet.includes('Server Error 500') || pageSnippet.includes('Payment Gateway Offline')) {
+    return {
+      healedSelector: null,
+      confidence: 99,
+      strategyLayer: 'Triage Layer: Application Integrity Check',
+      classification: 'Genuine_Bug',
+      reasoning: 'Critical Application Bug detected: The workflow component is disabled or the underlying payment service is throwing an uncaught 500 failure. Healing aborted to preserve test integrity.',
+      isSafeToResume: false
+    };
+  }
+
+  // Check if cart total is corrupted e.g. $0 when purchasing items
+  if (intentLower.includes('checkout') && pageSnippet.includes('$0.00') && !intentLower.includes('free')) {
+    return {
+      healedSelector: null,
+      confidence: 96,
+      strategyLayer: 'Triage Layer: Business Logic Assertion',
+      classification: 'Genuine_Bug',
+      reasoning: 'Genuine Failure: Cart Total unexpectedly shows $0.00 despite adding items. This is a severe pricing calculation bug, NOT a cosmetic UI shift. Test halted.',
+      isSafeToResume: false
+    };
+  }
+
+  // 2. MULTI-STRATEGY RESOLUTION FOR HARMLESS UI SHIFTS
+  let bestCandidate = null;
+  let highestScore = 0;
+  let layerUsed = 'Layer 1: Semantic Text & Role Matching';
+
+  // Semantic keyword dictionaries for testing workflows
+  const synonymMap = {
+    cart: ['cart', 'basket', 'bag', 'view cart', 'my cart', 'items'],
+    add: ['add to cart', 'grab it', 'buy now', 'purchase', 'add', 'order item', 'get it'],
+    checkout: ['checkout', 'pay now', 'complete order', 'place order', 'proceed to pay', 'confirm payment', 'finalize'],
+    email: ['email', 'contact', 'buyer email', 'mail', 'user@'],
+    address: ['address', 'shipping', 'delivery', 'street', 'location'],
+    confirm: ['confirmed', 'order #', 'success', 'tracking']
+  };
+
+  for (const el of elements) {
+    if (el.disabled) continue; // Skip disabled buttons
+
+    let score = 0;
+    const textLower = (el.text || '').toLowerCase();
+    const idLower = (el.id || '').toLowerCase();
+    const classLower = (el.classes || '').toLowerCase();
+
+    // Check intent synonyms
+    for (const [key, synonyms] of Object.entries(synonymMap)) {
+      if (intentLower.includes(key) || selectorLower.includes(key)) {
+        for (const syn of synonyms) {
+          if (textLower.includes(syn)) score += 40;
+          if (idLower.includes(syn)) score += 30;
+          if (classLower.includes(syn)) score += 20;
+        }
+      }
+    }
+
+    // Role and tag alignment
+    if (intentLower.includes('click') || intentLower.includes('order') || intentLower.includes('add')) {
+      if (el.tag === 'button' || el.role === 'button') score += 15;
+    }
+    if (intentLower.includes('email') || intentLower.includes('address') || intentLower.includes('enter') || intentLower.includes('fill')) {
+      if (el.tag === 'input' || el.tag === 'textarea') score += 25;
+    }
+
+    if (score > highestScore) {
+      highestScore = score;
+      bestCandidate = el;
+    }
+  }
+
+  if (bestCandidate && highestScore >= 30) {
+    let healedSelector = bestCandidate.suggestedSelector;
+    if (bestCandidate.id) {
+      healedSelector = `#${bestCandidate.id}`;
+    } else if (bestCandidate.text && bestCandidate.text.length < 30) {
+      healedSelector = `${bestCandidate.tag}:has-text("${bestCandidate.text}")`;
+    } else if (bestCandidate.classes) {
+      const firstClass = bestCandidate.classes.split(' ')[0];
+      healedSelector = `${bestCandidate.tag}.${firstClass}`;
+    }
+
+    const confidence = Math.min(99, Math.max(82, 70 + Math.round(highestScore / 2)));
+
+    return {
+      healedSelector,
+      confidence,
+      strategyLayer: highestScore > 60 ? 'Layer 1: Text & Intent Similarity' : 'Layer 2: Role & Structural Proximity',
+      classification: 'Harmless_UI_Change',
+      reasoning: `Original selector "${brokenSelector}" missing due to redesign. Located dynamic replacement <${bestCandidate.tag}> with label "${bestCandidate.text || bestCandidate.id}" satisfying intent "${intent}".`,
+      isSafeToResume: true,
+      candidateElement: bestCandidate
+    };
+  }
+
+  // Fallback if no clean candidate was found
+  return {
+    healedSelector: null,
+    confidence: 45,
+    strategyLayer: 'Layer 5: Fallback Scan',
+    classification: 'Genuine_Bug',
+    reasoning: `Target element for intent "${intent}" completely vanished from current view hierarchy. Marking as potential regression.`,
+    isSafeToResume: false
+  };
+};
+
+/**
+ * Main Heal Function
+ */
+const healBrokenStep = async ({ intent, brokenSelector, domData, mode }) => {
+  logger.healing(`Analyzing broken selector [${brokenSelector}] for intent: "${intent}"`);
+
+  // 1. Try LLM first if configured
+  const prompt = [
+    {
+      role: 'system',
+      content: `You are AutoHeal-AI, an expert automated test healing engine.
+Analyze the failed step, determine if this is a HARMLESS UI redesign or a GENUINE APPLICATION FAILURE.
+Return pure JSON:
+{
+  "classification": "Harmless_UI_Change" | "Genuine_Bug",
+  "healedSelector": "valid css or playwright selector" | null,
+  "confidence": number between 50 and 99,
+  "strategyLayer": "Layer 1: Text Match" | "Layer 2: Role & Position" | "Layer 3: Semantic DOM",
+  "reasoning": "clear concise explanation for developers and product managers",
+  "isSafeToResume": boolean
+}`
+    },
+    {
+      role: 'user',
+      content: `Step Intent: "${intent}"
+Original Selector: "${brokenSelector}"
+Test Mode: "${mode}"
+Current Interactive Page Elements:
+${JSON.stringify(domData.elements, null, 2)}
+Page Context Snippet:
+${domData.pageSnippet}`
+    }
+  ];
+
+  try {
+    const aiResult = await callLLM(prompt);
+    if (aiResult && aiResult.classification && (aiResult.healedSelector || aiResult.classification === 'Genuine_Bug')) {
+      logger.success(`AI LLM resolved healing: ${aiResult.classification} (Confidence: ${aiResult.confidence}%)`);
+      return aiResult;
+    }
+  } catch (err) {
+    logger.warn(`LLM failed or skipped (${err.message}), invoking Semantic Heuristic Engine.`);
+  }
+
+  // 2. High-precision semantic heuristic reasoner
+  const heuristicResult = evaluateHeuristically(intent, brokenSelector, domData, mode);
+  logger.info(`Heuristic engine resolved: ${heuristicResult.classification} -> ${heuristicResult.healedSelector || 'None'}`);
+  return heuristicResult;
+};
+
+module.exports = { healBrokenStep };
