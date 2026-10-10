@@ -80,7 +80,37 @@ HackWave-3.0/
 
 ---
 
-## 🧭 Step-by-Step Implementation Roadmap
+## 🎯 3 Killer Hackathon Features (Locked Core Scope)
+
+### 1. ⚡ Live Chaos Mode (Real-Time Mutation Demo)
+- **Concept:** Live UI destruction during execution to prove healing isn't a pre-baked script.
+- **Mechanism:**
+  - Real-time mutation controls directly on the Demo Store UI:
+    - *Rename Actions:* e.g., "Add to Cart" → "Grab It!", "Pay Now" → "Complete Order".
+    - *Relocate Elements:* Top ↔ Bottom layout shifting, class rewriting (`#checkout-btn` → `.btn-pay-action`).
+  - Playwright test encounters dynamic mutation mid-flight, AI intercepts immediately, deduces element intent, and heals within seconds.
+- **Hackathon Impact:** High visual drama that keeps judges hooked without static before/after slides.
+
+### 2. 📊 Intent Graph (Visual Healing Animation)
+- **Concept:** End-to-end test execution rendered as an interactive node graph (`Login` → `Add to Cart` → `Checkout` → `Pay`).
+- **Dynamic State Machine:**
+  - 🟢 **Green:** Step executing cleanly via existing selector.
+  - 🔴 **Red:** Broken selector detected (Element missing in DOM).
+  - 🟡 **Yellow (Pulsing):** AI Engine analyzing page context & healing replacement element.
+  - 🟢 **Green (Healed):** Action dispatched successfully on healed element.
+- **Hackathon Impact:** Judges can visually comprehend the exact moment of failure and self-repair at a glance.
+
+### 3. 🛡️ Smart Triage: Harmless Change vs. Real Application Bug (PS Mandatory)
+- **Concept:** The engine does NOT blindly heal everything. It distinguishes between harmless cosmetic/layout shifts and genuine application crashes.
+- **Scenarios:**
+  - **Harmless UI Shift (Auto-Heal ✅):** Button renamed ("Buy Now" → "Purchase") or moved. Workflow intact → AI heals and continues.
+  - **Real Failure (Fail & Alert 🚨):**
+    - Checkout total drops unexpectedly to `$0`.
+    - Payment button is completely removed or permanently disabled.
+    - API returns 500 server crash.
+  - **Action:** AI flags: *"Genuine Failure: Critical payment flow broken, DO NOT HEAL."* Test is failed legitimately and developer alert is logged.
+
+---
 
 ### Phase 1: Foundation & Environment Configuration
 - [ ] Initialize root `.gitignore`, `.env.example`, and `.env`.
