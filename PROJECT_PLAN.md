@@ -80,7 +80,7 @@ HackWave-3.0/
 
 ---
 
-## 🎯 3 Killer Hackathon Features (Locked Core Scope)
+## 🎯 4 Killer Hackathon Features (Locked Core Scope)
 
 ### 1. ⚡ Live Chaos Mode (Real-Time Mutation Demo)
 - **Concept:** Live UI destruction during execution to prove healing isn't a pre-baked script.
@@ -109,6 +109,13 @@ HackWave-3.0/
     - Payment button is completely removed or permanently disabled.
     - API returns 500 server crash.
   - **Action:** AI flags: *"Genuine Failure: Critical payment flow broken, DO NOT HEAL."* Test is failed legitimately and developer alert is logged.
+
+### 4. 🎚️ Confidence Scoring & Human-in-the-Loop Safety Guardrail
+- **Concept:** Every healing resolution receives a statistical confidence rating (0–100%) to prevent reckless / destructive automation.
+- **Threshold Policy:**
+  - **High Confidence (≥ 75%):** e.g., *"Found 'Purchase' button — 89% Confidence ✅ Auto-healing"* ➔ Dispatches action automatically.
+  - **Low / Ambiguous Confidence (< 75%):** e.g., *"Found 'Submit' button — 42% Confidence ⚠️ Needs Human Review"* ➔ Pauses execution and prompts the operator with a 1-click confirm/reject card on the dashboard.
+- **Hackathon Impact:** Conveys enterprise-grade maturity and safety. Shows judges our AI is deliberate, calibrated, and safe for production systems.
 
 ---
 
