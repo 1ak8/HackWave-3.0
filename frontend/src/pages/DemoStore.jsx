@@ -20,7 +20,8 @@ import {
   Cpu,
   Loader2,
   ChevronRight,
-  Info
+  Info,
+  Bot
 } from 'lucide-react';
 import { useTests } from '../context/TestContext';
 
@@ -79,9 +80,53 @@ export default function DemoStore() {
     terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [terminalLogs]);
 
+  // Keep bot running state in sync with activeRun
+  useEffect(() => {
+    if (activeSource === 'bot') {
+      if (activeRun?.status === 'running') {
+        setIsBotRunning(true);
+      } else if (activeRun?.status && activeRun.status !== 'pending') {
+        setIsBotRunning(false);
+      }
+    }
+  }, [activeRun?.status, activeSource]);
+
+  // Synchronize store UI with bot actions in real time!
+  useEffect(() => {
+    if (activeSource === 'bot' && activeRun?.steps) {
+      const steps = activeRun.steps;
+      // Step 1: Product added?
+      if (steps[0] && (steps[0].status === 'healed' || steps[0].status === 'passed')) {
+        setCartCount(1);
+        setItemAddedToast(true);
+      }
+      // Step 2: Opened drawer?
+      if (steps[1] && steps[1].status !== 'pending') {
+        setStoreStep(2);
+      }
+      // Step 3: Email filled?
+      if (steps[2] && (steps[2].status === 'healed' || steps[2].status === 'passed')) {
+        setEmail('lokesh@hackwave.dev');
+      }
+      // Step 4: Address filled?
+      if (steps[3] && (steps[3].status === 'healed' || steps[3].status === 'passed')) {
+        setAddress('Building 4, Tech Innovation Hub, Cyber City');
+      }
+      // Step 5: Payment attempted?
+      if (steps[4]) {
+        if (steps[4].status === 'failed') {
+          setBugHaltToast(true);
+        } else if (steps[4].status === 'healed' || steps[4].status === 'passed') {
+          setStoreStep(3);
+        }
+      }
+    }
+  }, [activeSource, activeRun?.steps]);
+
   // Reset store and step pipeline cleanly
   const resetStore = () => {
     setActiveSource('manual');
+    setIsBotRunning(false);
     setCartCount(0);
     setStoreStep(1);
     setEmail('');
@@ -96,6 +141,7 @@ export default function DemoStore() {
     setMode(newMode);
     setSearchParams({ mode: newMode });
     setActiveSource('manual');
+    setIsBotRunning(false);
     setCartCount(0);
     setStoreStep(1);
     setEmail('');
@@ -261,24 +307,40 @@ export default function DemoStore() {
     }, 850);
   };
 
-  // Automated E2E Bot execution
+  // Automated E2E Bot execution (Fixed & Robust!)
   const runAutomatedBot = async () => {
     setActiveSource('bot');
     setIsBotRunning(true);
-    resetStore();
+    setInspectorTab('pipeline');
+    
+    // Reset local UI inputs WITHOUT resetting activeSource to 'manual'
+    setCartCount(0);
+    setStoreStep(1);
+    setEmail('');
+    setAddress('');
+    setIsProcessing(false);
+    setItemAddedToast(false);
+    setBugHaltToast(false);
+    setManualSteps(getFreshSteps());
+
     try {
+      if (addTerminalLog) {
+        addTerminalLog('info', `🤖 Starting Headless Playwright Bot for [${mode.toUpperCase()}] mode...`);
+      }
       await triggerRun(defaultTest?._id, mode, true);
     } catch (err) {
-      console.error(err);
-    } finally {
+      console.error('Failed to run bot:', err);
       setIsBotRunning(false);
+      if (addTerminalLog) {
+        addTerminalLog('error', `Bot execution error: ${err.message}`);
+      }
     }
   };
 
   // Clean steps display:
-  // If activeSource === 'bot' AND activeRun is running for current mode, show bot's run steps.
+  // If activeSource === 'bot' AND activeRun has steps, display bot's live steps.
   // Otherwise ALWAYS show clean manualSteps (so tab switches start in pending state)!
-  const displayedSteps = (activeSource === 'bot' && activeRun && activeRun.mode === mode && activeRun.steps && activeRun.steps.length > 0)
+  const displayedSteps = (activeSource === 'bot' && activeRun && activeRun.steps && activeRun.steps.length > 0)
     ? activeRun.steps.map(s => ({
         order: s.order,
         name: s.name,
@@ -379,11 +441,24 @@ export default function DemoStore() {
           <button
             onClick={runAutomatedBot}
             disabled={isBotRunning}
-            className="btn btn-primary btn-sm flex items-center gap-1.5 font-bold shadow-sm"
-            title="Trigger headless Playwright bot to execute the test suite"
+            className={`btn btn-sm flex items-center gap-1.5 font-bold shadow-sm transition-all ${
+              isBotRunning 
+                ? 'bg-amber-500 hover:bg-amber-600 text-white animate-pulse' 
+                : 'btn-primary'
+            }`}
+            title="Auto-Run Playwright Robot: Automatically drives browser, clicks elements & executes the full test suite"
           >
-            <Zap className={`w-3.5 h-3.5 fill-current ${isBotRunning ? 'animate-spin' : ''}`} />
-            <span>{isBotRunning ? 'Bot Running...' : 'Auto-Run E2E Bot'}</span>
+            {isBotRunning ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Bot Running E2E Test...</span>
+              </>
+            ) : (
+              <>
+                <Bot className="w-4 h-4" />
+                <span>Auto-Run E2E Bot</span>
+              </>
+            )}
           </button>
 
           <button 
@@ -407,7 +482,7 @@ export default function DemoStore() {
         <div className="flex items-center gap-2">
           <Info className="w-4 h-4 shrink-0" />
           {mode === 'standard' && (
-            <span><strong>Version A Mode:</strong> Unmodified baseline store. Click through the order flow below to see all steps pass normally.</span>
+            <span><strong>Version A Mode:</strong> Unmodified baseline store. Click through the order flow below or run the bot to see all steps pass normally.</span>
           )}
           {mode === 'mutated' && (
             <span><strong>Version B Mode (Realistic Release):</strong> Devs renamed Steps 1, 3, 5, while Steps 2, 4, 6 remain untouched. Watch AI deliberately heal mutated steps while normal steps pass directly!</span>
@@ -705,7 +780,7 @@ export default function DemoStore() {
                   onClick={runAutomatedBot}
                   className="btn btn-primary btn-sm flex items-center gap-1.5"
                 >
-                  <Zap className="w-3.5 h-3.5 fill-current" />
+                  <Bot className="w-4 h-4" />
                   <span>Auto-Run with Bot</span>
                 </button>
               </div>
@@ -715,6 +790,19 @@ export default function DemoStore() {
 
         {/* ================= RIGHT PANE: Live Inspector & Telemetry Logs (5 cols) ================= */}
         <div className="lg:col-span-5 space-y-3 sticky top-20">
+          {/* Active Bot Driving Banner */}
+          {isBotRunning && (
+            <div className="p-3 rounded-xl bg-brand text-white text-xs font-bold flex items-center justify-between shadow-md animate-pulse">
+              <div className="flex items-center gap-2">
+                <Bot className="w-4 h-4 animate-bounce" />
+                <span>Playwright Bot Driving Browser...</span>
+              </div>
+              <span className="text-[10px] font-mono bg-white/20 px-2 py-0.5 rounded">
+                Mode: {mode.toUpperCase()}
+              </span>
+            </div>
+          )}
+
           {/* Tab Switcher */}
           <div className="card p-1.5 flex items-center justify-between bg-white shadow-xs">
             <div className="flex items-center gap-1">
@@ -760,7 +848,9 @@ export default function DemoStore() {
               <div className="flex items-center justify-between pb-2 border-b border-border">
                 <div>
                   <h3 className="text-sm font-bold text-ink">E2E Test Steps & Healing State</h3>
-                  <p className="text-xs text-ink-secondary">Live state as you click store or run bot</p>
+                  <p className="text-xs text-ink-secondary">
+                    {activeSource === 'bot' ? 'Streaming live from automated Playwright bot' : 'Live state as you click store buttons'}
+                  </p>
                 </div>
                 <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-surface border border-border">
                   {mode.toUpperCase()}
@@ -777,12 +867,13 @@ export default function DemoStore() {
                   const isPassed = (s.status === 'passed') || (s.status === 'healed' && (!s.healed || s.healed === s.orig));
                   const isFailed = s.status === 'failed';
                   const isPending = s.status === 'pending';
+                  const isRunning = s.status === 'running';
 
                   return (
                     <div
                       key={s.order}
                       className={`p-3 rounded-xl border transition-all text-xs space-y-2 ${
-                        isHealing ? 'border-amber-400 bg-warning-bg/40 ring-1 ring-amber-400' :
+                        isHealing || isRunning ? 'border-amber-400 bg-warning-bg/40 ring-1 ring-amber-400' :
                         isActuallyHealed ? 'border-indigo-300 bg-brand-light/30' :
                         isPassed ? 'border-success-border bg-success-bg/30' :
                         isFailed ? 'border-danger-border bg-danger-bg/40' :
@@ -800,19 +891,19 @@ export default function DemoStore() {
 
                         {/* Status Badges */}
                         <div>
-                          {isHealing && (
+                          {(isHealing || isRunning) && (
                             <span className="badge badge-warning text-2xs font-bold animate-pulse">
                               <Loader2 className="w-3 h-3 animate-spin" />
                               AI HEALING...
                             </span>
                           )}
-                          {isActuallyHealed && !isHealing && (
+                          {isActuallyHealed && !isHealing && !isRunning && (
                             <span className="badge badge-brand text-2xs font-bold">
                               <Sparkles className="w-3 h-3" />
                               AUTO-HEALED {s.confidence ? `(${s.confidence}%)` : ''}
                             </span>
                           )}
-                          {isPassed && !isHealing && (
+                          {isPassed && !isHealing && !isRunning && (
                             <span className="badge badge-success text-2xs font-bold">
                               <CheckCircle2 className="w-3 h-3" />
                               PASSED (Direct)
@@ -824,7 +915,7 @@ export default function DemoStore() {
                               BUG HALTED
                             </span>
                           )}
-                          {isPending && (
+                          {isPending && !isRunning && (
                             <span className="badge badge-neutral text-2xs">
                               Waiting...
                             </span>
@@ -838,7 +929,7 @@ export default function DemoStore() {
                       </p>
 
                       {/* AI Thinking State */}
-                      {isHealing && (
+                      {(isHealing || isRunning) && (
                         <div className="bg-amber-100 p-2 rounded-lg border border-amber-300 text-amber-900 font-mono text-2xs flex items-center gap-2">
                           <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0 text-amber-700" />
                           <span>Scanning accessibility tree & semantic intent...</span>
@@ -846,7 +937,7 @@ export default function DemoStore() {
                       )}
 
                       {/* Selector Diff Box: ONLY SHOWN WHEN ACTUALLY HEALED & DIFFERENT! */}
-                      {isActuallyHealed && !isHealing && (
+                      {isActuallyHealed && !isHealing && !isRunning && (
                         <div className="bg-white p-2 rounded-lg border border-indigo-200 font-mono text-2xs space-y-1">
                           <div className="flex items-center justify-between text-danger">
                             <span>- Broken:</span>
@@ -860,7 +951,7 @@ export default function DemoStore() {
                       )}
 
                       {/* Passed Clean Selector (No diff box because nothing broke!) */}
-                      {isPassed && !isHealing && (
+                      {isPassed && !isHealing && !isRunning && (
                         <div className="bg-white p-1.5 rounded border border-border font-mono text-2xs text-ink-secondary flex items-center justify-between">
                           <span>Baseline:</span>
                           <span className="font-bold text-success-text">{s.orig} (Passed directly)</span>
