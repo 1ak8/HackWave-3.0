@@ -22,7 +22,7 @@ export default function TestStudio() {
 
   const [title, setTitle] = useState('');
   const [intent, setIntent] = useState('');
-  const [targetUrl, setTargetUrl] = useState('http://localhost:5173/demo-store');
+  const [targetUrl, setTargetUrl] = useState(typeof window !== 'undefined' ? `${window.location.origin}/demo-store` : 'http://localhost:5173/demo-store');
   const [description, setDescription] = useState('');
   const [steps, setSteps] = useState([
     { order: 1, name: 'Select Product', intent: 'Add headphones to cart', action: 'click', selector: '#btn-add-to-cart', value: '' },
@@ -63,10 +63,17 @@ export default function TestStudio() {
   const handleRunSuite = async (testId) => {
     setRunningSuiteId(testId);
     try {
-      await triggerRun(testId, 'mutated', true);
+      const suite = tests.find(t => t._id === testId);
+      const url = suite?.targetUrl && !suite.targetUrl.includes('localhost')
+        ? suite.targetUrl
+        : `${window.location.origin}/demo-store`;
+
+      await triggerRun(testId, 'mutated', true, { targetUrl: url });
       navigate('/live');
     } catch (err) {
       console.error('Failed to run suite:', err);
+      alert('Failed to launch suite: ' + (err.response?.data?.error || err.message));
+    } finally {
       setRunningSuiteId(null);
     }
   };

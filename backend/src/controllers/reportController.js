@@ -17,7 +17,7 @@ const reportController = {
   async listHealingLogs(req, res) {
     try {
       const logs = await store.getHealingLogs(req.query.limit ? parseInt(req.query.limit) : 50);
-      res.json({ logs });
+      res.json({ logs, healingLogs: logs });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -27,7 +27,7 @@ const reportController = {
   async createHealingLog(req, res) {
     try {
       const log = await store.createHealingLog(req.body);
-      res.status(201).json({ log });
+      res.status(201).json({ log, healingLog: log });
     } catch (err) {
       logger.error('Failed to create healing log', err.message);
       res.status(500).json({ error: err.message });
