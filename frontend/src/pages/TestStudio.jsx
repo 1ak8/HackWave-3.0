@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Plus, 
   Trash2, 
   Save, 
   Layers, 
   Play, 
-  Check,
-  FileCode,
-  Globe
+  Check, 
+  FileCode, 
+  Globe,
+  Loader2,
+  ArrowRight
 } from 'lucide-react';
 import { useTests } from '../context/TestContext';
 import apiClient from '../api/apiClient';
 
 export default function TestStudio() {
+  const navigate = useNavigate();
   const { tests, refreshAll, triggerRun } = useTests();
+  const [runningSuiteId, setRunningSuiteId] = useState(null);
 
   const [title, setTitle] = useState('');
   const [intent, setIntent] = useState('');
@@ -53,6 +58,17 @@ export default function TestStudio() {
       updated[index][field] = value;
       return updated;
     });
+  };
+
+  const handleRunSuite = async (testId) => {
+    setRunningSuiteId(testId);
+    try {
+      await triggerRun(testId, 'mutated', true);
+      navigate('/live');
+    } catch (err) {
+      console.error('Failed to run suite:', err);
+      setRunningSuiteId(null);
+    }
   };
 
   const handleSave = async (e) => {
@@ -283,11 +299,22 @@ export default function TestStudio() {
                     {t.targetUrl}
                   </span>
                   <button
-                    onClick={() => triggerRun(t._id, 'mutated', true)}
-                    className="btn btn-primary btn-xs flex items-center gap-1 font-bold"
+                    onClick={() => handleRunSuite(t._id)}
+                    disabled={runningSuiteId === t._id}
+                    className="btn btn-primary btn-xs flex items-center gap-1 font-bold shadow-xs active:scale-95"
+                    title="Launch this suite and view live execution in runner"
                   >
-                    <span>Run</span>
-                    <Play className="w-3 h-3 fill-current" />
+                    {runningSuiteId === t._id ? (
+                      <>
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                        <span>Launching...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Run & Inspect</span>
+                        <Play className="w-3 h-3 fill-current" />
+                      </>
+                    )}
                   </button>
                 </div>
               </div>

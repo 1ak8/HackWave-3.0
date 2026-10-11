@@ -38,8 +38,12 @@ export function TestProvider({ children }) {
       if (testsRes.status === 'fulfilled') setTests(testsRes.value.data.tests || []);
       if (runsRes.status === 'fulfilled') {
         setRuns(runsRes.value.data.runs || []);
-        if (runsRes.value.data.runs && runsRes.value.data.runs.length > 0 && !activeRun) {
-          setActiveRun(runsRes.value.data.runs[0]);
+        if (runsRes.value.data.runs && runsRes.value.data.runs.length > 0) {
+          setActiveRun(prev => {
+            if (!prev) return runsRes.value.data.runs[0];
+            const matching = runsRes.value.data.runs.find(r => r._id === prev._id);
+            return matching || runsRes.value.data.runs[0];
+          });
         }
       }
       if (statsRes.status === 'fulfilled') setStats(statsRes.value.data.stats || stats);
@@ -151,14 +155,25 @@ export function TestProvider({ children }) {
           if (payload.resolvedSelector) {
             steps[payload.stepIndex].resolvedSelector = payload.resolvedSelector;
           }
+          if (payload.healingDetails) {
+            steps[payload.stepIndex].healingDetails = payload.healingDetails;
+          }
+          if (payload.error) {
+            steps[payload.stepIndex].error = payload.error;
+          }
         }
         return { ...prev, steps };
       });
     });
 
-    socket.on('run_completed', (payload) => {
+    socket.on('run_completed', async (payload) => {
       addTerminalLog('success', `🎉 E2E Test Run Completed! Status: ${payload.status.toUpperCase()} (${payload.durationMs}ms, Healed Steps: ${payload.healedCount})`);
-      setActiveRun(prev => prev ? { ...prev, status: payload.status, durationMs: payload.durationMs, healedCount: payload.healedCount } : prev);
+      try {
+        const runRes = await apiClient.get(`/runs/${payload.runId}`);
+        if (runRes.data && runRes.data.run) {
+          setActiveRun(runRes.data.run);
+        }
+      } catch (e) {}
       refreshAll();
     });
 

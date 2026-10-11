@@ -6,24 +6,31 @@ import {
   CheckCircle2, 
   XCircle, 
   Cpu, 
-  FileCode,
-  ArrowRight
+  FileCode, 
+  ArrowRight, 
+  Loader2, 
+  Clock,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 
-export default function DiffInspector({ selectedStep }) {
+export default function DiffInspector({ selectedStep, steps = [], onSelectStep = null }) {
   if (!selectedStep) {
     return (
       <div className="card h-full flex flex-col items-center justify-center p-8 text-center bg-surface border-dashed">
         <FileCode className="w-8 h-8 text-ink-tertiary mb-2" />
         <h4 className="text-base font-bold text-ink">Select a Step Above</h4>
         <p className="text-xs text-ink-secondary mt-1 max-w-xs">
-          Click any step node in the graph above to inspect its DOM selector repair diff.
+          Click any step node in the Intent Graph above to inspect its live DOM selector status.
         </p>
       </div>
     );
   }
 
   const healing = selectedStep.healingDetails || {};
+  const isHealing = selectedStep.status === 'healing';
+  const isRunning = selectedStep.status === 'running';
+  const isPending = selectedStep.status === 'pending';
   const isActuallyHealed = selectedStep.status === 'healed' && 
     selectedStep.resolvedSelector && 
     selectedStep.resolvedSelector !== selectedStep.originalSelector;
@@ -40,15 +47,60 @@ export default function DiffInspector({ selectedStep }) {
             <Cpu className="w-4 h-4" />
           </div>
           <div>
-            <h4 className="text-sm font-bold text-ink">
-              Step #{selectedStep.order} — {selectedStep.name}
-            </h4>
+            <div className="flex items-center gap-2">
+              <h4 className="text-sm font-bold text-ink">
+                Step #{selectedStep.order} — {selectedStep.name}
+              </h4>
+
+              {/* Step Navigation Arrows */}
+              {steps && steps.length > 1 && onSelectStep && (
+                <div className="flex items-center gap-1 bg-surface border border-border px-1.5 py-0.5 rounded-md text-2xs">
+                  <button
+                    onClick={() => {
+                      const idx = steps.findIndex(s => s.order === selectedStep.order);
+                      if (idx > 0) onSelectStep(steps[idx - 1]);
+                    }}
+                    disabled={steps.findIndex(s => s.order === selectedStep.order) <= 0}
+                    className="hover:text-brand disabled:opacity-30 disabled:cursor-not-allowed p-0.5"
+                    title="Inspect Previous Step"
+                  >
+                    <ChevronLeft className="w-3.5 h-3.5" />
+                  </button>
+                  <span className="font-mono text-ink-tertiary">
+                    {selectedStep.order}/{steps.length}
+                  </span>
+                  <button
+                    onClick={() => {
+                      const idx = steps.findIndex(s => s.order === selectedStep.order);
+                      if (idx < steps.length - 1) onSelectStep(steps[idx + 1]);
+                    }}
+                    disabled={steps.findIndex(s => s.order === selectedStep.order) >= steps.length - 1}
+                    className="hover:text-brand disabled:opacity-30 disabled:cursor-not-allowed p-0.5"
+                    title="Inspect Next Step"
+                  >
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
+            </div>
             <p className="text-xs text-ink-secondary font-mono">Action: <span className="font-semibold text-ink">{selectedStep.action}</span></p>
           </div>
         </div>
 
         <div>
-          {isActuallyHealed && (
+          {isHealing && (
+            <span className="badge badge-warning text-xs px-2.5 py-1 font-bold animate-pulse">
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              AI HEALING...
+            </span>
+          )}
+          {isRunning && !isHealing && (
+            <span className="badge badge-brand text-xs px-2.5 py-1 font-bold animate-pulse">
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              RUNNING...
+            </span>
+          )}
+          {isActuallyHealed && !isHealing && (
             <span className="badge badge-brand text-xs px-2.5 py-1 font-bold">
               <Sparkles className="w-3.5 h-3.5" />
               Auto-Healed ({confidence}%)
@@ -60,10 +112,15 @@ export default function DiffInspector({ selectedStep }) {
               Regression Triaged
             </span>
           )}
-          {!isActuallyHealed && !isBug && (
+          {!isActuallyHealed && !isBug && !isHealing && !isRunning && !isPending && (
             <span className="badge badge-success text-xs px-2.5 py-1 font-bold">
               <CheckCircle2 className="w-3.5 h-3.5" />
               Passed Directly (Baseline)
+            </span>
+          )}
+          {isPending && (
+            <span className="badge badge-neutral text-xs px-2.5 py-1 font-mono">
+              Waiting in Pipeline...
             </span>
           )}
         </div>
@@ -77,8 +134,19 @@ export default function DiffInspector({ selectedStep }) {
         <p className="text-sm text-ink font-semibold">"{selectedStep.intent}"</p>
       </div>
 
-      {/* Selector Display */}
-      {isActuallyHealed ? (
+      {/* Selector Display Area */}
+      {isHealing || isRunning ? (
+        /* Actively analyzing state */
+        <div className="bg-amber-50 p-4 rounded-xl border border-amber-300 space-y-2 text-amber-900 text-xs font-mono">
+          <div className="font-bold flex items-center gap-2">
+            <Loader2 className="w-4 h-4 animate-spin text-amber-600 shrink-0" />
+            <span>AI Reasoning Engine Analyzing DOM...</span>
+          </div>
+          <p className="text-amber-800 leading-relaxed font-sans">
+            Baseline selector missing or mutated. Engine is extracting the accessibility tree and comparing candidate elements against goal "{selectedStep.intent}".
+          </p>
+        </div>
+      ) : isActuallyHealed ? (
         /* Real Diff shown when selector changed */
         <div className="bg-[#0f172a] text-slate-100 p-4 rounded-xl font-mono text-xs space-y-2.5 border border-slate-800 shadow-inner">
           <div className="flex items-center justify-between text-slate-400 pb-2 border-b border-slate-800">
@@ -121,6 +189,12 @@ export default function DiffInspector({ selectedStep }) {
             {selectedStep.error || 'Server error 500 encountered with pricing anomaly ($0.00). AI engine verified this is a true application defect and refused to false-heal.'}
           </p>
         </div>
+      ) : isPending ? (
+        /* Pending execution */
+        <div className="bg-surface p-4 rounded-xl border border-border flex items-center justify-between font-mono text-xs">
+          <span className="text-ink-secondary">Target Selector (Pending):</span>
+          <span className="font-bold text-ink-tertiary">{selectedStep.originalSelector}</span>
+        </div>
       ) : (
         /* Baseline Clean Pass (No Diff because nothing changed!) */
         <div className="bg-surface p-4 rounded-xl border border-border flex items-center justify-between font-mono text-xs">
@@ -143,6 +217,10 @@ export default function DiffInspector({ selectedStep }) {
             ? (healing.reasoning || `Selector ${selectedStep.originalSelector} was renamed in the DOM. AI located matching component ${selectedStep.resolvedSelector} via accessibility role and intent analysis.`)
             : isBug
             ? 'Execution safely terminated to prevent defect leakage into production.'
+            : isHealing || isRunning
+            ? 'Step actively in progress. Inspect telemetry stream in terminal for live network and selector dispatch events.'
+            : isPending
+            ? 'This step is queued to execute in the pipeline.'
             : 'Target component responded normally to baseline selector without requiring dynamic healing.'}
         </p>
       </div>

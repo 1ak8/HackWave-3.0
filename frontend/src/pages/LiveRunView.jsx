@@ -7,7 +7,9 @@ import {
   Monitor, 
   CheckCircle2,
   Activity,
-  ArrowRight
+  ArrowRight,
+  RotateCcw,
+  Loader2
 } from 'lucide-react';
 import { useTests } from '../context/TestContext';
 import IntentGraph from '../components/runner/IntentGraph';
@@ -15,7 +17,7 @@ import LiveTerminal from '../components/runner/LiveTerminal';
 import DiffInspector from '../components/inspector/DiffInspector';
 
 export default function LiveRunView() {
-  const { tests, activeRun, triggerRun, terminalLogs, clearLogs } = useTests();
+  const { tests, activeRun, setActiveRun, triggerRun, terminalLogs, clearLogs } = useTests();
   const [selectedStep, setSelectedStep] = useState(null);
   const [headless, setHeadless] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
@@ -23,13 +25,26 @@ export default function LiveRunView() {
   const defaultTest = tests[0] || null;
   const stepsToDisplay = activeRun?.steps || defaultTest?.steps || [];
 
-  // Auto-select latest active or healed step if none selected
+  // Automatically track currently running/healing step, and sync selectedStep with latest socket updates!
   useEffect(() => {
-    if (!selectedStep && stepsToDisplay.length > 0) {
-      const activeOrHealed = stepsToDisplay.find(s => s.status === 'healing' || s.status === 'healed' || s.status === 'failed') || stepsToDisplay[0];
-      setSelectedStep(activeOrHealed);
+    if (stepsToDisplay.length > 0) {
+      // If a step is actively running, healing, or has failed, auto-focus it!
+      const activeStep = stepsToDisplay.find(s => s.status === 'healing' || s.status === 'running' || s.status === 'failed');
+      
+      if (activeStep) {
+        setSelectedStep(activeStep);
+      } else if (!selectedStep) {
+        const latestHealed = stepsToDisplay.slice().reverse().find(s => s.status === 'healed') || stepsToDisplay[0];
+        setSelectedStep(latestHealed);
+      } else {
+        // Keep selectedStep in sync with the latest updated data for that step
+        const matchingStep = stepsToDisplay.find(s => s.order === selectedStep.order);
+        if (matchingStep && (matchingStep.status !== selectedStep.status || matchingStep.resolvedSelector !== selectedStep.resolvedSelector)) {
+          setSelectedStep(matchingStep);
+        }
+      }
     }
-  }, [stepsToDisplay, selectedStep]);
+  }, [stepsToDisplay]);
 
   const handleExecute = async (mode) => {
     setIsRunning(true);
@@ -69,30 +84,37 @@ export default function LiveRunView() {
         {/* Action Controls */}
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Visual Browser Checkbox */}
-          <label className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-surface text-xs font-mono text-ink-secondary cursor-pointer hover:bg-gray-100 transition font-medium">
-            <Monitor className="w-4 h-4 text-ink-tertiary" />
+          <label 
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-lg border text-xs font-mono cursor-pointer transition font-semibold ${
+              !headless 
+                ? 'bg-indigo-50 border-indigo-300 text-brand shadow-xs ring-1 ring-indigo-200' 
+                : 'bg-surface border-border text-ink-secondary hover:bg-gray-100'
+            }`}
+            title="When ON: Launches a real Chromium browser window on your desktop so you can watch Playwright physically click buttons and fill inputs live!"
+          >
+            <Monitor className={`w-4 h-4 ${!headless ? 'text-brand' : 'text-ink-tertiary'}`} />
             <input
               type="checkbox"
               checked={!headless}
               onChange={(e) => setHeadless(!e.target.checked)}
               className="accent-brand rounded"
             />
-            <span>Visual Window</span>
+            <span>{!headless ? 'Desktop Chrome Window: ON' : 'Desktop Window: OFF (Headless)'}</span>
           </label>
 
           <button
             onClick={() => handleExecute('mutated')}
-            disabled={isRunning || activeRun?.status === 'running'}
+            disabled={isRunning}
             className="btn btn-primary text-sm px-5 py-2.5 font-bold shadow-sm"
             title="Run test against mutated elements with auto-healing"
           >
-            <Zap className="w-4 h-4 fill-current" />
-            <span>Auto-Heal Run</span>
+            <Zap className={`w-4 h-4 fill-current ${isRunning ? 'animate-spin' : ''}`} />
+            <span>{isRunning ? 'Running...' : 'Auto-Heal Run'}</span>
           </button>
 
           <button
             onClick={() => handleExecute('standard')}
-            disabled={isRunning || activeRun?.status === 'running'}
+            disabled={isRunning}
             className="btn btn-secondary text-sm px-4 py-2.5 font-semibold"
             title="Run standard test"
           >
@@ -102,7 +124,7 @@ export default function LiveRunView() {
 
           <button
             onClick={() => handleExecute('chaos')}
-            disabled={isRunning || activeRun?.status === 'running'}
+            disabled={isRunning}
             className="btn bg-amber-500 hover:bg-amber-600 text-white text-sm px-4 py-2.5 font-semibold shadow-sm"
             title="Randomize UI elements during run"
           >
@@ -112,13 +134,27 @@ export default function LiveRunView() {
 
           <button
             onClick={() => handleExecute('bug_mode')}
-            disabled={isRunning || activeRun?.status === 'running'}
+            disabled={isRunning}
             className="btn bg-danger hover:bg-red-700 text-white text-sm px-4 py-2.5 font-semibold shadow-sm"
             title="Trigger a genuine bug to test Smart Triage"
           >
             <AlertTriangle className="w-4 h-4" />
             <span>Real Bug</span>
           </button>
+
+          {activeRun?.status === 'running' && (
+            <button
+              onClick={() => {
+                setActiveRun(prev => prev ? { ...prev, status: 'completed' } : null);
+                setIsRunning(false);
+              }}
+              className="btn btn-ghost btn-xs text-xs text-ink-secondary flex items-center gap-1 ml-1"
+              title="Reset state if run was interrupted"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Reset State</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -182,7 +218,11 @@ export default function LiveRunView() {
       {/* Split Details Section: Step Diff Inspector + Live Telemetry Terminal */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
         <div className="h-full">
-          <DiffInspector selectedStep={selectedStep || stepsToDisplay[0]} />
+          <DiffInspector 
+            selectedStep={selectedStep || stepsToDisplay[0]} 
+            steps={stepsToDisplay}
+            onSelectStep={(step) => setSelectedStep(step)}
+          />
         </div>
 
         <div className="h-full">

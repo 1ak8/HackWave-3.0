@@ -14,6 +14,7 @@ const runE2ETest = async (runId, testCase, options = {}) => {
   logger.info(`Starting E2E Run [${runId}] for "${testCase.title}" (Mode: ${mode}, Headless: ${isHeadless})`);
 
   let browser = null;
+  let page = null;
   const startTime = Date.now();
   let healedCount = 0;
   let passedCount = 0;
@@ -61,13 +62,14 @@ const runE2ETest = async (runId, testCase, options = {}) => {
   try {
     browser = await chromium.launch({
       headless: isHeadless,
+      slowMo: isHeadless ? 0 : 500,
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
     const context = await browser.newContext({
       viewport: { width: 1280, height: 800 }
     });
-    const page = await context.newPage();
+    page = await context.newPage();
 
     // Navigate to target application
     logger.info(`Navigating browser to: ${fullTargetUrl}`);
@@ -287,7 +289,9 @@ const runE2ETest = async (runId, testCase, options = {}) => {
         stepOrder: step.order,
         status: step.status,
         durationMs: step.durationMs,
-        resolvedSelector: step.resolvedSelector
+        resolvedSelector: step.resolvedSelector,
+        healingDetails: step.healingDetails,
+        error: step.error
       });
 
       // Brief human-friendly step transition
@@ -298,6 +302,10 @@ const runE2ETest = async (runId, testCase, options = {}) => {
     logger.error(`Critical Run Failure: ${globalErr.message}`);
     failedCount++;
   } finally {
+    if (!isHeadless && page) {
+      await page.waitForTimeout(2500).catch(() => {});
+    }
+
     if (browser) {
       await browser.close().catch(() => {});
     }
