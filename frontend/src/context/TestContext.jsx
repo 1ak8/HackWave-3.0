@@ -211,6 +211,7 @@ export function TestProvider({ children }) {
       systemHealth,
       socketConnected,
       terminalLogs,
+      addTerminalLog,
       triggerRun,
       refreshAll,
       clearLogs: () => setTerminalLogs([])

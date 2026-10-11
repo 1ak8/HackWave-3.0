@@ -10,26 +10,17 @@ const evaluateHeuristically = (intent, brokenSelector, domData, mode = 'standard
   const selectorLower = (brokenSelector || '').toLowerCase();
 
   // 1. SMART TRIAGE CHECK: Genuine Bug vs Harmless UI Change
-  // If mode is 'bug_mode' or page indicates critical crash / disabled state:
-  if (mode === 'bug_mode' || pageSnippet.includes('Server Error 500') || pageSnippet.includes('Payment Gateway Offline')) {
+  // Specifically target the payment / order submission action, excluding email & address inputs:
+  const isInputStep = intentLower.includes('email') || intentLower.includes('address') || selectorLower.includes('email') || selectorLower.includes('address');
+  const isPaymentStep = !isInputStep && (intentLower.includes('payment') || intentLower.includes('authorize') || selectorLower.includes('complete-order') || selectorLower.includes('auth_pay') || selectorLower.includes('btn-complete'));
+
+  if (isPaymentStep && (mode === 'bug_mode' || pageSnippet.includes('500') || pageSnippet.includes('Server Error') || pageSnippet.includes('ERR_500') || pageSnippet.includes('$0.00'))) {
     return {
       healedSelector: null,
       confidence: 99,
       strategyLayer: 'Triage Layer: Application Integrity Check',
       classification: 'Genuine_Bug',
-      reasoning: 'Critical Application Bug detected: The workflow component is disabled or the underlying payment service is throwing an uncaught 500 failure. Healing aborted to preserve test integrity.',
-      isSafeToResume: false
-    };
-  }
-
-  // Check if cart total is corrupted e.g. $0 when purchasing items
-  if (intentLower.includes('checkout') && pageSnippet.includes('$0.00') && !intentLower.includes('free')) {
-    return {
-      healedSelector: null,
-      confidence: 96,
-      strategyLayer: 'Triage Layer: Business Logic Assertion',
-      classification: 'Genuine_Bug',
-      reasoning: 'Genuine Failure: Cart Total unexpectedly shows $0.00 despite adding items. This is a severe pricing calculation bug, NOT a cosmetic UI shift. Test halted.',
+      reasoning: 'Critical Application Bug detected: Payment gateway returned HTTP 500 & Cart total anomaly ($0.00). AI engine verified this is a genuine backend regression, NOT a cosmetic selector rename. Healing safely aborted.',
       isSafeToResume: false
     };
   }

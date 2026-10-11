@@ -28,11 +28,14 @@ export default function DemoStore() {
   const [searchParams, setSearchParams] = useSearchParams();
   const urlMode = searchParams.get('mode') || 'standard';
 
-  const { tests, activeRun, triggerRun, terminalLogs, clearLogs } = useTests();
+  const { tests, activeRun, triggerRun, terminalLogs, clearLogs, addTerminalLog } = useTests();
   const defaultTest = tests[0] || null;
 
   // Mode: 'standard' | 'mutated' | 'chaos' | 'bug_mode'
   const [mode, setMode] = useState(urlMode);
+
+  // Active source: 'manual' (user clicks) vs 'bot' (Playwright headless runner)
+  const [activeSource, setActiveSource] = useState('manual');
 
   // Chaos tweaks
   const [chaosText, setChaosText] = useState(false);
@@ -53,8 +56,8 @@ export default function DemoStore() {
   const [inspectorTab, setInspectorTab] = useState('pipeline');
   const [isBotRunning, setIsBotRunning] = useState(false);
 
-  // Initial steps definition
-  const getInitialSteps = () => [
+  // Clean initial steps definition (waiting for action)
+  const getFreshSteps = () => [
     { order: 1, name: 'Select Product', intent: 'Add headphones to bag', status: 'pending', orig: '#btn-add-to-cart', healed: null, confidence: null, error: null },
     { order: 2, name: 'Open Shopping Bag', intent: 'Open checkout drawer', status: 'pending', orig: '#btn-view-cart', healed: null, confidence: null, error: null },
     { order: 3, name: 'Enter Buyer Email', intent: 'Fill customer contact email', status: 'pending', orig: '#input-checkout-email', healed: null, confidence: null, error: null },
@@ -63,7 +66,7 @@ export default function DemoStore() {
     { order: 6, name: 'Order Confirmation', intent: 'Verify successful order badge', status: 'pending', orig: '#order-success-badge', healed: null, confidence: null, error: null }
   ];
 
-  const [manualSteps, setManualSteps] = useState(getInitialSteps());
+  const [manualSteps, setManualSteps] = useState(getFreshSteps());
   const terminalEndRef = useRef(null);
 
   useEffect(() => {
@@ -76,8 +79,9 @@ export default function DemoStore() {
     terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [terminalLogs]);
 
-  // Reset store and step pipeline
+  // Reset store and step pipeline cleanly
   const resetStore = () => {
+    setActiveSource('manual');
     setCartCount(0);
     setStoreStep(1);
     setEmail('');
@@ -85,31 +89,44 @@ export default function DemoStore() {
     setIsProcessing(false);
     setItemAddedToast(false);
     setBugHaltToast(false);
-    setManualSteps(getInitialSteps());
+    setManualSteps(getFreshSteps());
   };
 
   const handleModeChange = (newMode) => {
     setMode(newMode);
     setSearchParams({ mode: newMode });
-    resetStore();
+    setActiveSource('manual');
+    setCartCount(0);
+    setStoreStep(1);
+    setEmail('');
+    setAddress('');
+    setIsProcessing(false);
+    setItemAddedToast(false);
+    setBugHaltToast(false);
+    setManualSteps(getFreshSteps());
+    if (addTerminalLog) {
+      addTerminalLog('info', `Switched workspace mode to [${newMode.toUpperCase()}]. Waiting for user actions...`);
+    }
   };
 
-  const isMutated = mode === 'mutated' || mode === 'chaos';
+  // In mutated, chaos, and bug_mode: Steps 1 & 3 have renamed selectors.
+  // In bug_mode: Step 5 is also where the real bug triggers!
+  const isMutated = mode === 'mutated' || mode === 'chaos' || mode === 'bug_mode';
   const isBug = mode === 'bug_mode';
 
   /*
    * REALISTIC SELECTOR SETUP:
-   * In Version B, we do NOT break every single selector!
-   * Real world developers only rename 2-3 components:
+   * In Version B & Bug Mode:
    * - Step 1: #btn-add-to-cart -> #dynamic_btn_cart_x89 (MUTATED, AI HEALS)
-   * - Step 2: #btn-view-cart -> KEPT UNCHANGED (PASSES DIRECTLY WITHOUT AI)
+   * - Step 2: #btn-view-cart -> KEPT UNCHANGED (PASSES DIRECTLY)
    * - Step 3: #input-checkout-email -> #customer_email_contact (MUTATED, AI HEALS)
-   * - Step 4: #input-checkout-address -> KEPT UNCHANGED (PASSES DIRECTLY WITHOUT AI)
-   * - Step 5: #btn-complete-order -> #checkout_action_auth_pay (MUTATED, AI HEALS)
+   * - Step 4: #input-checkout-address -> KEPT UNCHANGED (PASSES DIRECTLY)
+   * - Step 5: #btn-complete-order -> in Ver B: #checkout_action_auth_pay (AI HEALS)
+   *                               -> in Bug Mode: 500 error & $0 price (AI REFUSES TO HEAL!)
    * - Step 6: #order-success-badge -> KEPT UNCHANGED (PASSES DIRECTLY)
    */
 
-  // Step 1: Mutated in Version B & Chaos
+  // Step 1: Mutated in Version B, Chaos, and Bug Mode
   const addToCartId = isMutated || chaosClasses 
     ? (chaosSeed > 0 ? `dynamic_cart_btn_${chaosSeed}` : 'dynamic_btn_cart_x89') 
     : 'btn-add-to-cart';
@@ -118,24 +135,24 @@ export default function DemoStore() {
     ? 'Grab Deal Now!' 
     : (isMutated ? 'Claim Headphones Now' : 'Add to Bag');
 
-  // Step 2: Unchanged in Version B! (Only mutates if Chaos is explicitly enabled)
+  // Step 2: Unchanged in Version B & Bug Mode! (Only mutates if Chaos is explicitly enabled)
   const viewCartId = mode === 'chaos' && (chaosClasses || chaosSeed > 0)
     ? `nav_bag_trigger_${chaosSeed}`
     : 'btn-view-cart';
 
   const viewCartText = 'View Bag & Checkout';
 
-  // Step 3: Mutated in Version B & Chaos
+  // Step 3: Mutated in Version B, Chaos, and Bug Mode
   const emailFieldId = isMutated || chaosClasses 
     ? (chaosSeed > 0 ? `customer_email_${chaosSeed}` : 'customer_email_contact') 
     : 'input-checkout-email';
 
-  // Step 4: Unchanged in Version B! (Only mutates if Chaos is explicitly enabled)
+  // Step 4: Unchanged in Version B & Bug Mode! (Only mutates if Chaos is explicitly enabled)
   const addressFieldId = mode === 'chaos' && (chaosClasses || chaosSeed > 0)
     ? `shipping_dest_${chaosSeed}`
     : 'input-checkout-address';
 
-  // Step 5: Mutated in Version B & Chaos
+  // Step 5: In Version B & Chaos: #checkout_action_auth_pay
   const checkoutBtnId = isMutated || chaosClasses 
     ? (chaosSeed > 0 ? `auth_pay_action_${chaosSeed}` : 'checkout_action_auth_pay') 
     : 'btn-complete-order';
@@ -144,26 +161,40 @@ export default function DemoStore() {
     ? 'Authorize & Charge' 
     : (isMutated ? 'Complete Payment ($149.00)' : 'Place Order');
 
-  // Trigger step progression with realistic AI thinking delays
+  // Trigger manual step progression WITH LIVE REAL-TIME LOGGING
   const triggerStepAction = (order, isFailure = false, errorMsg = null) => {
-    // If standard mode, it passes cleanly right away
+    setActiveSource('manual');
+
+    // 1. STANDARD MODE: All steps pass cleanly on baseline selectors
     if (mode === 'standard') {
       setManualSteps(prev => prev.map(s => s.order === order ? { ...s, status: 'passed' } : s));
+      if (addTerminalLog) {
+        if (order === 1) addTerminalLog('info', 'Step #1: Located baseline selector #btn-add-to-cart. Item added.');
+        if (order === 2) addTerminalLog('info', 'Step #2: Baseline selector #btn-view-cart located. Opened drawer.');
+        if (order === 3) addTerminalLog('info', 'Step #3: Baseline selector #input-checkout-email filled with contact email.');
+        if (order === 4) addTerminalLog('info', 'Step #4: Baseline selector #input-checkout-address filled with shipping destination.');
+        if (order === 5) addTerminalLog('info', 'Step #5: Baseline selector #btn-complete-order authorized card payment.');
+        if (order === 6) addTerminalLog('success', 'Step #6: Order confirmation verified (#order-success-badge). Test passed.');
+      }
       return;
     }
 
-    // If bug mode and payment step fails
-    if (isFailure) {
+    // 2. REAL BUG MODE on Step 5 (Payment)
+    if (isFailure || (mode === 'bug_mode' && order === 5)) {
       setManualSteps(prev => prev.map(s => s.order === order ? {
         ...s,
         status: 'failed',
-        error: errorMsg || 'Genuine application regression encountered (500 Server Error)'
+        error: errorMsg || 'HTTP 500 Payment Gateway Timeout & $0.00 Price Anomaly'
       } : s));
+      if (addTerminalLog) {
+        addTerminalLog('warn', 'Payment authorization submitted for processing...');
+        addTerminalLog('error', 'HTTP 500 Internal Server Error & Cart total anomaly ($0.00).');
+        addTerminalLog('error', '🚨 GENUINE APPLICATION BUG DETECTED: Smart Triage halted test. AI refused to heal regression!');
+      }
       return;
     }
 
-    // Determine if this specific step is mutated or unchanged:
-    // Steps 2, 4, 6 are UNCHANGED in Version B
+    // 3. MUTATED & REAL BUG MODE (Steps 1 & 3 are mutated, Steps 2, 4, 6 are unchanged)
     const isThisStepMutated = (order === 1 && addToCartId !== 'btn-add-to-cart') ||
       (order === 2 && viewCartId !== 'btn-view-cart') ||
       (order === 3 && emailFieldId !== 'input-checkout-email') ||
@@ -173,14 +204,31 @@ export default function DemoStore() {
     if (!isThisStepMutated) {
       // Clean pass without needing AI!
       setManualSteps(prev => prev.map(s => s.order === order ? { ...s, status: 'passed', healed: null } : s));
+      if (addTerminalLog) {
+        if (order === 2) addTerminalLog('info', 'Step #2: Baseline selector #btn-view-cart found (Unchanged). Passed directly.');
+        if (order === 4) addTerminalLog('info', 'Step #4: Baseline selector #input-checkout-address found (Unchanged). Passed directly.');
+        if (order === 6) addTerminalLog('success', 'Step #6: Order confirmation verified (#order-success-badge). Direct pass.');
+      }
       return;
     }
 
-    // Step IS mutated: show realistic AI deliberation delay!
-    // 1. Mark status as 'healing'
+    // Step IS mutated: show realistic AI deliberation delay and stream logs!
     setManualSteps(prev => prev.map(s => s.order === order ? { ...s, status: 'healing' } : s));
 
-    // 2. After 800ms, resolve with the healed selector
+    if (addTerminalLog) {
+      if (order === 1) {
+        addTerminalLog('warn', 'Selector Failure on Step #1! Missing: #btn-add-to-cart. Invoking AI Reasoning Engine...');
+        addTerminalLog('healing', 'AI Engine analyzing accessibility tree for intent: "Add headphones to bag"...');
+      } else if (order === 3) {
+        addTerminalLog('warn', 'Selector Failure on Step #3! Missing: #input-checkout-email. Invoking AI Reasoning Engine...');
+        addTerminalLog('healing', 'AI Engine analyzing accessibility tree for intent: "Fill customer contact email"...');
+      } else if (order === 5) {
+        addTerminalLog('warn', 'Selector Failure on Step #5! Missing: #btn-complete-order. Invoking AI Reasoning Engine...');
+        addTerminalLog('healing', 'AI Engine analyzing accessibility tree for intent: "Authorize card and charge $149"...');
+      }
+    }
+
+    // Realistic deliberation delay of 850ms before healing completes
     setTimeout(() => {
       let resolvedSel = '#btn-add-to-cart';
       if (order === 1) resolvedSel = `#${addToCartId}`;
@@ -189,17 +237,33 @@ export default function DemoStore() {
       if (order === 4) resolvedSel = `#${addressFieldId}`;
       if (order === 5) resolvedSel = `#${checkoutBtnId}`;
 
+      const conf = Math.floor(Math.random() * 4) + 95;
+
       setManualSteps(prev => prev.map(s => s.order === order ? {
         ...s,
         status: 'healed',
         healed: resolvedSel,
-        confidence: Math.floor(Math.random() * 4) + 95
+        confidence: conf
       } : s));
+
+      if (addTerminalLog) {
+        if (order === 1) {
+          addTerminalLog('success', `✔ Healed: [#btn-add-to-cart] -> [${resolvedSel}] (${conf}% confidence via Semantic Text & Role Matching)`);
+          addTerminalLog('info', `Action dispatched on resolved element: ${resolvedSel}`);
+        } else if (order === 3) {
+          addTerminalLog('success', `✔ Healed: [#input-checkout-email] -> [${resolvedSel}] (${conf}% confidence via Proximity Graph)`);
+          addTerminalLog('info', `Filled contact email on resolved element: ${resolvedSel}`);
+        } else if (order === 5) {
+          addTerminalLog('success', `✔ Healed: [#btn-complete-order] -> [${resolvedSel}] (${conf}% confidence via Intent Assertion)`);
+          addTerminalLog('info', `Payment authorization dispatched on: ${resolvedSel}`);
+        }
+      }
     }, 850);
   };
 
   // Automated E2E Bot execution
   const runAutomatedBot = async () => {
+    setActiveSource('bot');
     setIsBotRunning(true);
     resetStore();
     try {
@@ -211,8 +275,10 @@ export default function DemoStore() {
     }
   };
 
-  // Steps to render: check activeRun first if it matches current mode
-  const displayedSteps = (activeRun && activeRun.mode === mode && activeRun.steps && activeRun.steps.length > 0)
+  // Clean steps display:
+  // If activeSource === 'bot' AND activeRun is running for current mode, show bot's run steps.
+  // Otherwise ALWAYS show clean manualSteps (so tab switches start in pending state)!
+  const displayedSteps = (activeSource === 'bot' && activeRun && activeRun.mode === mode && activeRun.steps && activeRun.steps.length > 0)
     ? activeRun.steps.map(s => ({
         order: s.order,
         name: s.name,
@@ -344,13 +410,13 @@ export default function DemoStore() {
             <span><strong>Version A Mode:</strong> Unmodified baseline store. Click through the order flow below to see all steps pass normally.</span>
           )}
           {mode === 'mutated' && (
-            <span><strong>Version B Mode (Realistic Release):</strong> Devs renamed 3 selectors (Steps 1, 3, 5), while Steps 2, 4, 6 remain untouched. Watch AI deliberately heal mutated steps while normal steps pass directly!</span>
+            <span><strong>Version B Mode (Realistic Release):</strong> Devs renamed Steps 1, 3, 5, while Steps 2, 4, 6 remain untouched. Watch AI deliberately heal mutated steps while normal steps pass directly!</span>
           )}
           {mode === 'chaos' && (
             <span><strong>Live Chaos Mode:</strong> Toggle mutations or click "Shuffle Now" to scramble elements while testing. AI uses semantic intent to heal!</span>
           )}
           {mode === 'bug_mode' && (
-            <span><strong>Real Bug Mode (Smart Triage):</strong> Cart price is corrupted ($0.00) & Payment endpoint returns 500. AI halts and REFUSES to heal real bugs!</span>
+            <span><strong>Real Bug Mode (Smart Triage):</strong> Steps 1 & 3 are harmlessly auto-healed, but Step 5 encounters a real 500 error & $0 price. AI halts and REFUSES to false-heal!</span>
           )}
         </div>
 
