@@ -11,6 +11,7 @@ const StepSchema = new mongoose.Schema({
 }, { _id: false });
 
 const TestCaseSchema = new mongoose.Schema({
+  _id: { type: String },
   title: { type: String, required: true },
   description: { type: String, default: '' },
   targetUrl: { type: String, required: true },

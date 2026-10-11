@@ -6,6 +6,7 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const { connectDB, getDBStatus } = require('./src/config/db');
+const store = require('./src/models/store');
 const { initSocket } = require('./src/config/socket');
 const logger = require('./src/utils/logger');
 
@@ -58,6 +59,7 @@ app.use((err, req, res, next) => {
 // Start Server & Connect Database
 const startServer = async () => {
   await connectDB();
+  await store.seedDefaultTests();
 
   server.listen(PORT, () => {
     logger.success(`🚀 NexHeal Backend Server active on port ${PORT}`);

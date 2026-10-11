@@ -2,6 +2,7 @@ const TestCase = require('./TestCase');
 const TestRun = require('./TestRun');
 const HealingLog = require('./HealingLog');
 const { isUsingMemory } = require('../config/db');
+const logger = require('../utils/logger');
 const fs = require('fs');
 const path = require('path');
 
@@ -42,7 +43,7 @@ const saveDiskStorage = () => {
 loadDiskStorage();
 
 // Seed default benchmark test suites for HackWave Demo
-const seedDefaultTests = () => {
+const seedDefaultTests = async () => {
   const defaultSuite = {
     _id: 'test_default_ecommerce_flow',
     title: 'E-Commerce Checkout & Order Fulfillment',
@@ -114,18 +115,23 @@ const seedDefaultTests = () => {
       memStorage.tests.push(defaultSuite);
     }
   } else {
-    TestCase.countDocuments().then(count => {
+    try {
+      const count = await TestCase.countDocuments();
       if (count === 0) {
-        TestCase.create(defaultSuite).catch(() => {});
+        await TestCase.create(defaultSuite);
+        logger.success('Seeded default benchmark suite into MongoDB Atlas');
       }
-    }).catch(() => {});
+    } catch (e) {
+      logger.warn(`Could not seed default suite to MongoDB: ${e.message}`);
+    }
   }
 };
 
 // Seed on startup immediately
-seedDefaultTests();
+seedDefaultTests().catch(() => {});
 
 const store = {
+  seedDefaultTests,
   // --- TestCases ---
   async getTests() {
     if (isUsingMemory()) {

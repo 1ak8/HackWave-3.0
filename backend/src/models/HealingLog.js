@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const HealingLogSchema = new mongoose.Schema({
+  _id: { type: String, default: () => `log_${Date.now()}_${Math.random().toString(36).substring(2, 7)}` },
   runId: { type: String, required: true },
   testId: { type: String, required: true },
   stepOrder: { type: Number, required: true },
