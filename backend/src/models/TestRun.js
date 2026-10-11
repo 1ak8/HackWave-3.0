@@ -19,7 +19,7 @@ const RunStepSchema = new mongoose.Schema({
 }, { _id: false });
 
 const TestRunSchema = new mongoose.Schema({
-  _id: { type: String },
+  _id: { type: String, default: () => `run_${Date.now()}` },
   testId: { type: String, required: true },
   testTitle: { type: String, required: true },
   status: { type: String, enum: ['pending', 'running', 'passed', 'failed', 'healed'], default: 'pending' },

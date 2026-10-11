@@ -22,7 +22,7 @@ const runE2ETest = async (runId, testCase, options = {}) => {
   let triageClassification = 'Clean';
 
   // Construct target URL with test mode query and custom chaos options
-  let targetUrl = testCase.targetUrl || 'http://localhost:5173/demo-store';
+  let targetUrl = options.targetUrl || testCase.targetUrl || 'http://localhost:5173/demo-store';
   if (process.env.CLIENT_URL && !process.env.CLIENT_URL.includes('localhost') && process.env.CLIENT_URL !== '*') {
     targetUrl = targetUrl.replace(/https?:\/\/localhost:\d+/i, process.env.CLIENT_URL.replace(/\/$/, ''));
   }

@@ -49,7 +49,7 @@ export default function Dashboard() {
   const handleLaunch = async (mode) => {
     setLaunching(true);
     try {
-      await triggerRun(defaultTest?._id, mode, true);
+      await triggerRun(defaultTest?._id, mode, true, { targetUrl: `${window.location.origin}/demo-store` });
       navigate('/live');
     } catch (err) {
       console.error(err);

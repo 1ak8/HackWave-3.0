@@ -158,7 +158,10 @@ const store = {
       memStorage.tests.unshift(newTest);
       return newTest;
     }
-    return await TestCase.create(data);
+    return await TestCase.create({
+      _id: data._id || 'test_' + Date.now(),
+      ...data
+    });
   },
 
   async updateTest(id, data) {
@@ -212,7 +215,10 @@ const store = {
       saveDiskStorage();
       return newRun;
     }
-    return await TestRun.create(data);
+    return await TestRun.create({
+      _id: data._id || 'run_' + Date.now(),
+      ...data
+    });
   },
 
   async updateRun(id, data) {
@@ -248,7 +254,10 @@ const store = {
       saveDiskStorage();
       return newLog;
     }
-    return await HealingLog.create(data);
+    return await HealingLog.create({
+      _id: data._id || 'heal_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+      ...data
+    });
   },
 
   // --- Analytics & Statistics ---

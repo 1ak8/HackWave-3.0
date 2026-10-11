@@ -61,12 +61,12 @@ export default function Sidebar() {
   const { socketConnected, systemHealth, tests, triggerRun } = useTests();
   const [running, setRunning] = useState(null);
 
-  const defaultTest = tests[0] || null;
+  const defaultTest = tests.find(t => t._id === 'test_default_ecommerce_flow' || t.isSample || t.steps?.length === 6) || tests[0] || null;
 
   const handleQuickRun = async (mode) => {
     setRunning(mode);
     try {
-      await triggerRun(defaultTest?._id, mode, true);
+      await triggerRun(defaultTest?._id, mode, true, { targetUrl: `${window.location.origin}/demo-store` });
       if (location.pathname !== '/live') navigate('/live');
     } catch (err) {
       console.error(err);

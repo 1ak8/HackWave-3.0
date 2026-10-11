@@ -428,7 +428,10 @@ export default function DemoStore() {
       // If in Chaos mode, pass the judge's exact choices to the Playwright runner!
       const chaosParams = `mutateCart=${mutateCart}&mutateBag=${mutateBag}&mutateEmail=${mutateEmail}&mutateAddress=${mutateAddress}&mutatePay=${mutatePay}&chaosPosition=${chaosPosition}&chaosText=${chaosText}&chaosSeed=${chaosSeed}`;
 
-      await triggerRun(defaultTest?._id, mode, true, isChaos ? { chaosParams } : {});
+      await triggerRun(defaultTest?._id, mode, true, {
+        targetUrl: `${window.location.origin}/demo-store`,
+        ...(isChaos ? { chaosParams } : {})
+      });
     } catch (err) {
       console.error('Failed to run bot:', err);
       setIsBotRunning(false);

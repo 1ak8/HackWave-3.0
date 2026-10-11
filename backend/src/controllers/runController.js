@@ -6,7 +6,7 @@ const runController = {
   // POST /api/runs/execute
   async triggerRun(req, res) {
     try {
-      const { testId, mode = 'standard', headless, chaosParams } = req.body;
+      const { testId, mode = 'standard', headless, chaosParams, targetUrl } = req.body;
 
       let targetTest = null;
       if (testId) {
@@ -58,7 +58,8 @@ const runController = {
       runE2ETest(initialRun._id, targetTest, {
         mode,
         headless: headless !== undefined ? headless : (process.env.HEADLESS_BROWSER !== 'false'),
-        chaosParams
+        chaosParams,
+        targetUrl
       }).catch(err => {
         logger.error(`Error in run execution: ${err.message}`);
       });

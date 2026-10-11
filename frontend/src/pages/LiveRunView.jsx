@@ -50,7 +50,7 @@ export default function LiveRunView() {
     setIsRunning(true);
     setSelectedStep(null);
     try {
-      await triggerRun(defaultTest?._id, mode, headless);
+      await triggerRun(defaultTest?._id, mode, headless, { targetUrl: `${window.location.origin}/demo-store` });
     } catch (err) {
       console.error(err);
     } finally {
