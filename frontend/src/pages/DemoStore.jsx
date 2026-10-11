@@ -18,6 +18,7 @@ import {
   Shuffle,
   Trash2,
   Cpu,
+  Loader2,
   ChevronRight,
   Info
 } from 'lucide-react';
@@ -52,16 +53,17 @@ export default function DemoStore() {
   const [inspectorTab, setInspectorTab] = useState('pipeline');
   const [isBotRunning, setIsBotRunning] = useState(false);
 
-  // Interactive step tracker state for manual testing
-  const [manualSteps, setManualSteps] = useState([
+  // Initial steps definition
+  const getInitialSteps = () => [
     { order: 1, name: 'Select Product', intent: 'Add headphones to bag', status: 'pending', orig: '#btn-add-to-cart', healed: null, confidence: null, error: null },
     { order: 2, name: 'Open Shopping Bag', intent: 'Open checkout drawer', status: 'pending', orig: '#btn-view-cart', healed: null, confidence: null, error: null },
     { order: 3, name: 'Enter Buyer Email', intent: 'Fill customer contact email', status: 'pending', orig: '#input-checkout-email', healed: null, confidence: null, error: null },
     { order: 4, name: 'Enter Shipping Address', intent: 'Fill destination delivery address', status: 'pending', orig: '#input-checkout-address', healed: null, confidence: null, error: null },
     { order: 5, name: 'Authorize Payment', intent: 'Authorize card and charge $149', status: 'pending', orig: '#btn-complete-order', healed: null, confidence: null, error: null },
     { order: 6, name: 'Order Confirmation', intent: 'Verify successful order badge', status: 'pending', orig: '#order-success-badge', healed: null, confidence: null, error: null }
-  ]);
+  ];
 
+  const [manualSteps, setManualSteps] = useState(getInitialSteps());
   const terminalEndRef = useRef(null);
 
   useEffect(() => {
@@ -83,14 +85,7 @@ export default function DemoStore() {
     setIsProcessing(false);
     setItemAddedToast(false);
     setBugHaltToast(false);
-    setManualSteps([
-      { order: 1, name: 'Select Product', intent: 'Add headphones to bag', status: 'pending', orig: '#btn-add-to-cart', healed: null, confidence: null, error: null },
-      { order: 2, name: 'Open Shopping Bag', intent: 'Open checkout drawer', status: 'pending', orig: '#btn-view-cart', healed: null, confidence: null, error: null },
-      { order: 3, name: 'Enter Buyer Email', intent: 'Fill customer contact email', status: 'pending', orig: '#input-checkout-email', healed: null, confidence: null, error: null },
-      { order: 4, name: 'Enter Shipping Address', intent: 'Fill destination delivery address', status: 'pending', orig: '#input-checkout-address', healed: null, confidence: null, error: null },
-      { order: 5, name: 'Authorize Payment', intent: 'Authorize card and charge $149', status: 'pending', orig: '#btn-complete-order', healed: null, confidence: null, error: null },
-      { order: 6, name: 'Order Confirmation', intent: 'Verify successful order badge', status: 'pending', orig: '#order-success-badge', healed: null, confidence: null, error: null }
-    ]);
+    setManualSteps(getInitialSteps());
   };
 
   const handleModeChange = (newMode) => {
@@ -102,7 +97,19 @@ export default function DemoStore() {
   const isMutated = mode === 'mutated' || mode === 'chaos';
   const isBug = mode === 'bug_mode';
 
-  // Dynamic selector computations
+  /*
+   * REALISTIC SELECTOR SETUP:
+   * In Version B, we do NOT break every single selector!
+   * Real world developers only rename 2-3 components:
+   * - Step 1: #btn-add-to-cart -> #dynamic_btn_cart_x89 (MUTATED, AI HEALS)
+   * - Step 2: #btn-view-cart -> KEPT UNCHANGED (PASSES DIRECTLY WITHOUT AI)
+   * - Step 3: #input-checkout-email -> #customer_email_contact (MUTATED, AI HEALS)
+   * - Step 4: #input-checkout-address -> KEPT UNCHANGED (PASSES DIRECTLY WITHOUT AI)
+   * - Step 5: #btn-complete-order -> #checkout_action_auth_pay (MUTATED, AI HEALS)
+   * - Step 6: #order-success-badge -> KEPT UNCHANGED (PASSES DIRECTLY)
+   */
+
+  // Step 1: Mutated in Version B & Chaos
   const addToCartId = isMutated || chaosClasses 
     ? (chaosSeed > 0 ? `dynamic_cart_btn_${chaosSeed}` : 'dynamic_btn_cart_x89') 
     : 'btn-add-to-cart';
@@ -111,12 +118,24 @@ export default function DemoStore() {
     ? 'Grab Deal Now!' 
     : (isMutated ? 'Claim Headphones Now' : 'Add to Bag');
 
-  const viewCartId = isMutated || chaosClasses 
-    ? (chaosSeed > 0 ? `nav_bag_trigger_${chaosSeed}` : 'nav_bag_trigger_92') 
+  // Step 2: Unchanged in Version B! (Only mutates if Chaos is explicitly enabled)
+  const viewCartId = mode === 'chaos' && (chaosClasses || chaosSeed > 0)
+    ? `nav_bag_trigger_${chaosSeed}`
     : 'btn-view-cart';
 
-  const viewCartText = isMutated ? 'Proceed to Bag' : 'View Bag & Checkout';
+  const viewCartText = 'View Bag & Checkout';
 
+  // Step 3: Mutated in Version B & Chaos
+  const emailFieldId = isMutated || chaosClasses 
+    ? (chaosSeed > 0 ? `customer_email_${chaosSeed}` : 'customer_email_contact') 
+    : 'input-checkout-email';
+
+  // Step 4: Unchanged in Version B! (Only mutates if Chaos is explicitly enabled)
+  const addressFieldId = mode === 'chaos' && (chaosClasses || chaosSeed > 0)
+    ? `shipping_dest_${chaosSeed}`
+    : 'input-checkout-address';
+
+  // Step 5: Mutated in Version B & Chaos
   const checkoutBtnId = isMutated || chaosClasses 
     ? (chaosSeed > 0 ? `auth_pay_action_${chaosSeed}` : 'checkout_action_auth_pay') 
     : 'btn-complete-order';
@@ -125,47 +144,58 @@ export default function DemoStore() {
     ? 'Authorize & Charge' 
     : (isMutated ? 'Complete Payment ($149.00)' : 'Place Order');
 
-  const emailFieldId = isMutated || chaosClasses 
-    ? (chaosSeed > 0 ? `customer_email_${chaosSeed}` : 'customer_email_contact') 
-    : 'input-checkout-email';
+  // Trigger step progression with realistic AI thinking delays
+  const triggerStepAction = (order, isFailure = false, errorMsg = null) => {
+    // If standard mode, it passes cleanly right away
+    if (mode === 'standard') {
+      setManualSteps(prev => prev.map(s => s.order === order ? { ...s, status: 'passed' } : s));
+      return;
+    }
 
-  const addressFieldId = isMutated || chaosClasses 
-    ? (chaosSeed > 0 ? `shipping_dest_${chaosSeed}` : 'shipping_dest_address') 
-    : 'input-checkout-address';
+    // If bug mode and payment step fails
+    if (isFailure) {
+      setManualSteps(prev => prev.map(s => s.order === order ? {
+        ...s,
+        status: 'failed',
+        error: errorMsg || 'Genuine application regression encountered (500 Server Error)'
+      } : s));
+      return;
+    }
 
-  // Trigger manual step progression when user clicks in UI
-  const markStepDone = (order, isFailure = false, errorMsg = null) => {
-    setManualSteps(prev => prev.map(s => {
-      if (s.order === order) {
-        if (isFailure) {
-          return {
-            ...s,
-            status: 'failed',
-            error: errorMsg || 'Genuine application regression encountered (500 Error)'
-          };
-        }
-        if (mode === 'standard') {
-          return { ...s, status: 'passed' };
-        } else {
-          // Mutated or Chaos: mark healed with resolved selector
-          let healedSel = s.orig;
-          if (order === 1) healedSel = `#${addToCartId}`;
-          if (order === 2) healedSel = `#${viewCartId}`;
-          if (order === 3) healedSel = `#${emailFieldId}`;
-          if (order === 4) healedSel = `#${addressFieldId}`;
-          if (order === 5) healedSel = `#${checkoutBtnId}`;
-          if (order === 6) healedSel = '#order-success-badge';
+    // Determine if this specific step is mutated or unchanged:
+    // Steps 2, 4, 6 are UNCHANGED in Version B
+    const isThisStepMutated = (order === 1 && addToCartId !== 'btn-add-to-cart') ||
+      (order === 2 && viewCartId !== 'btn-view-cart') ||
+      (order === 3 && emailFieldId !== 'input-checkout-email') ||
+      (order === 4 && addressFieldId !== 'input-checkout-address') ||
+      (order === 5 && checkoutBtnId !== 'btn-complete-order');
 
-          return {
-            ...s,
-            status: order === 6 ? 'passed' : 'healed',
-            healed: healedSel,
-            confidence: Math.floor(Math.random() * 5) + 94
-          };
-        }
-      }
-      return s;
-    }));
+    if (!isThisStepMutated) {
+      // Clean pass without needing AI!
+      setManualSteps(prev => prev.map(s => s.order === order ? { ...s, status: 'passed', healed: null } : s));
+      return;
+    }
+
+    // Step IS mutated: show realistic AI deliberation delay!
+    // 1. Mark status as 'healing'
+    setManualSteps(prev => prev.map(s => s.order === order ? { ...s, status: 'healing' } : s));
+
+    // 2. After 800ms, resolve with the healed selector
+    setTimeout(() => {
+      let resolvedSel = '#btn-add-to-cart';
+      if (order === 1) resolvedSel = `#${addToCartId}`;
+      if (order === 2) resolvedSel = `#${viewCartId}`;
+      if (order === 3) resolvedSel = `#${emailFieldId}`;
+      if (order === 4) resolvedSel = `#${addressFieldId}`;
+      if (order === 5) resolvedSel = `#${checkoutBtnId}`;
+
+      setManualSteps(prev => prev.map(s => s.order === order ? {
+        ...s,
+        status: 'healed',
+        healed: resolvedSel,
+        confidence: Math.floor(Math.random() * 4) + 95
+      } : s));
+    }, 850);
   };
 
   // Automated E2E Bot execution
@@ -181,8 +211,7 @@ export default function DemoStore() {
     }
   };
 
-  // Determine which steps to show in the pipeline:
-  // If activeRun is recent and running/completed in this mode, use activeRun.steps, else manualSteps
+  // Steps to render: check activeRun first if it matches current mode
   const displayedSteps = (activeRun && activeRun.mode === mode && activeRun.steps && activeRun.steps.length > 0)
     ? activeRun.steps.map(s => ({
         order: s.order,
@@ -315,7 +344,7 @@ export default function DemoStore() {
             <span><strong>Version A Mode:</strong> Unmodified baseline store. Click through the order flow below to see all steps pass normally.</span>
           )}
           {mode === 'mutated' && (
-            <span><strong>Version B Mode (Auto-Heal):</strong> Button IDs and names have been mutated by developers. Watch the right panel dynamically heal them in real time!</span>
+            <span><strong>Version B Mode (Realistic Release):</strong> Devs renamed 3 selectors (Steps 1, 3, 5), while Steps 2, 4, 6 remain untouched. Watch AI deliberately heal mutated steps while normal steps pass directly!</span>
           )}
           {mode === 'chaos' && (
             <span><strong>Live Chaos Mode:</strong> Toggle mutations or click "Shuffle Now" to scramble elements while testing. AI uses semantic intent to heal!</span>
@@ -356,10 +385,10 @@ export default function DemoStore() {
         )}
       </div>
 
-      {/* Dual-Pane Arena: Store on Left (55%), Live Inspector on Right (45%) */}
+      {/* Dual-Pane Arena */}
       <div className="flex-1 max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        {/* ================= LEFT PANE: Interactive E-Commerce Sandbox Store (7 cols) ================= */}
+        {/* ================= LEFT PANE: Interactive Store (7 cols) ================= */}
         <div className="lg:col-span-7 space-y-4">
           <div className="flex items-center justify-between pb-1">
             <h2 className="text-base font-bold text-ink flex items-center gap-2">
@@ -422,7 +451,7 @@ export default function DemoStore() {
                       onClick={() => {
                         setCartCount(prev => Math.max(1, prev + 1));
                         setItemAddedToast(true);
-                        markStepDone(1);
+                        triggerStepAction(1);
                         setTimeout(() => setItemAddedToast(false), 2000);
                       }}
                       className={`btn w-full py-3 text-sm font-bold shadow-sm ${
@@ -432,7 +461,7 @@ export default function DemoStore() {
                       {itemAddedToast ? (
                         <>
                           <Check className="w-4 h-4 text-green-300" />
-                          <span>Added to Bag! (Step 1 Completed)</span>
+                          <span>Added to Bag! (Step 1 Complete)</span>
                         </>
                       ) : (
                         <>
@@ -446,7 +475,7 @@ export default function DemoStore() {
                       id={viewCartId}
                       onClick={() => {
                         setStoreStep(2);
-                        markStepDone(2);
+                        triggerStepAction(2);
                       }}
                       className="btn btn-secondary w-full py-2.5 text-sm font-semibold"
                     >
@@ -502,7 +531,7 @@ export default function DemoStore() {
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);
-                      markStepDone(3);
+                      triggerStepAction(3);
                     }}
                     placeholder="lokesh@hackwave.dev"
                     className="input input-mono text-xs"
@@ -511,7 +540,7 @@ export default function DemoStore() {
 
                 <div>
                   <label className="block text-xs font-bold text-ink mb-1 flex justify-between">
-                    <span>Shipping Address (Step 4)</span>
+                    <span>Shipping Address (Step 4 — Unchanged Baseline)</span>
                     <span className="text-xs font-mono text-ink-tertiary">#{addressFieldId}</span>
                   </label>
                   <input
@@ -521,7 +550,7 @@ export default function DemoStore() {
                     value={address}
                     onChange={(e) => {
                       setAddress(e.target.value);
-                      markStepDone(4);
+                      triggerStepAction(4);
                     }}
                     placeholder="Building 4, Tech Innovation Hub, Cyber City"
                     className="input input-mono text-xs"
@@ -539,11 +568,11 @@ export default function DemoStore() {
                         setIsProcessing(false);
                         if (isBug) {
                           setBugHaltToast(true);
-                          markStepDone(5, true, 'HTTP 500 Payment Gateway Timeout & $0.00 Price Anomaly');
+                          triggerStepAction(5, true, 'HTTP 500 Payment Gateway Timeout & $0.00 Price Anomaly');
                         } else {
                           setStoreStep(3);
-                          markStepDone(5);
-                          markStepDone(6);
+                          triggerStepAction(5);
+                          triggerStepAction(6);
                         }
                       }, 500);
                     }}
@@ -561,13 +590,13 @@ export default function DemoStore() {
                 </div>
 
                 {bugHaltToast && (
-                  <div className="p-3 rounded-lg bg-red-100 border border-red-300 text-danger text-xs space-y-1">
+                  <div className="p-3.5 rounded-lg bg-red-100 border border-red-300 text-danger text-xs space-y-1">
                     <p className="font-bold flex items-center gap-1.5">
                       <AlertTriangle className="w-4 h-4" />
                       HTTP 500 Internal Server Error & Corrupted Price
                     </p>
-                    <p>
-                      The AI Smart Triage detected that this is NOT a selector rename. The payment service crashed and price was corrupted. <strong>AI refused to heal this step!</strong> Check the right panel.
+                    <p className="leading-relaxed">
+                      AI Smart Triage detected that this is a real server crash, not a renamed selector. <strong>AI refused to heal this step!</strong> Check the right panel.
                     </p>
                   </div>
                 )}
@@ -618,9 +647,9 @@ export default function DemoStore() {
           )}
         </div>
 
-        {/* ================= RIGHT PANE: Live Autonomous Inspector & Telemetry Logs (5 cols) ================= */}
+        {/* ================= RIGHT PANE: Live Inspector & Telemetry Logs (5 cols) ================= */}
         <div className="lg:col-span-5 space-y-3 sticky top-20">
-          {/* Right Pane Tab Switcher */}
+          {/* Tab Switcher */}
           <div className="card p-1.5 flex items-center justify-between bg-white shadow-xs">
             <div className="flex items-center gap-1">
               <button
@@ -661,11 +690,11 @@ export default function DemoStore() {
 
           {/* TAB 1: Live Step Pipeline & AI Diff */}
           {inspectorTab === 'pipeline' && (
-            <div className="card p-5 space-y-3.5 shadow-card max-h-[620px] overflow-y-auto scrollbar-thin">
+            <div className="card p-5 space-y-3 shadow-card max-h-[620px] overflow-y-auto scrollbar-thin">
               <div className="flex items-center justify-between pb-2 border-b border-border">
                 <div>
                   <h3 className="text-sm font-bold text-ink">E2E Test Steps & Healing State</h3>
-                  <p className="text-xs text-ink-secondary">Updates in real-time as you click or run bot</p>
+                  <p className="text-xs text-ink-secondary">Live state as you click store or run bot</p>
                 </div>
                 <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-surface border border-border">
                   {mode.toUpperCase()}
@@ -675,8 +704,11 @@ export default function DemoStore() {
               {/* Steps List */}
               <div className="space-y-2.5">
                 {displayedSteps.map((s) => {
-                  const isPassed = s.status === 'passed';
-                  const isHealed = s.status === 'healed';
+                  const isHealing = s.status === 'healing';
+                  // A step is only healed if the resolved selector is ACTUALLY DIFFERENT from original!
+                  const isActuallyHealed = s.status === 'healed' && s.healed && s.healed !== s.orig;
+                  // If s.status is healed but s.orig === s.healed, treat as clean pass
+                  const isPassed = (s.status === 'passed') || (s.status === 'healed' && (!s.healed || s.healed === s.orig));
                   const isFailed = s.status === 'failed';
                   const isPending = s.status === 'pending';
 
@@ -684,7 +716,8 @@ export default function DemoStore() {
                     <div
                       key={s.order}
                       className={`p-3 rounded-xl border transition-all text-xs space-y-2 ${
-                        isHealed ? 'border-indigo-300 bg-brand-light/30' :
+                        isHealing ? 'border-amber-400 bg-warning-bg/40 ring-1 ring-amber-400' :
+                        isActuallyHealed ? 'border-indigo-300 bg-brand-light/30' :
                         isPassed ? 'border-success-border bg-success-bg/30' :
                         isFailed ? 'border-danger-border bg-danger-bg/40' :
                         'border-border bg-surface'
@@ -701,16 +734,22 @@ export default function DemoStore() {
 
                         {/* Status Badges */}
                         <div>
-                          {isHealed && (
+                          {isHealing && (
+                            <span className="badge badge-warning text-2xs font-bold animate-pulse">
+                              <Loader2 className="w-3 h-3 animate-spin" />
+                              AI HEALING...
+                            </span>
+                          )}
+                          {isActuallyHealed && !isHealing && (
                             <span className="badge badge-brand text-2xs font-bold">
                               <Sparkles className="w-3 h-3" />
                               AUTO-HEALED {s.confidence ? `(${s.confidence}%)` : ''}
                             </span>
                           )}
-                          {isPassed && (
+                          {isPassed && !isHealing && (
                             <span className="badge badge-success text-2xs font-bold">
                               <CheckCircle2 className="w-3 h-3" />
-                              PASSED
+                              PASSED (Direct)
                             </span>
                           )}
                           {isFailed && (
@@ -732,8 +771,16 @@ export default function DemoStore() {
                         Goal: <span className="text-ink font-semibold">{s.intent}</span>
                       </p>
 
-                      {/* Selector Diff Box */}
-                      {isHealed && (
+                      {/* AI Thinking State */}
+                      {isHealing && (
+                        <div className="bg-amber-100 p-2 rounded-lg border border-amber-300 text-amber-900 font-mono text-2xs flex items-center gap-2">
+                          <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0 text-amber-700" />
+                          <span>Scanning accessibility tree & semantic intent...</span>
+                        </div>
+                      )}
+
+                      {/* Selector Diff Box: ONLY SHOWN WHEN ACTUALLY HEALED & DIFFERENT! */}
+                      {isActuallyHealed && !isHealing && (
                         <div className="bg-white p-2 rounded-lg border border-indigo-200 font-mono text-2xs space-y-1">
                           <div className="flex items-center justify-between text-danger">
                             <span>- Broken:</span>
@@ -746,11 +793,11 @@ export default function DemoStore() {
                         </div>
                       )}
 
-                      {/* Passed Clean Selector */}
-                      {isPassed && !isHealed && (
+                      {/* Passed Clean Selector (No diff box because nothing broke!) */}
+                      {isPassed && !isHealing && (
                         <div className="bg-white p-1.5 rounded border border-border font-mono text-2xs text-ink-secondary flex items-center justify-between">
-                          <span>Selector:</span>
-                          <span className="font-bold text-ink">{s.orig}</span>
+                          <span>Baseline:</span>
+                          <span className="font-bold text-success-text">{s.orig} (Passed directly)</span>
                         </div>
                       )}
 
@@ -759,10 +806,10 @@ export default function DemoStore() {
                         <div className="bg-red-50 p-2.5 rounded-lg border border-red-200 text-danger text-2xs space-y-1">
                           <p className="font-bold flex items-center gap-1">
                             <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
-                            Smart Triage Refused to Heal
+                            Smart Triage: Refused to False-Heal
                           </p>
                           <p className="leading-relaxed">
-                            {s.error || '500 Server Regression & Corrupted Price ($0.00). Test safely halted to prevent shipping broken payment code!'}
+                            {s.error || '500 Server Regression & Corrupted Price ($0.00). Test halted safely to prevent shipping broken payment code!'}
                           </p>
                         </div>
                       )}

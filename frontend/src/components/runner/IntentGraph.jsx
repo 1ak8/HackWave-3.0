@@ -62,8 +62,8 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
           const ActionIcon = getActionIcon(step.action);
           const isSelected = selectedStep && selectedStep.order === step.order;
           const isHealing = step.status === 'healing';
-          const isHealed = step.status === 'healed';
-          const isPassed = step.status === 'passed';
+          const isActuallyHealed = step.status === 'healed' && step.resolvedSelector && step.resolvedSelector !== step.originalSelector;
+          const isPassed = step.status === 'passed' || (step.status === 'healed' && (!step.resolvedSelector || step.resolvedSelector === step.originalSelector));
           const isFailed = step.status === 'failed';
           const isRunning = step.status === 'running';
 
@@ -78,7 +78,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
                 Healing...
               </span>
             );
-          } else if (isHealed) {
+          } else if (isActuallyHealed) {
             cardStyle = 'border-indigo-300 bg-brand-light/40 ring-1 ring-indigo-300';
             statusBadge = (
               <span className="badge badge-brand text-xs font-bold">
@@ -143,10 +143,10 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
               {/* Selector details */}
               <div className="pt-2 border-t border-border flex items-center justify-between text-xs font-mono">
                 <span className="truncate max-w-[190px]">
-                  {isHealed ? (
+                  {isActuallyHealed ? (
                     <span className="line-through text-danger mr-1.5">{step.originalSelector}</span>
                   ) : null}
-                  <span className={isHealed ? 'text-brand font-bold' : 'text-ink-secondary'}>
+                  <span className={isActuallyHealed ? 'text-brand font-bold' : 'text-ink-secondary'}>
                     {step.resolvedSelector || step.originalSelector}
                   </span>
                 </span>

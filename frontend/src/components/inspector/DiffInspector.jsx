@@ -24,7 +24,10 @@ export default function DiffInspector({ selectedStep }) {
   }
 
   const healing = selectedStep.healingDetails || {};
-  const isHealed = selectedStep.status === 'healed' || healing.wasHealed;
+  const isActuallyHealed = selectedStep.status === 'healed' && 
+    selectedStep.resolvedSelector && 
+    selectedStep.resolvedSelector !== selectedStep.originalSelector;
+
   const isBug = selectedStep.status === 'failed' || healing.classification === 'Genuine_Bug';
   const confidence = healing.confidence || 0;
 
@@ -45,10 +48,10 @@ export default function DiffInspector({ selectedStep }) {
         </div>
 
         <div>
-          {isHealed && (
-            <span className="badge badge-success text-xs px-2.5 py-1 font-bold">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              Auto-Healed
+          {isActuallyHealed && (
+            <span className="badge badge-brand text-xs px-2.5 py-1 font-bold">
+              <Sparkles className="w-3.5 h-3.5" />
+              Auto-Healed ({confidence}%)
             </span>
           )}
           {isBug && (
@@ -57,9 +60,10 @@ export default function DiffInspector({ selectedStep }) {
               Regression Triaged
             </span>
           )}
-          {!isHealed && !isBug && (
-            <span className="badge badge-neutral text-xs px-2.5 py-1">
-              Clean Pass
+          {!isActuallyHealed && !isBug && (
+            <span className="badge badge-success text-xs px-2.5 py-1 font-bold">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              Passed Directly (Baseline)
             </span>
           )}
         </div>
@@ -73,51 +77,73 @@ export default function DiffInspector({ selectedStep }) {
         <p className="text-sm text-ink font-semibold">"{selectedStep.intent}"</p>
       </div>
 
-      {/* GitHub/Linear Style Sleek Code Diff */}
-      <div className="bg-[#0f172a] text-slate-100 p-4 rounded-xl font-mono text-xs space-y-2.5 border border-slate-800 shadow-inner">
-        <div className="flex items-center justify-between text-slate-400 pb-2 border-b border-slate-800">
-          <span className="font-sans font-semibold text-slate-300">DOM Selector Repair Diff</span>
-          {isHealed && (
+      {/* Selector Display */}
+      {isActuallyHealed ? (
+        /* Real Diff shown when selector changed */
+        <div className="bg-[#0f172a] text-slate-100 p-4 rounded-xl font-mono text-xs space-y-2.5 border border-slate-800 shadow-inner">
+          <div className="flex items-center justify-between text-slate-400 pb-2 border-b border-slate-800">
+            <span className="font-sans font-semibold text-slate-300">DOM Selector Repair Diff</span>
             <span className="text-emerald-400 font-bold font-mono">
               {confidence}% match confidence
             </span>
-          )}
-        </div>
+          </div>
 
-        {/* Broken Selector (-) */}
-        <div className="bg-red-950/60 text-red-200 p-2.5 rounded-lg flex items-center gap-2 border border-red-900/50">
-          <span className="text-red-400 font-extrabold select-none text-sm">-</span>
-          <span className={`break-all font-mono ${isHealed ? 'line-through text-red-300' : 'text-red-200'}`}>
-            {selectedStep.originalSelector}
-          </span>
-          <span className="ml-auto text-[10px] bg-red-900/70 px-2 py-0.5 rounded text-red-200 font-sans font-bold shrink-0">
-            BROKEN
-          </span>
-        </div>
+          {/* Broken Selector (-) */}
+          <div className="bg-red-950/60 text-red-200 p-2.5 rounded-lg flex items-center gap-2 border border-red-900/50">
+            <span className="text-red-400 font-extrabold select-none text-sm">-</span>
+            <span className="break-all font-mono line-through text-red-300">
+              {selectedStep.originalSelector}
+            </span>
+            <span className="ml-auto text-[10px] bg-red-900/70 px-2 py-0.5 rounded text-red-200 font-sans font-bold shrink-0">
+              BROKEN
+            </span>
+          </div>
 
-        {/* Healed Replacement (+) */}
-        <div className="bg-emerald-950/60 text-emerald-200 p-2.5 rounded-lg flex items-center gap-2 border border-emerald-900/50">
-          <span className="text-emerald-400 font-extrabold select-none text-sm">+</span>
-          <span className="break-all font-mono font-bold text-emerald-300">
-            {selectedStep.resolvedSelector || (isBug ? 'NONE (HALTED AS REAL BUG)' : selectedStep.originalSelector)}
-          </span>
-          <span className="ml-auto text-[10px] bg-emerald-900/70 px-2 py-0.5 rounded text-emerald-200 font-sans font-bold shrink-0">
-            {isHealed ? 'AUTO-HEALED' : 'RESOLVED'}
-          </span>
+          {/* Healed Replacement (+) */}
+          <div className="bg-emerald-950/60 text-emerald-200 p-2.5 rounded-lg flex items-center gap-2 border border-emerald-900/50">
+            <span className="text-emerald-400 font-extrabold select-none text-sm">+</span>
+            <span className="break-all font-mono font-bold text-emerald-300">
+              {selectedStep.resolvedSelector}
+            </span>
+            <span className="ml-auto text-[10px] bg-emerald-900/70 px-2 py-0.5 rounded text-emerald-200 font-sans font-bold shrink-0">
+              AUTO-HEALED
+            </span>
+          </div>
         </div>
-      </div>
+      ) : isBug ? (
+        /* Genuine bug display */
+        <div className="bg-red-50 p-4 rounded-xl border border-red-200 space-y-2 text-danger text-xs font-mono">
+          <div className="font-bold flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 shrink-0" />
+            <span>AI Smart Triage Halted Execution</span>
+          </div>
+          <p className="text-red-700 leading-relaxed font-sans">
+            {selectedStep.error || 'Server error 500 encountered with pricing anomaly ($0.00). AI engine verified this is a true application defect and refused to false-heal.'}
+          </p>
+        </div>
+      ) : (
+        /* Baseline Clean Pass (No Diff because nothing changed!) */
+        <div className="bg-surface p-4 rounded-xl border border-border flex items-center justify-between font-mono text-xs">
+          <span className="text-ink-secondary">Selector Verified (Baseline):</span>
+          <span className="font-bold text-success-text">{selectedStep.originalSelector} (Clean Pass)</span>
+        </div>
+      )}
 
       {/* Natural Language AI Rationale */}
       <div className="bg-surface p-3.5 rounded-xl border border-border flex-1">
         <div className="flex items-center gap-1.5 mb-1 text-ink text-xs font-bold font-mono">
           <Sparkles className="w-3.5 h-3.5 text-brand" />
-          <span>Resolution Rationale</span>
+          <span>Execution Rationale</span>
           {healing.strategyLayer && (
             <span className="text-xs font-mono text-ink-tertiary">({healing.strategyLayer})</span>
           )}
         </div>
         <p className="text-xs text-ink-secondary leading-relaxed">
-          {healing.reasoning || selectedStep.error || 'This step executed against its baseline DOM selector without requiring dynamic repair.'}
+          {isActuallyHealed 
+            ? (healing.reasoning || `Selector ${selectedStep.originalSelector} was renamed in the DOM. AI located matching component ${selectedStep.resolvedSelector} via accessibility role and intent analysis.`)
+            : isBug
+            ? 'Execution safely terminated to prevent defect leakage into production.'
+            : 'Target component responded normally to baseline selector without requiring dynamic healing.'}
         </p>
       </div>
     </div>

@@ -128,13 +128,22 @@ const runE2ETest = async (runId, testCase, options = {}) => {
           error: selectorErr.message
         });
 
-        // 🧠 ACTIVATE AI SELF-HEALING ENGINE
+        // 🧠 ACTIVATE AI SELF-HEALING ENGINE (Realistic Deliberation Delay)
+        await new Promise(r => setTimeout(r, 600));
+
         emitRunTelemetry(runId, 'healing_in_progress', {
           runId,
           stepIndex: i,
           stepOrder: step.order,
           intent: step.intent
         });
+
+        emitRunTelemetry(runId, 'run_log', {
+          type: 'healing',
+          message: `[AI HEALER] Analyzing DOM accessibility tree & semantic proximity graph for intent: "${step.intent}"`
+        });
+
+        await new Promise(r => setTimeout(r, 600));
 
         // Extract clean interactive DOM
         const domData = await extractInteractiveDOM(page);
@@ -148,6 +157,7 @@ const runE2ETest = async (runId, testCase, options = {}) => {
         });
 
         if (healDecision.classification === 'Genuine_Bug') {
+          await new Promise(r => setTimeout(r, 400));
           // 🛡️ SMART TRIAGE: Real Bug Detected!
           triageClassification = 'Genuine_Bug_Halted';
           step.status = 'failed';
@@ -183,6 +193,11 @@ const runE2ETest = async (runId, testCase, options = {}) => {
             confidence: healDecision.confidence
           });
 
+          emitRunTelemetry(runId, 'run_log', {
+            type: 'error',
+            message: `[SMART TRIAGE] Halted: Genuine software regression detected (HTTP 500 / $0.00 corruption). AI refused to heal.`
+          });
+
           logger.error(`🚨 Genuine Bug Flagged: ${healDecision.reasoning}`);
           break; // Stop test execution on genuine regression
         }
@@ -191,6 +206,13 @@ const runE2ETest = async (runId, testCase, options = {}) => {
         if (healDecision.isSafeToResume && healDecision.healedSelector) {
           const newSelector = healDecision.healedSelector;
           logger.healing(`Applying healed selector: "${newSelector}" (Confidence: ${healDecision.confidence}%)`);
+
+          emitRunTelemetry(runId, 'run_log', {
+            type: 'healing',
+            message: `[AI HEALER] Candidate verified: "${newSelector}" (${healDecision.confidence}% confidence via ${healDecision.strategyLayer}). Re-binding action...`
+          });
+
+          await new Promise(r => setTimeout(r, 400));
 
           try {
             // Execute action with healed replacement element
