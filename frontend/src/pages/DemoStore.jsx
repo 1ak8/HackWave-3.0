@@ -530,12 +530,12 @@ export default function DemoStore() {
                 <span>Mutate:</span>
               </div>
 
-              {/* 5 Extra Small Chips with Extra Wide Gaps (gap-8 to gap-14) */}
-              <div className="flex items-center gap-8 sm:gap-12 md:gap-16 flex-wrap">
+              {/* 5 Small Pill Chips with Extra Wide Gaps (gap-10 to gap-20) */}
+              <div className="flex items-center gap-10 sm:gap-14 md:gap-20 flex-wrap">
                 {/* 1. Cart */}
                 <button
                   onClick={() => setMutateCart(!mutateCart)}
-                  className={`px-2 py-0.5 rounded text-[11px] font-mono transition flex items-center gap-1 ${
+                  className={`px-3 py-1 rounded-full text-[11px] font-mono transition flex items-center gap-1.5 ${
                     mutateCart 
                       ? 'bg-amber-500 text-white font-bold shadow-xs' 
                       : 'bg-surface text-ink-secondary hover:text-ink border border-border'
@@ -549,7 +549,7 @@ export default function DemoStore() {
                 {/* 2. Bag */}
                 <button
                   onClick={() => setMutateBag(!mutateBag)}
-                  className={`px-2 py-0.5 rounded text-[11px] font-mono transition flex items-center gap-1 ${
+                  className={`px-3 py-1 rounded-full text-[11px] font-mono transition flex items-center gap-1.5 ${
                     mutateBag 
                       ? 'bg-amber-500 text-white font-bold shadow-xs' 
                       : 'bg-surface text-ink-secondary hover:text-ink border border-border'
@@ -563,7 +563,7 @@ export default function DemoStore() {
                 {/* 3. Email */}
                 <button
                   onClick={() => setMutateEmail(!mutateEmail)}
-                  className={`px-2 py-0.5 rounded text-[11px] font-mono transition flex items-center gap-1 ${
+                  className={`px-3 py-1 rounded-full text-[11px] font-mono transition flex items-center gap-1.5 ${
                     mutateEmail 
                       ? 'bg-amber-500 text-white font-bold shadow-xs' 
                       : 'bg-surface text-ink-secondary hover:text-ink border border-border'
@@ -577,7 +577,7 @@ export default function DemoStore() {
                 {/* 4. Address */}
                 <button
                   onClick={() => setMutateAddress(!mutateAddress)}
-                  className={`px-2 py-0.5 rounded text-[11px] font-mono transition flex items-center gap-1 ${
+                  className={`px-3 py-1 rounded-full text-[11px] font-mono transition flex items-center gap-1.5 ${
                     mutateAddress 
                       ? 'bg-amber-500 text-white font-bold shadow-xs' 
                       : 'bg-surface text-ink-secondary hover:text-ink border border-border'
@@ -591,7 +591,7 @@ export default function DemoStore() {
                 {/* 5. Pay */}
                 <button
                   onClick={() => setMutatePay(!mutatePay)}
-                  className={`px-2 py-0.5 rounded text-[11px] font-mono transition flex items-center gap-1 ${
+                  className={`px-3 py-1 rounded-full text-[11px] font-mono transition flex items-center gap-1.5 ${
                     mutatePay 
                       ? 'bg-amber-500 text-white font-bold shadow-xs' 
                       : 'bg-surface text-ink-secondary hover:text-ink border border-border'
@@ -608,7 +608,7 @@ export default function DemoStore() {
             <div className="shrink-0">
               <button
                 onClick={handleShuffleSeed}
-                className="px-3 py-1 rounded-md text-2xs font-bold font-mono bg-surface hover:bg-gray-100 text-ink-secondary border border-border flex items-center gap-1.5 transition shadow-xs active:scale-95"
+                className="px-3.5 py-1 rounded-full text-2xs font-bold font-mono bg-surface hover:bg-gray-100 text-ink-secondary border border-border flex items-center gap-1.5 transition shadow-xs active:scale-95"
                 title="Click to scramble element IDs with dynamic seed"
               >
                 <Shuffle className="w-3 h-3 text-amber-600" />
