@@ -28,12 +28,13 @@ import {
   ToggleRight
 } from 'lucide-react';
 import { useTests } from '../context/TestContext';
+import apiClient from '../api/apiClient';
 
 export default function DemoStore() {
   const [searchParams, setSearchParams] = useSearchParams();
   const urlMode = searchParams.get('mode') || 'standard';
 
-  const { tests, activeRun, triggerRun, terminalLogs, clearLogs, addTerminalLog } = useTests();
+  const { tests, activeRun, triggerRun, terminalLogs, clearLogs, addTerminalLog, refreshAll } = useTests();
   const defaultTest = tests[0] || null;
 
   // Mode: 'standard' | 'mutated' | 'chaos' | 'bug_mode'
@@ -255,6 +256,21 @@ export default function DemoStore() {
         addTerminalLog('error', 'HTTP 500 Internal Server Error & Cart total anomaly ($0.00).');
         addTerminalLog('error', '🚨 GENUINE APPLICATION BUG DETECTED: Smart Triage halted test. AI refused to heal regression!');
       }
+
+      // Persist genuine bug record into database
+      apiClient.post('/reports/healing-logs', {
+        testId: defaultTest?._id || 'test_default_ecommerce_flow',
+        stepOrder: 5,
+        stepName: 'Complete Payment',
+        userIntent: 'Authorize card and charge $149',
+        brokenSelector: '#btn-complete-order',
+        healedSelector: 'NONE (BLOCKED)',
+        confidence: 99,
+        strategyLayer: 'Triage Layer: Business Logic Assertion',
+        classification: 'Genuine_Bug',
+        reasoning: 'Critical Application Bug detected: Payment gateway returned HTTP 500 & Cart total anomaly ($0.00). AI engine verified this is a genuine backend regression, NOT a cosmetic selector rename. Healing safely aborted.'
+      }).then(() => { if (refreshAll) refreshAll(); }).catch(() => {});
+
       return;
     }
 
@@ -338,6 +354,20 @@ export default function DemoStore() {
           addTerminalLog('info', `Payment authorization dispatched on: ${resolvedSel}`);
         }
       }
+
+      // Persist real healing record into backend database
+      apiClient.post('/reports/healing-logs', {
+        testId: defaultTest?._id || 'test_default_ecommerce_flow',
+        stepOrder: order,
+        stepName: order === 1 ? 'Select Product' : order === 2 ? 'Open Shopping Bag' : order === 3 ? 'Enter Buyer Email' : order === 4 ? 'Enter Shipping Address' : 'Complete Payment',
+        userIntent: order === 1 ? 'Add headphones to bag' : order === 2 ? 'Open checkout drawer' : order === 3 ? 'Fill customer contact email' : order === 4 ? 'Fill destination delivery address' : 'Authorize card and charge $149',
+        brokenSelector: order === 1 ? '#btn-add-to-cart' : order === 2 ? '#btn-view-cart' : order === 3 ? '#input-checkout-email' : order === 4 ? '#input-checkout-address' : '#btn-complete-order',
+        healedSelector: resolvedSel,
+        confidence: conf,
+        strategyLayer: order === 1 ? 'Layer 1: Semantic Text & Role Matching' : order === 3 ? 'Layer 2: Proximity & Input Graph' : 'Layer 3: Intent Assertion',
+        classification: 'Harmless_UI_Change',
+        reasoning: `Original selector was mutated in DOM redesign. Located dynamic replacement element "${resolvedSel}" satisfying user intent.`
+      }).then(() => { if (refreshAll) refreshAll(); }).catch(() => {});
     }, 850);
   };
 

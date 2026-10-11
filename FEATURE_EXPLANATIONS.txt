@@ -86,4 +86,99 @@ Tumhara answer:
    cryptographically logged with a confidence score, before/after selector diffs, 
    and exact semantic reasoning for full SOC-2 and enterprise compliance!"
 
+
+================================================================================
+FEATURE #2: DUAL-PANE INTERACTIVE SANDBOX ARENA (/demo-store)
+================================================================================
+
+1. THE CORE IDEA (ASLI DUNIYA KA EXAMPLE):
+--------------------------------------------------------------------------------
+Car companies naye airbags test karne ke liye unhe seedha customer ko nahi 
+deti — wo ek dedicated "Crash Test Arena" banati hain jahan car ko deewar par 
+thok kar dekha jata hai ki safety systems kaam kar rahe hain ya nahi.
+
+Theek waise hi, DEMO STORE hamara Live Testing Ground & Crash Test Arena hai!
+Yahan judges aur users apni aankhon se dekh sakte hain ki jab frontend tootta 
+hai, toh AI use live kaise fix karta hai.
+
+
+2. DUAL-PANE SPLIT DESIGN (NO REDIRECT TO DASHBOARD):
+--------------------------------------------------------------------------------
+Poora demo ek hi screen par side-by-side chalta hai:
+
+  [LEFT PANE — 60% Width]: Live E-Commerce Store UI
+  - Real 3-step checkout workflow:
+    1. Product Page (Quantum Wireless Headphones — $149)
+    2. Checkout Form (Customer Email & Shipping Address)
+    3. Order Confirmation (#order-success-badge)
+  - DOM selector ID tags har button ke niche live visible rehte hain.
+
+  [RIGHT PANE — 40% Width]: Real-Time Autonomous Inspector
+  - Tab 1: Live Step Pipeline & AI Diff
+    * Har step ka live status: PENDING ➔ HEALING ➔ HEALED ya PASSED.
+    * Real selector diff: - Broken vs + Healed (sirf tab jab selector mutate hua ho).
+  - Tab 2: Playwright Real-Time Telemetry Logs
+    * macOS style terminal jahan live timestamps ke sath INFO, WARN, HEAL, PASS, 
+      FAIL logs stream hote hain.
+
+
+3. THE 4 DEMO MODES (AND WHAT THEY PROVE):
+--------------------------------------------------------------------------------
+Top bar par 4 tabs hain jo engine ki alag-alag capabilities prove karte hain:
+
+  [A] Version A (Standard Baseline):
+      - Store ka normal code bina kisi mutation ke.
+      - User click kare ya bot chalaye, saare 6 steps direct baseline selectors 
+        par pass hote hain (Zero AI needed).
+
+  [B] Version B (Realistic Release & Auto-Heal):
+      - Real-world software release simulate karta hai jahan developers ne 
+        3 selectors rename kar diye (#btn-add-to-cart, #input-checkout-email, 
+        #btn-complete-order) jabki 2-3 selectors unchanged chhod diye.
+      - AI deliberates with 850ms thinking delay, scans DOM accessibility tree, 
+        aur mutated selectors ko heal karta hai jabki normal steps direct pass hote hain.
+
+  [C] Live Chaos Mode (Judge's Custom Control Deck):
+      - Top par centered pill capsule dock:
+        [ 1. Cart ⚡ ]  [ 2. Bag ]  [ 3. Email ⚡ ]  [ 4. Address ]  [ 5. Pay ⚡ ]
+      - Judge jo toggle ON karega, SIRF WAHI STEP mutate aur heal hoga!
+      - Untoggled steps Version A ki tarah direct pass honge.
+      - Yeh judge ko 100% control deta hai to test any permutation live!
+
+  [D] Real Bug Mode (Smart Triage in Action):
+      - Steps 1 aur 3 harmlessly auto-heal hote hain.
+      - Lekin Step 5 par $0.00 pricing corruption aur HTTP 500 payment gateway 
+        crash trigger hota hai.
+      - AI halts execution immediately with "BUG HALTED (Genuine_Bug_Halted)"!
+      - AI refuses to heal because it's a real server crash, not a selector change.
+
+
+4. MANUAL CLICKS VS "AUTO-RUN E2E BOT":
+--------------------------------------------------------------------------------
+Demo Store mein do tareeqe hain test run karne ke:
+
+  1. User Manual Clicks:
+     - User khud left store mein "Add to Bag", checkout, aur payment click karta hai.
+     - Har click ke sath right pane mein live pipeline update hoti hai aur 
+       terminal mein real-time logs stream hote hain.
+
+  2. Auto-Run E2E Bot (Playwright Robot):
+     - Top bar par 1-click button: [ ⚡ Auto-Run E2E Bot ]
+     - Headless Playwright robot background mein chalta hai.
+     - User apni aankhon se dekhta hai:
+       * Left store mein item bag mein judta hai, form fill hota hai, checkout hota hai.
+       * Right pane mein live pipeline aur telemetry logs autonomously sync hote hain!
+
+
+5. HACKATHON JUDGES KE SAMNE PITCH (KILLER LINE):
+--------------------------------------------------------------------------------
+Jab judge poochenge:
+  "Is this just a pre-recorded script or actually running in real time?"
+
+Tumhara answer:
+  "Sir/Ma'am, please open our Demo Store sandbox. You can select custom chaos 
+   toggles, mutate specific buttons, or simulate real 500 server crashes yourself. 
+   Our engine will adapt to your exact selections live on this screen, proving 
+   intent-aware autonomous healing with zero smoke and mirrors!"
+
 ================================================================================

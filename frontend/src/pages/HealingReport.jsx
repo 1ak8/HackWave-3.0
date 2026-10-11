@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   FileText, 
   ShieldCheck, 
@@ -13,9 +13,13 @@ import {
 import { useTests } from '../context/TestContext';
 
 export default function HealingReport() {
-  const { healingLogs, stats } = useTests();
+  const { healingLogs, stats, refreshAll } = useTests();
   const [filter, setFilter] = useState('ALL');
   const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    refreshAll();
+  }, []);
 
   const filteredLogs = healingLogs.filter(log => {
     const matchesFilter = filter === 'ALL' || log.classification === filter;

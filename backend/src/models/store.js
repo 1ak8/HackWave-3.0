@@ -2,6 +2,10 @@ const TestCase = require('./TestCase');
 const TestRun = require('./TestRun');
 const HealingLog = require('./HealingLog');
 const { isUsingMemory } = require('../config/db');
+const fs = require('fs');
+const path = require('path');
+
+const storageFilePath = path.join(__dirname, '../../data/store_records.json');
 
 // In-Memory storage buffers for zero-dependency local runs
 const memStorage = {
@@ -9,6 +13,33 @@ const memStorage = {
   runs: [],
   logs: []
 };
+
+// Load existing persistent records from disk on startup
+const loadDiskStorage = () => {
+  try {
+    if (fs.existsSync(storageFilePath)) {
+      const raw = fs.readFileSync(storageFilePath, 'utf8');
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed.tests) && parsed.tests.length > 0) memStorage.tests = parsed.tests;
+      if (Array.isArray(parsed.runs) && parsed.runs.length > 0) memStorage.runs = parsed.runs;
+      if (Array.isArray(parsed.logs) && parsed.logs.length > 0) memStorage.logs = parsed.logs;
+    }
+  } catch (e) {
+    // silently fallback to memory
+  }
+};
+
+const saveDiskStorage = () => {
+  try {
+    const dir = path.dirname(storageFilePath);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(storageFilePath, JSON.stringify(memStorage, null, 2), 'utf8');
+  } catch (e) {
+    // ignore
+  }
+};
+
+loadDiskStorage();
 
 // Seed default benchmark test suites for HackWave Demo
 const seedDefaultTests = () => {
@@ -172,6 +203,7 @@ const store = {
         updatedAt: new Date()
       };
       memStorage.runs.unshift(newRun);
+      saveDiskStorage();
       return newRun;
     }
     return await TestRun.create(data);
@@ -182,6 +214,7 @@ const store = {
       const idx = memStorage.runs.findIndex(r => String(r._id) === String(id));
       if (idx !== -1) {
         memStorage.runs[idx] = { ...memStorage.runs[idx], ...data, updatedAt: new Date() };
+        saveDiskStorage();
         return memStorage.runs[idx];
       }
       return null;
@@ -200,12 +233,13 @@ const store = {
   async createHealingLog(data) {
     if (isUsingMemory()) {
       const newLog = {
-        _id: 'heal_' + Date.now(),
+        _id: 'heal_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
         ...data,
-        createdAt: new Date(),
+        createdAt: data.createdAt || new Date(),
         updatedAt: new Date()
       };
       memStorage.logs.unshift(newLog);
+      saveDiskStorage();
       return newLog;
     }
     return await HealingLog.create(data);

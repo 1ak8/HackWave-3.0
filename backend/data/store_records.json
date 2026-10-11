@@ -1,0 +1,430 @@
+{
+  "tests": [
+    {
+      "_id": "test_default_ecommerce_flow",
+      "title": "E-Commerce Checkout & Order Fulfillment",
+      "description": "Autonomous end-to-end user checkout workflow: item selection, cart management, checkout form submission, and order verification.",
+      "targetUrl": "http://localhost:5173/demo-store",
+      "intent": "Complete purchase for Quantum Wireless Headphones with coupon code and payment confirmation",
+      "tags": [
+        "E-Commerce",
+        "Critical Path",
+        "Smoke Suite"
+      ],
+      "isSample": true,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add Quantum Wireless Headphones to shopping cart",
+          "action": "click",
+          "selector": "#btn-add-to-cart",
+          "value": "",
+          "description": "Locate product card and press Add to Cart button"
+        },
+        {
+          "order": 2,
+          "name": "Open Shopping Cart",
+          "intent": "Open checkout side drawer or cart view",
+          "action": "click",
+          "selector": "#btn-view-cart",
+          "value": "",
+          "description": "Navigate to shopping cart modal"
+        },
+        {
+          "order": 3,
+          "name": "Enter Buyer Email",
+          "intent": "Input customer email in checkout contact field",
+          "action": "fill",
+          "selector": "#input-checkout-email",
+          "value": "lokesh@hackwave.dev",
+          "description": "Fill verified email address"
+        },
+        {
+          "order": 4,
+          "name": "Enter Shipping Address",
+          "intent": "Provide delivery street address",
+          "action": "fill",
+          "selector": "#input-checkout-address",
+          "value": "Building 4, Tech Innovation Hub, Cyber City",
+          "description": "Fill shipping destination"
+        },
+        {
+          "order": 5,
+          "name": "Complete Payment",
+          "intent": "Submit order and authorize payment",
+          "action": "click",
+          "selector": "#btn-complete-order",
+          "value": "",
+          "description": "Trigger payment submission action"
+        },
+        {
+          "order": 6,
+          "name": "Assert Order Confirmation",
+          "intent": "Confirm that order success screen and tracking code are displayed",
+          "action": "assert",
+          "selector": "#order-success-badge",
+          "value": "Order Confirmed",
+          "description": "Verify fulfillment confirmation"
+        }
+      ]
+    }
+  ],
+  "runs": [
+    {
+      "_id": "run_1791682866837",
+      "testId": "test_default_ecommerce_flow",
+      "testTitle": "E-Commerce Checkout & Order Fulfillment",
+      "status": "failed",
+      "mode": "bug_mode",
+      "durationMs": 12371,
+      "healedCount": 2,
+      "totalSteps": 6,
+      "passedSteps": 4,
+      "failedSteps": 1,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add Quantum Wireless Headphones to shopping cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "#dynamic_btn_cart_x89",
+          "status": "healed",
+          "durationMs": 3079,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 99,
+            "reasoning": "Original selector \"#btn-add-to-cart\" missing due to redesign. Located dynamic replacement <button> with label \"Claim Headphones Now\" satisfying intent \"Add Quantum Wireless Headphones to shopping cart\".",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 2,
+          "name": "Open Shopping Cart",
+          "intent": "Open checkout side drawer or cart view",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "passed",
+          "durationMs": 51,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Enter Buyer Email",
+          "intent": "Input customer email in checkout contact field",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#customer_email_contact",
+          "status": "healed",
+          "durationMs": 3064,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 99,
+            "reasoning": "Original selector \"#input-checkout-email\" missing due to redesign. Located dynamic replacement <input> with label \"lokesh@hackwave.dev\" satisfying intent \"Input customer email in checkout contact field\".",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 4,
+          "name": "Enter Shipping Address",
+          "intent": "Provide delivery street address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-address",
+          "resolvedSelector": "#input-checkout-address",
+          "status": "passed",
+          "durationMs": 17,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 5,
+          "name": "Complete Payment",
+          "intent": "Submit order and authorize payment",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#btn-complete-order",
+          "status": "failed",
+          "durationMs": 3024,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 99,
+            "reasoning": "Critical Application Bug detected: Payment gateway returned HTTP 500 & Cart total anomaly ($0.00). AI engine verified this is a genuine backend regression, NOT a cosmetic selector rename. Healing safely aborted.",
+            "classification": "Genuine_Bug"
+          },
+          "error": "Critical Application Bug detected: Payment gateway returned HTTP 500 & Cart total anomaly ($0.00). AI engine verified this is a genuine backend regression, NOT a cosmetic selector rename. Healing safely aborted."
+        },
+        {
+          "order": 6,
+          "name": "Assert Order Confirmation",
+          "intent": "Confirm that order success screen and tracking code are displayed",
+          "action": "assert",
+          "originalSelector": "#order-success-badge",
+          "resolvedSelector": "#order-success-badge",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        }
+      ],
+      "createdAt": "2026-10-11T01:41:06.837Z",
+      "updatedAt": "2026-10-11T01:41:19.209Z",
+      "triageClassification": "Genuine_Bug_Halted"
+    },
+    {
+      "_id": "run_1791682854769",
+      "testId": "test_default_ecommerce_flow",
+      "testTitle": "E-Commerce Checkout & Order Fulfillment",
+      "status": "healed",
+      "mode": "mutated",
+      "durationMs": 16270,
+      "healedCount": 3,
+      "totalSteps": 6,
+      "passedSteps": 6,
+      "failedSteps": 0,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add Quantum Wireless Headphones to shopping cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "#dynamic_btn_cart_x89",
+          "status": "healed",
+          "durationMs": 3169,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 99,
+            "reasoning": "Original selector \"#btn-add-to-cart\" missing due to redesign. Located dynamic replacement <button> with label \"Claim Headphones Now\" satisfying intent \"Add Quantum Wireless Headphones to shopping cart\".",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 2,
+          "name": "Open Shopping Cart",
+          "intent": "Open checkout side drawer or cart view",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "passed",
+          "durationMs": 57,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Enter Buyer Email",
+          "intent": "Input customer email in checkout contact field",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#customer_email_contact",
+          "status": "healed",
+          "durationMs": 3067,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 99,
+            "reasoning": "Original selector \"#input-checkout-email\" missing due to redesign. Located dynamic replacement <input> with label \"lokesh@hackwave.dev\" satisfying intent \"Input customer email in checkout contact field\".",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 4,
+          "name": "Enter Shipping Address",
+          "intent": "Provide delivery street address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-address",
+          "resolvedSelector": "#input-checkout-address",
+          "status": "passed",
+          "durationMs": 13,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 5,
+          "name": "Complete Payment",
+          "intent": "Submit order and authorize payment",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#checkout_action_auth_pay",
+          "status": "healed",
+          "durationMs": 3080,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 99,
+            "reasoning": "Original selector \"#btn-complete-order\" missing due to redesign. Located dynamic replacement <button> with label \"Complete Payment ($149.00)\" satisfying intent \"Submit order and authorize payment\".",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 6,
+          "name": "Assert Order Confirmation",
+          "intent": "Confirm that order success screen and tracking code are displayed",
+          "action": "assert",
+          "originalSelector": "#order-success-badge",
+          "resolvedSelector": "#order-success-badge",
+          "status": "passed",
+          "durationMs": 101,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        }
+      ],
+      "createdAt": "2026-10-11T01:40:54.769Z",
+      "updatedAt": "2026-10-11T01:41:11.042Z",
+      "triageClassification": "Harmless_Healed"
+    }
+  ],
+  "logs": [
+    {
+      "_id": "heal_1791682879056_658e",
+      "runId": "run_1791682866837",
+      "testId": "test_default_ecommerce_flow",
+      "stepOrder": 5,
+      "stepName": "Complete Payment",
+      "userIntent": "Submit order and authorize payment",
+      "brokenSelector": "#btn-complete-order",
+      "healedSelector": "NONE (BLOCKED)",
+      "confidence": 99,
+      "strategyLayer": "Triage Layer: Application Integrity Check",
+      "classification": "Genuine_Bug",
+      "reasoning": "Critical Application Bug detected: Payment gateway returned HTTP 500 & Cart total anomaly ($0.00). AI engine verified this is a genuine backend regression, NOT a cosmetic selector rename. Healing safely aborted.",
+      "createdAt": "2026-10-11T01:41:19.056Z",
+      "updatedAt": "2026-10-11T01:41:19.056Z"
+    },
+    {
+      "_id": "heal_1791682875195_dtw8",
+      "runId": "run_1791682866837",
+      "testId": "test_default_ecommerce_flow",
+      "stepOrder": 3,
+      "stepName": "Enter Buyer Email",
+      "userIntent": "Input customer email in checkout contact field",
+      "brokenSelector": "#input-checkout-email",
+      "healedSelector": "#customer_email_contact",
+      "confidence": 99,
+      "strategyLayer": "Layer 1: Text & Intent Similarity",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector \"#input-checkout-email\" missing due to redesign. Located dynamic replacement <input> with label \"lokesh@hackwave.dev\" satisfying intent \"Input customer email in checkout contact field\".",
+      "createdAt": "2026-10-11T01:41:15.195Z",
+      "updatedAt": "2026-10-11T01:41:15.195Z"
+    },
+    {
+      "_id": "heal_1791682872123_1j9n",
+      "testId": "test_default_ecommerce_flow",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to bag",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 95,
+      "strategyLayer": "Layer 1: Semantic Text & Role Matching",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#dynamic_btn_cart_x89\" satisfying user intent.",
+      "createdAt": "2026-10-11T01:41:12.123Z",
+      "updatedAt": "2026-10-11T01:41:12.123Z"
+    },
+    {
+      "_id": "heal_1791682871272_w9h3",
+      "runId": "run_1791682866837",
+      "testId": "test_default_ecommerce_flow",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add Quantum Wireless Headphones to shopping cart",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 99,
+      "strategyLayer": "Layer 1: Text & Intent Similarity",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector \"#btn-add-to-cart\" missing due to redesign. Located dynamic replacement <button> with label \"Claim Headphones Now\" satisfying intent \"Add Quantum Wireless Headphones to shopping cart\".",
+      "createdAt": "2026-10-11T01:41:11.272Z",
+      "updatedAt": "2026-10-11T01:41:11.272Z"
+    },
+    {
+      "_id": "heal_1791682869987_4lgo",
+      "runId": "run_1791682854769",
+      "testId": "test_default_ecommerce_flow",
+      "stepOrder": 5,
+      "stepName": "Complete Payment",
+      "userIntent": "Submit order and authorize payment",
+      "brokenSelector": "#btn-complete-order",
+      "healedSelector": "#checkout_action_auth_pay",
+      "confidence": 99,
+      "strategyLayer": "Layer 1: Text & Intent Similarity",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector \"#btn-complete-order\" missing due to redesign. Located dynamic replacement <button> with label \"Complete Payment ($149.00)\" satisfying intent \"Submit order and authorize payment\".",
+      "createdAt": "2026-10-11T01:41:09.987Z",
+      "updatedAt": "2026-10-11T01:41:09.987Z"
+    },
+    {
+      "_id": "heal_1791682866079_7x4i",
+      "runId": "run_1791682854769",
+      "testId": "test_default_ecommerce_flow",
+      "stepOrder": 3,
+      "stepName": "Enter Buyer Email",
+      "userIntent": "Input customer email in checkout contact field",
+      "brokenSelector": "#input-checkout-email",
+      "healedSelector": "#customer_email_contact",
+      "confidence": 99,
+      "strategyLayer": "Layer 1: Text & Intent Similarity",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector \"#input-checkout-email\" missing due to redesign. Located dynamic replacement <input> with label \"lokesh@hackwave.dev\" satisfying intent \"Input customer email in checkout contact field\".",
+      "createdAt": "2026-10-11T01:41:06.079Z",
+      "updatedAt": "2026-10-11T01:41:06.079Z"
+    },
+    {
+      "_id": "heal_1791682862978_xzpx",
+      "testId": "test_default_ecommerce_flow",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to bag",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 96,
+      "strategyLayer": "Layer 1: Semantic Text & Role Matching",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#dynamic_btn_cart_x89\" satisfying user intent.",
+      "createdAt": "2026-10-11T01:41:02.978Z",
+      "updatedAt": "2026-10-11T01:41:02.978Z"
+    },
+    {
+      "_id": "heal_1791682862134_6vun",
+      "runId": "run_1791682854769",
+      "testId": "test_default_ecommerce_flow",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add Quantum Wireless Headphones to shopping cart",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 99,
+      "strategyLayer": "Layer 1: Text & Intent Similarity",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector \"#btn-add-to-cart\" missing due to redesign. Located dynamic replacement <button> with label \"Claim Headphones Now\" satisfying intent \"Add Quantum Wireless Headphones to shopping cart\".",
+      "createdAt": "2026-10-11T01:41:02.134Z",
+      "updatedAt": "2026-10-11T01:41:02.134Z"
+    }
+  ]
+}

@@ -21,6 +21,17 @@ const reportController = {
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
+  },
+
+  // POST /api/reports/healing-logs (Records live healing actions from tests)
+  async createHealingLog(req, res) {
+    try {
+      const log = await store.createHealingLog(req.body);
+      res.status(201).json({ log });
+    } catch (err) {
+      logger.error('Failed to create healing log', err.message);
+      res.status(500).json({ error: err.message });
+    }
   }
 };
 
