@@ -433,7 +433,11 @@ const runE2ETest = async (runId, testCase, options = {}) => {
       });
 
       // Brief human-friendly step transition
-      await page.waitForTimeout(400);
+      if (page) {
+        await page.waitForTimeout(400);
+      } else {
+        await new Promise(r => setTimeout(r, 400));
+      }
     }
 
   } catch (globalErr) {
