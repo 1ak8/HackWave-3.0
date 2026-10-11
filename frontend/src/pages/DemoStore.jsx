@@ -520,78 +520,83 @@ export default function DemoStore() {
         </div>
       </header>
 
-      {/* Full-width Top Chaos Banner (When in Chaos mode) */}
+      {/* Full-width Top Chaos Banner (Extra-Compact Chips, Extra-Wide Spacing Between Items) */}
       {isChaos ? (
-        <div className="w-full bg-white border-b border-border px-6 sm:px-8 py-3 shadow-xs">
+        <div className="w-full bg-white border-b border-border px-6 sm:px-8 py-2 shadow-xs">
           <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 font-bold text-ink text-sm">
-                <Flame className="w-4 h-4 text-amber-500 animate-pulse" />
-                <span>Mutate Steps:</span>
+            <div className="flex items-center gap-6 sm:gap-10 flex-wrap flex-1">
+              <div className="flex items-center gap-1.5 font-bold text-ink text-xs shrink-0">
+                <Flame className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
+                <span>Mutate:</span>
               </div>
 
-              {/* 5 Comfortable Toggle Chips */}
-              <div className="flex items-center gap-2">
+              {/* 5 Extra Small Chips with Extra Wide Gaps (gap-8 to gap-14) */}
+              <div className="flex items-center gap-8 sm:gap-12 md:gap-16 flex-wrap">
+                {/* 1. Cart */}
                 <button
                   onClick={() => setMutateCart(!mutateCart)}
-                  className={`px-3 py-1 rounded-md text-xs font-semibold font-mono transition flex items-center gap-1.5 ${
+                  className={`px-2 py-0.5 rounded text-[11px] font-mono transition flex items-center gap-1 ${
                     mutateCart 
                       ? 'bg-amber-500 text-white font-bold shadow-xs' 
                       : 'bg-surface text-ink-secondary hover:text-ink border border-border'
                   }`}
-                  title="Toggle Step 1 (Cart Button)"
+                  title="Toggle Step 1: Cart Button"
                 >
                   <span>1. Cart</span>
                   {mutateCart && <span>⚡</span>}
                 </button>
 
+                {/* 2. Bag */}
                 <button
                   onClick={() => setMutateBag(!mutateBag)}
-                  className={`px-3 py-1 rounded-md text-xs font-semibold font-mono transition flex items-center gap-1.5 ${
+                  className={`px-2 py-0.5 rounded text-[11px] font-mono transition flex items-center gap-1 ${
                     mutateBag 
                       ? 'bg-amber-500 text-white font-bold shadow-xs' 
                       : 'bg-surface text-ink-secondary hover:text-ink border border-border'
                   }`}
-                  title="Toggle Step 2 (Bag Drawer)"
+                  title="Toggle Step 2: Bag Drawer"
                 >
                   <span>2. Bag</span>
                   {mutateBag && <span>⚡</span>}
                 </button>
 
+                {/* 3. Email */}
                 <button
                   onClick={() => setMutateEmail(!mutateEmail)}
-                  className={`px-3 py-1 rounded-md text-xs font-semibold font-mono transition flex items-center gap-1.5 ${
+                  className={`px-2 py-0.5 rounded text-[11px] font-mono transition flex items-center gap-1 ${
                     mutateEmail 
                       ? 'bg-amber-500 text-white font-bold shadow-xs' 
                       : 'bg-surface text-ink-secondary hover:text-ink border border-border'
                   }`}
-                  title="Toggle Step 3 (Email Field)"
+                  title="Toggle Step 3: Email Field"
                 >
                   <span>3. Email</span>
                   {mutateEmail && <span>⚡</span>}
                 </button>
 
+                {/* 4. Address */}
                 <button
                   onClick={() => setMutateAddress(!mutateAddress)}
-                  className={`px-3 py-1 rounded-md text-xs font-semibold font-mono transition flex items-center gap-1.5 ${
+                  className={`px-2 py-0.5 rounded text-[11px] font-mono transition flex items-center gap-1 ${
                     mutateAddress 
                       ? 'bg-amber-500 text-white font-bold shadow-xs' 
                       : 'bg-surface text-ink-secondary hover:text-ink border border-border'
                   }`}
-                  title="Toggle Step 4 (Address Field)"
+                  title="Toggle Step 4: Address Field"
                 >
                   <span>4. Address</span>
                   {mutateAddress && <span>⚡</span>}
                 </button>
 
+                {/* 5. Pay */}
                 <button
                   onClick={() => setMutatePay(!mutatePay)}
-                  className={`px-3 py-1 rounded-md text-xs font-semibold font-mono transition flex items-center gap-1.5 ${
+                  className={`px-2 py-0.5 rounded text-[11px] font-mono transition flex items-center gap-1 ${
                     mutatePay 
                       ? 'bg-amber-500 text-white font-bold shadow-xs' 
                       : 'bg-surface text-ink-secondary hover:text-ink border border-border'
                   }`}
-                  title="Toggle Step 5 (Payment Button)"
+                  title="Toggle Step 5: Payment Action"
                 >
                   <span>5. Pay</span>
                   {mutatePay && <span>⚡</span>}
@@ -599,15 +604,15 @@ export default function DemoStore() {
               </div>
             </div>
 
-            {/* Right side: Functional Seed Button */}
-            <div className="flex items-center gap-2">
+            {/* Right side: Functional Seed Button (Compact) */}
+            <div className="shrink-0">
               <button
                 onClick={handleShuffleSeed}
-                className="px-3.5 py-1.5 rounded-md text-xs font-bold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1.5 transition shadow-xs active:scale-95"
+                className="px-3 py-1 rounded-md text-2xs font-bold font-mono bg-surface hover:bg-gray-100 text-ink-secondary border border-border flex items-center gap-1.5 transition shadow-xs active:scale-95"
                 title="Click to scramble element IDs with dynamic seed"
               >
-                <Shuffle className="w-3.5 h-3.5 text-amber-600" />
-                <span>Seed #{chaosSeed > 0 ? chaosSeed : 1} 🎲</span>
+                <Shuffle className="w-3 h-3 text-amber-600" />
+                <span>Seed #{chaosSeed > 0 ? chaosSeed : 1}</span>
               </button>
             </div>
           </div>
