@@ -164,6 +164,232 @@
   ],
   "runs": [
     {
+      "_id": "run_1791762032350",
+      "testId": "test_default_ecommerce_flow",
+      "testTitle": "E-Commerce Checkout & Order Fulfillment",
+      "mode": "standard",
+      "totalSteps": 6,
+      "createdAt": "2026-10-11T23:40:32.350Z",
+      "updatedAt": "2026-10-11T23:40:37.930Z",
+      "status": "passed",
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add Quantum Wireless Headphones to shopping cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "#btn-add-to-cart",
+          "status": "passed",
+          "durationMs": 244,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 2,
+          "name": "Open Shopping Cart",
+          "intent": "Open checkout side drawer or cart view",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "passed",
+          "durationMs": 109,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Enter Buyer Email",
+          "intent": "Input customer email in checkout contact field",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#input-checkout-email",
+          "status": "passed",
+          "durationMs": 45,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 4,
+          "name": "Enter Shipping Address",
+          "intent": "Provide delivery street address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-address",
+          "resolvedSelector": "#input-checkout-address",
+          "status": "passed",
+          "durationMs": 19,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 5,
+          "name": "Complete Payment",
+          "intent": "Submit order and authorize payment",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#btn-complete-order",
+          "status": "passed",
+          "durationMs": 66,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 6,
+          "name": "Assert Order Confirmation",
+          "intent": "Confirm that order success screen and tracking code are displayed",
+          "action": "assert",
+          "originalSelector": "#order-success-badge",
+          "resolvedSelector": "#order-success-badge",
+          "status": "passed",
+          "durationMs": 113,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        }
+      ],
+      "durationMs": 5573,
+      "healedCount": 0,
+      "passedSteps": 6,
+      "failedSteps": 0,
+      "triageClassification": "Clean"
+    },
+    {
+      "_id": "run_1791761730786",
+      "testId": "test_default_ecommerce_flow",
+      "testTitle": "E-Commerce Checkout & Order Fulfillment",
+      "mode": "standard",
+      "totalSteps": 6,
+      "createdAt": "2026-10-11T23:35:30.786Z",
+      "updatedAt": "2026-10-11T23:35:38.342Z",
+      "status": "passed",
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add Quantum Wireless Headphones to shopping cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "#btn-add-to-cart",
+          "status": "passed",
+          "durationMs": 228,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 2,
+          "name": "Open Shopping Cart",
+          "intent": "Open checkout side drawer or cart view",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "passed",
+          "durationMs": 96,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Enter Buyer Email",
+          "intent": "Input customer email in checkout contact field",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#input-checkout-email",
+          "status": "passed",
+          "durationMs": 36,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 4,
+          "name": "Enter Shipping Address",
+          "intent": "Provide delivery street address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-address",
+          "resolvedSelector": "#input-checkout-address",
+          "status": "passed",
+          "durationMs": 25,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 5,
+          "name": "Complete Payment",
+          "intent": "Submit order and authorize payment",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#btn-complete-order",
+          "status": "passed",
+          "durationMs": 112,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 6,
+          "name": "Assert Order Confirmation",
+          "intent": "Confirm that order success screen and tracking code are displayed",
+          "action": "assert",
+          "originalSelector": "#order-success-badge",
+          "resolvedSelector": "#order-success-badge",
+          "status": "passed",
+          "durationMs": 131,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        }
+      ],
+      "durationMs": 7549,
+      "healedCount": 0,
+      "passedSteps": 6,
+      "failedSteps": 0,
+      "triageClassification": "Clean"
+    },
+    {
       "_id": "run_1791726629774",
       "testId": "test_1791711869155",
       "testTitle": "checkout ",

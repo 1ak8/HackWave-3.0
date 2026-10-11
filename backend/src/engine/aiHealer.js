@@ -160,6 +160,7 @@ const healBrokenStep = async ({ intent, brokenSelector, domData, mode }) => {
       role: 'system',
       content: `You are NexHeal-AI, an expert automated test healing engine.
 Analyze the failed step, determine if this is a HARMLESS UI redesign or a GENUINE APPLICATION FAILURE.
+When returning healedSelector, prefer using candidate element id (e.g. #element_id) or [data-testid="..."] from the candidate elements list.
 Return pure JSON:
 {
   "classification": "Harmless_UI_Change" | "Genuine_Bug",

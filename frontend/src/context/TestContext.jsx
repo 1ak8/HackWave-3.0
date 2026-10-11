@@ -74,31 +74,50 @@ export function TestProvider({ children }) {
 
     socket.on('run_status_changed', (payload) => {
       addTerminalLog('info', `Run [${payload.runId}] status: ${payload.status.toUpperCase()} (${payload.mode || 'standard'} mode)`);
-      setActiveRun(prev => prev && prev._id === payload.runId ? { ...prev, status: payload.status, mode: payload.mode } : prev);
-      apiClient.get(`/runs/${payload.runId}`).then(res => setActiveRun(res.data.run)).catch(() => {});
+      setActiveRun(prev => {
+        if (!prev) {
+          return {
+            _id: payload.runId,
+            status: payload.status,
+            mode: payload.mode || 'standard',
+            steps: [],
+            healedCount: 0
+          };
+        }
+        return {
+          ...prev,
+          _id: payload.runId,
+          status: payload.status,
+          mode: payload.mode || prev.mode || 'standard'
+        };
+      });
     });
 
     socket.on('step_started', (payload) => {
       addTerminalLog('info', `Step #${payload.stepOrder} started: "${payload.name}" -> Selector: ${payload.selector}`);
       setActiveRun(prev => {
-        if (!prev) return prev;
-        const steps = [...(prev.steps || [])];
-        if (steps[payload.stepIndex]) {
-          steps[payload.stepIndex].status = 'running';
+        const currentSteps = prev?.steps ? [...prev.steps] : [];
+        const idx = currentSteps.findIndex(s => s.order === payload.stepOrder);
+        if (idx !== -1) {
+          currentSteps[idx] = { ...currentSteps[idx], status: 'running' };
+        } else if (payload.stepIndex !== undefined && currentSteps[payload.stepIndex]) {
+          currentSteps[payload.stepIndex] = { ...currentSteps[payload.stepIndex], status: 'running' };
         }
-        return { ...prev, steps };
+        return prev ? { ...prev, steps: currentSteps } : { _id: payload.runId, status: 'running', steps: currentSteps };
       });
     });
 
     socket.on('selector_failed', (payload) => {
       addTerminalLog('warn', `Selector Failure on Step #${payload.stepOrder}! Missing: ${payload.failedSelector}. Invoking AI Reasoning Engine...`);
       setActiveRun(prev => {
-        if (!prev) return prev;
-        const steps = [...(prev.steps || [])];
-        if (steps[payload.stepIndex]) {
-          steps[payload.stepIndex].status = 'healing';
+        const currentSteps = prev?.steps ? [...prev.steps] : [];
+        const idx = currentSteps.findIndex(s => s.order === payload.stepOrder);
+        if (idx !== -1) {
+          currentSteps[idx] = { ...currentSteps[idx], status: 'healing' };
+        } else if (payload.stepIndex !== undefined && currentSteps[payload.stepIndex]) {
+          currentSteps[payload.stepIndex] = { ...currentSteps[payload.stepIndex], status: 'healing' };
         }
-        return { ...prev, steps };
+        return prev ? { ...prev, steps: currentSteps } : { _id: payload.runId, status: 'running', steps: currentSteps };
       });
     });
 
@@ -109,60 +128,70 @@ export function TestProvider({ children }) {
     socket.on('healed_successfully', (payload) => {
       addTerminalLog('success', `✔ Healed: [${payload.oldSelector}] -> [${payload.newSelector}] (${payload.confidence}% confidence via ${payload.strategyLayer})`);
       setActiveRun(prev => {
-        if (!prev) return prev;
-        const steps = [...(prev.steps || [])];
-        if (steps[payload.stepIndex]) {
-          steps[payload.stepIndex].status = 'healed';
-          steps[payload.stepIndex].resolvedSelector = payload.newSelector;
-          steps[payload.stepIndex].healingDetails = {
-            wasHealed: true,
-            confidence: payload.confidence,
-            reasoning: payload.reasoning,
-            classification: 'Harmless_UI_Change'
+        const currentSteps = prev?.steps ? [...prev.steps] : [];
+        const idx = currentSteps.findIndex(s => s.order === payload.stepOrder);
+        const targetIdx = idx !== -1 ? idx : payload.stepIndex;
+        if (targetIdx !== undefined && currentSteps[targetIdx]) {
+          currentSteps[targetIdx] = {
+            ...currentSteps[targetIdx],
+            status: 'healed',
+            resolvedSelector: payload.newSelector,
+            healingDetails: {
+              wasHealed: true,
+              confidence: payload.confidence,
+              reasoning: payload.reasoning,
+              classification: 'Harmless_UI_Change'
+            }
           };
         }
-        return { ...prev, steps, healedCount: (prev.healedCount || 0) + 1 };
+        const healedCount = currentSteps.filter(s => s.status === 'healed' && s.resolvedSelector && s.resolvedSelector !== s.originalSelector).length;
+        return prev ? { ...prev, steps: currentSteps, healedCount } : { _id: payload.runId, status: 'running', steps: currentSteps, healedCount };
       });
     });
 
     socket.on('bug_detected', (payload) => {
       addTerminalLog('error', `🚨 GENUINE APPLICATION BUG DETECTED: ${payload.reasoning} (Test halted)`);
       setActiveRun(prev => {
-        if (!prev) return prev;
-        const steps = [...(prev.steps || [])];
-        if (steps[payload.stepIndex]) {
-          steps[payload.stepIndex].status = 'failed';
-          steps[payload.stepIndex].error = payload.reasoning;
-          steps[payload.stepIndex].healingDetails = {
-            wasHealed: false,
-            confidence: payload.confidence,
-            reasoning: payload.reasoning,
-            classification: 'Genuine_Bug'
+        const currentSteps = prev?.steps ? [...prev.steps] : [];
+        const idx = currentSteps.findIndex(s => s.order === payload.stepOrder);
+        const targetIdx = idx !== -1 ? idx : payload.stepIndex;
+        if (targetIdx !== undefined && currentSteps[targetIdx]) {
+          currentSteps[targetIdx] = {
+            ...currentSteps[targetIdx],
+            status: 'failed',
+            error: payload.reasoning,
+            healingDetails: {
+              wasHealed: false,
+              confidence: payload.confidence,
+              reasoning: payload.reasoning,
+              classification: 'Genuine_Bug'
+            }
           };
         }
-        return { ...prev, steps, status: 'failed', triageClassification: 'Genuine_Bug_Halted' };
+        return prev
+          ? { ...prev, steps: currentSteps, status: 'failed', triageClassification: 'Genuine_Bug_Halted' }
+          : { _id: payload.runId, status: 'failed', triageClassification: 'Genuine_Bug_Halted', steps: currentSteps };
       });
     });
 
     socket.on('step_completed', (payload) => {
       addTerminalLog(payload.status === 'failed' ? 'error' : 'success', `Step #${payload.stepOrder} finished [${payload.status}] in ${payload.durationMs}ms`);
       setActiveRun(prev => {
-        if (!prev) return prev;
-        const steps = [...(prev.steps || [])];
-        if (steps[payload.stepIndex]) {
-          steps[payload.stepIndex].status = payload.status;
-          steps[payload.stepIndex].durationMs = payload.durationMs;
-          if (payload.resolvedSelector) {
-            steps[payload.stepIndex].resolvedSelector = payload.resolvedSelector;
-          }
-          if (payload.healingDetails) {
-            steps[payload.stepIndex].healingDetails = payload.healingDetails;
-          }
-          if (payload.error) {
-            steps[payload.stepIndex].error = payload.error;
-          }
+        const currentSteps = prev?.steps ? [...prev.steps] : [];
+        const idx = currentSteps.findIndex(s => s.order === payload.stepOrder);
+        const targetIdx = idx !== -1 ? idx : payload.stepIndex;
+        if (targetIdx !== undefined && currentSteps[targetIdx]) {
+          currentSteps[targetIdx] = {
+            ...currentSteps[targetIdx],
+            status: payload.status,
+            durationMs: payload.durationMs,
+            resolvedSelector: payload.resolvedSelector || currentSteps[targetIdx].resolvedSelector,
+            healingDetails: payload.healingDetails || currentSteps[targetIdx].healingDetails,
+            error: payload.error || currentSteps[targetIdx].error
+          };
         }
-        return { ...prev, steps };
+        const healedCount = currentSteps.filter(s => s.status === 'healed' && s.resolvedSelector && s.resolvedSelector !== s.originalSelector).length;
+        return prev ? { ...prev, steps: currentSteps, healedCount } : { _id: payload.runId, status: 'running', steps: currentSteps, healedCount };
       });
     });
 
@@ -206,9 +235,26 @@ export function TestProvider({ children }) {
         ...extraOptions
       });
       const runId = res.data.runId;
-      // Fetch initial run
-      const runRes = await apiClient.get(`/runs/${runId}`);
-      setActiveRun(runRes.data.run);
+      // Fetch initial run and merge with any real-time socket events that already arrived!
+      try {
+        const runRes = await apiClient.get(`/runs/${runId}`);
+        if (runRes.data && runRes.data.run) {
+          setActiveRun(prev => {
+            if (prev && (prev._id === runId || prev._id === 'pending_run') && prev.steps && prev.steps.length > 0) {
+              const mergedSteps = runRes.data.run.steps.map(remoteStep => {
+                const local = prev.steps.find(s => s.order === remoteStep.order);
+                if (local && (local.status === 'running' || local.status === 'healed' || local.status === 'passed' || local.status === 'failed')) {
+                  return local; // keep live socket progress!
+                }
+                return remoteStep;
+              });
+              const healedCount = mergedSteps.filter(s => s.status === 'healed' && s.resolvedSelector && s.resolvedSelector !== s.originalSelector).length;
+              return { ...runRes.data.run, steps: mergedSteps, healedCount: Math.max(prev.healedCount || 0, healedCount) };
+            }
+            return runRes.data.run;
+          });
+        }
+      } catch (getErr) {}
       return res.data;
     } catch (err) {
       addTerminalLog('error', `Failed to initiate test run: ${err.message}`);

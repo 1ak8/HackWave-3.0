@@ -135,7 +135,7 @@ export default function DiffInspector({ selectedStep, steps = [], onSelectStep =
       </div>
 
       {/* Selector Display Area */}
-      {isHealing || isRunning ? (
+      {isHealing ? (
         /* Actively analyzing state */
         <div className="bg-warning-bg p-4 rounded-xl border border-warning-border space-y-2 text-warning-text text-xs font-mono">
           <div className="font-bold flex items-center gap-2">
@@ -144,6 +144,17 @@ export default function DiffInspector({ selectedStep, steps = [], onSelectStep =
           </div>
           <p className="text-warning-text leading-relaxed font-sans">
             Baseline selector missing or mutated. Engine is extracting the accessibility tree and comparing candidate elements against goal "{selectedStep.intent}".
+          </p>
+        </div>
+      ) : isRunning ? (
+        /* Direct Playwright execution */
+        <div className="bg-surface p-4 rounded-xl border border-border space-y-2 text-ink text-xs font-mono">
+          <div className="font-bold flex items-center gap-2 text-brand">
+            <Loader2 className="w-4 h-4 animate-spin text-brand shrink-0" />
+            <span>Playwright Executing Direct Action...</span>
+          </div>
+          <p className="text-ink-secondary leading-relaxed font-sans">
+            Testing baseline selector <code className="font-bold text-ink bg-surface-raised px-1.5 py-0.5 rounded border border-border">{selectedStep.originalSelector}</code> directly via Playwright browser automation without AI intervention.
           </p>
         </div>
       ) : isActuallyHealed ? (
@@ -217,8 +228,10 @@ export default function DiffInspector({ selectedStep, steps = [], onSelectStep =
             ? (healing.reasoning || `Selector ${selectedStep.originalSelector} was renamed in the DOM. AI located matching component ${selectedStep.resolvedSelector} via accessibility role and intent analysis.`)
             : isBug
             ? 'Execution safely terminated to prevent defect leakage into production.'
-            : isHealing || isRunning
-            ? 'Step actively in progress. Inspect telemetry stream in terminal for live network and selector dispatch events.'
+            : isHealing
+            ? 'Selector mutated or missing in DOM. AI located dynamic replacement element via accessibility role and intent analysis.'
+            : isRunning
+            ? 'Playwright actively executing direct action on target selector in browser.'
             : isPending
             ? 'This step is queued to execute in the pipeline.'
             : 'Target component responded normally to baseline selector without requiring dynamic healing.'}

@@ -421,7 +421,29 @@ export default function DemoStore() {
     setActiveSource('bot');
     setIsBotRunning(true);
     setInspectorTab('pipeline');
-    if (setActiveRun) setActiveRun(null); // Clear previous run immediately so stale results NEVER flash!
+    // Initialize activeRun with fresh pending steps so real-time socket events never drop!
+    if (setActiveRun) {
+      const freshSteps = (defaultTest?.steps || getFreshSteps()).map(s => ({
+        order: s.order,
+        name: s.name,
+        intent: s.intent,
+        action: s.action,
+        originalSelector: s.selector || s.orig,
+        resolvedSelector: s.selector || s.orig,
+        status: 'pending',
+        durationMs: 0,
+        healingDetails: null,
+        error: null
+      }));
+      setActiveRun({
+        _id: 'pending_run',
+        status: 'running',
+        mode,
+        steps: freshSteps,
+        healedCount: 0,
+        totalSteps: freshSteps.length
+      });
+    }
     
     // Reset local UI inputs WITHOUT resetting activeSource
     setCartCount(0);
@@ -764,6 +786,7 @@ export default function DemoStore() {
 
                     <button
                       id={viewCartId}
+                      data-testid="view-cart-action"
                       onClick={() => {
                         setStoreStep(2);
                         triggerStepAction(2);
@@ -817,6 +840,7 @@ export default function DemoStore() {
                   </label>
                   <input
                     id={emailFieldId}
+                    data-testid="checkout-email-input"
                     name={isEmailMutated ? 'buyer_email' : 'email'}
                     type="email"
                     value={email}
@@ -836,6 +860,7 @@ export default function DemoStore() {
                   </label>
                   <input
                     id={addressFieldId}
+                    data-testid="checkout-address-input"
                     name={isAddressMutated ? 'delivery_addr' : 'address'}
                     type="text"
                     value={address}
@@ -852,6 +877,7 @@ export default function DemoStore() {
                 <div className="pt-2">
                   <button
                     id={checkoutBtnId}
+                    data-testid="checkout-payment-action"
                     disabled={isProcessing}
                     onClick={() => {
                       setIsProcessing(true);
@@ -1019,72 +1045,85 @@ export default function DemoStore() {
                   const isPending = s.status === 'pending';
                   const isRunning = s.status === 'running';
 
-                  return (
-                    <div
-                      key={s.order}
-                      className={`p-3 rounded-xl border transition-all text-xs space-y-2 ${
-                        isHealing || isRunning ? 'border-amber-400 bg-warning-bg/40 ring-1 ring-amber-400' :
-                        isActuallyHealed ? 'border-brand-border bg-brand-light/30' :
-                        isPassed ? 'border-success-border bg-success-bg/30' :
-                        isFailed ? 'border-danger-border bg-danger-bg/40' :
-                        'border-border bg-surface'
-                      }`}
-                    >
-                      {/* Step Header */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="w-5 h-5 rounded-md bg-surface-raised border border-border flex items-center justify-center font-mono font-bold text-2xs text-ink-secondary">
-                            {s.order}
-                          </span>
-                          <span className="font-bold text-ink text-xs">{s.name}</span>
+                    return (
+                      <div
+                        key={s.order}
+                        className={`p-3 rounded-xl border transition-all text-xs space-y-2 ${
+                          isHealing ? 'border-amber-400 bg-warning-bg/40 ring-1 ring-amber-400' :
+                          isRunning ? 'border-brand-border bg-brand-light/20 ring-1 ring-brand/30' :
+                          isActuallyHealed ? 'border-brand-border bg-brand-light/30' :
+                          isPassed ? 'border-success-border bg-success-bg/30' :
+                          isFailed ? 'border-danger-border bg-danger-bg/40' :
+                          'border-border bg-surface'
+                        }`}
+                      >
+                        {/* Step Header */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="w-5 h-5 rounded-md bg-surface-raised border border-border flex items-center justify-center font-mono font-bold text-2xs text-ink-secondary">
+                              {s.order}
+                            </span>
+                            <span className="font-bold text-ink text-xs">{s.name}</span>
+                          </div>
+
+                          {/* Status Badges */}
+                          <div>
+                            {isHealing && (
+                              <span className="badge badge-warning text-2xs font-bold animate-pulse">
+                                <Loader2 className="w-3 h-3 animate-spin" />
+                                AI HEALING...
+                              </span>
+                            )}
+                            {isRunning && !isHealing && (
+                              <span className="badge badge-neutral text-2xs font-bold font-mono animate-pulse">
+                                <Loader2 className="w-3 h-3 animate-spin text-brand" />
+                                RUNNING...
+                              </span>
+                            )}
+                            {isActuallyHealed && !isHealing && !isRunning && (
+                              <span className="badge badge-brand text-2xs font-bold">
+                                <Sparkles className="w-3 h-3" />
+                                AUTO-HEALED {s.confidence ? `(${s.confidence}%)` : ''}
+                              </span>
+                            )}
+                            {isPassed && !isHealing && !isRunning && (
+                              <span className="badge badge-success text-2xs font-bold">
+                                <CheckCircle2 className="w-3 h-3" />
+                                PASSED (Direct)
+                              </span>
+                            )}
+                            {isFailed && (
+                              <span className="badge badge-danger text-2xs font-bold">
+                                <AlertTriangle className="w-3 h-3" />
+                                BUG HALTED
+                              </span>
+                            )}
+                            {isPending && !isRunning && (
+                              <span className="badge badge-neutral text-2xs">
+                                Waiting...
+                              </span>
+                            )}
+                          </div>
                         </div>
 
-                        {/* Status Badges */}
-                        <div>
-                          {(isHealing || isRunning) && (
-                            <span className="badge badge-warning text-2xs font-bold animate-pulse">
-                              <Loader2 className="w-3 h-3 animate-spin" />
-                              AI HEALING...
-                            </span>
-                          )}
-                          {isActuallyHealed && !isHealing && !isRunning && (
-                            <span className="badge badge-brand text-2xs font-bold">
-                              <Sparkles className="w-3 h-3" />
-                              AUTO-HEALED {s.confidence ? `(${s.confidence}%)` : ''}
-                            </span>
-                          )}
-                          {isPassed && !isHealing && !isRunning && (
-                            <span className="badge badge-success text-2xs font-bold">
-                              <CheckCircle2 className="w-3 h-3" />
-                              PASSED (Direct)
-                            </span>
-                          )}
-                          {isFailed && (
-                            <span className="badge badge-danger text-2xs font-bold">
-                              <AlertTriangle className="w-3 h-3" />
-                              BUG HALTED
-                            </span>
-                          )}
-                          {isPending && !isRunning && (
-                            <span className="badge badge-neutral text-2xs">
-                              Waiting...
-                            </span>
-                          )}
-                        </div>
-                      </div>
+                        {/* Goal */}
+                        <p className="text-2xs text-ink-secondary">
+                          Goal: <span className="text-ink font-semibold">{s.intent}</span>
+                        </p>
 
-                      {/* Goal */}
-                      <p className="text-2xs text-ink-secondary">
-                        Goal: <span className="text-ink font-semibold">{s.intent}</span>
-                      </p>
-
-                      {/* AI Thinking State */}
-                      {(isHealing || isRunning) && (
-                        <div className="bg-warning-bg p-2 rounded-lg border border-warning-border text-warning-text font-mono text-2xs flex items-center gap-2">
-                          <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0 text-warning-text" />
-                          <span>Scanning accessibility tree & semantic intent...</span>
-                        </div>
-                      )}
+                        {/* State indicator when actively running or healing */}
+                        {isHealing && (
+                          <div className="bg-warning-bg p-2 rounded-lg border border-warning-border text-warning-text font-mono text-2xs flex items-center gap-2">
+                            <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0 text-warning-text" />
+                            <span>Selector mutated! Scanning accessibility tree & semantic intent...</span>
+                          </div>
+                        )}
+                        {isRunning && !isHealing && (
+                          <div className="bg-surface-raised p-2 rounded-lg border border-border text-ink-secondary font-mono text-2xs flex items-center gap-2">
+                            <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0 text-brand" />
+                            <span>Playwright executing direct action on baseline selector...</span>
+                          </div>
+                        )}
 
                       {/* Selector Diff Box: ONLY SHOWN WHEN ACTUALLY HEALED & DIFFERENT! */}
                       {isActuallyHealed && !isHealing && !isRunning && (

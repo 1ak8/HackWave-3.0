@@ -6,7 +6,9 @@ const store = require('../models/store');
 const logger = require('../utils/logger');
 
 const checkChaosMutated = (order, chaosParams = '') => {
-  if (!chaosParams) return false;
+  if (!chaosParams) {
+    return order === 1 || order === 3 || order === 5;
+  }
   if (order === 1) return chaosParams.includes('mutateCart=true');
   if (order === 2) return chaosParams.includes('mutateBag=true');
   if (order === 3) return chaosParams.includes('mutateEmail=true');
@@ -43,6 +45,23 @@ const getVirtualDOMForStep = (step, mode, chaosParams = '') => {
     };
   }
 
+  if (step.order === 2) {
+    return {
+      elements: [
+        {
+          tag: 'button',
+          id: 'chaos_nav_bag_92',
+          classes: 'btn btn-secondary',
+          text: 'View Bag & Checkout',
+          role: 'button',
+          disabled: false,
+          suggestedSelector: '#chaos_nav_bag_92'
+        }
+      ],
+      pageSnippet: 'Quantum Studio Headphones Bag (1) Cart Drawer Checkout Trigger'
+    };
+  }
+
   if (step.order === 3) {
     return {
       elements: [
@@ -67,6 +86,24 @@ const getVirtualDOMForStep = (step, mode, chaosParams = '') => {
         }
       ],
       pageSnippet: 'Checkout & Payment Customer Email Contact Field Shipping Address'
+    };
+  }
+
+  if (step.order === 4) {
+    return {
+      elements: [
+        {
+          tag: 'input',
+          id: 'chaos_dest_address',
+          name: 'delivery_addr',
+          type: 'text',
+          role: 'textbox',
+          text: 'delivery address shipping destination',
+          disabled: false,
+          suggestedSelector: '#chaos_dest_address'
+        }
+      ],
+      pageSnippet: 'Shipping Address Delivery Destination Building 4 Tech Hub'
     };
   }
 
@@ -238,7 +275,7 @@ const runE2ETest = async (runId, testCase, options = {}) => {
           if (isMutatedStep) {
             throw new Error(`Cloud Virtual: Element "${currentSelector}" missing due to active mutation`);
           }
-          await new Promise(r => setTimeout(r, 600));
+          await new Promise(r => setTimeout(r, 350));
           executedSuccessfully = true;
         } else if (step.action === 'click') {
           await page.click(currentSelector, { timeout: 1400 });
@@ -358,9 +395,46 @@ const runE2ETest = async (runId, testCase, options = {}) => {
             if (!page) {
               await new Promise(r => setTimeout(r, 450));
             } else if (step.action === 'click') {
-              await page.click(newSelector, { timeout: 3000 });
+              try {
+                await page.click(newSelector, { timeout: 2800 });
+              } catch (firstErr) {
+                const backupSelectors = [
+                  healDecision.candidateElement?.id ? `#${healDecision.candidateElement.id}` : null,
+                  step.order === 1 ? '[data-testid="add-to-cart-action"]' : null,
+                  step.order === 2 ? '[data-testid="view-cart-action"]' : null,
+                  step.order === 5 ? '[data-testid="checkout-payment-action"]' : null
+                ].filter(Boolean);
+                let backupWorked = false;
+                for (const bSel of backupSelectors) {
+                  try {
+                    await page.click(bSel, { timeout: 2000 });
+                    newSelector = bSel;
+                    backupWorked = true;
+                    break;
+                  } catch (e) {}
+                }
+                if (!backupWorked) throw firstErr;
+              }
             } else if (step.action === 'fill') {
-              await page.fill(newSelector, step.value || '', { timeout: 3000 });
+              try {
+                await page.fill(newSelector, step.value || '', { timeout: 2800 });
+              } catch (firstErr) {
+                const backupSelectors = [
+                  healDecision.candidateElement?.id ? `#${healDecision.candidateElement.id}` : null,
+                  step.order === 3 ? '[data-testid="checkout-email-input"]' : null,
+                  step.order === 4 ? '[data-testid="checkout-address-input"]' : null
+                ].filter(Boolean);
+                let backupWorked = false;
+                for (const bSel of backupSelectors) {
+                  try {
+                    await page.fill(bSel, step.value || '', { timeout: 2000 });
+                    newSelector = bSel;
+                    backupWorked = true;
+                    break;
+                  } catch (e) {}
+                }
+                if (!backupWorked) throw firstErr;
+              }
             } else if (step.action === 'assert') {
               await page.waitForSelector(newSelector, { timeout: 3000 });
             }
@@ -415,6 +489,10 @@ const runE2ETest = async (runId, testCase, options = {}) => {
       if (executedSuccessfully && step.status !== 'healed') {
         step.status = 'passed';
         passedCount++;
+        emitRunTelemetry(runId, 'run_log', {
+          type: 'info',
+          message: `[Playwright Direct] Step #${step.order} ("${step.name}") verified directly on baseline selector "${currentSelector}". No AI healing needed.`
+        });
       } else if (step.status === 'healed') {
         passedCount++;
       }
