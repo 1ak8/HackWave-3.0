@@ -1,125 +1,129 @@
 ================================================================================
-                    AUTOHEAL STUDIO — FEATURE EXPLANATIONS
+                    AUTOHEAL STUDIO — COMPLETE PAGE-BY-PAGE GUIDE
 ================================================================================
 
+Yeh document hamare AutoHeal Studio platform ke saare 5 core pages ka complete,
+detailed aur step-by-step explanation hai. Har page ko real-life examples,
+problem-solution, technical working aur demo walkthrough ke sath samjhaya gaya hai.
+
+
 ================================================================================
-FEATURE #1: AUDIT LOG & COMPLIANCE TRAIL (/audit)
+PAGE 1: AUDIT TRAIL (/audit)
 ================================================================================
 
-1. THE CORE IDEA (ASLI DUNIYA KA EXAMPLE):
+1. ASLI DUNIYA KA EXAMPLE (THE ANALOGY):
 --------------------------------------------------------------------------------
-Jab koi aeroplane udta hai, toh flight ka ek "Black Box" hota hai jo har ek 
-second ka record rakhta hai ki flight ke dauran kab, kahan aur kya hua.
+Jab koi commercial aeroplane udta hai, toh flight ke andar ek "Black Box" (Flight 
+Data Recorder) laga hota hai. Yeh Black Box flight ke har ek second ka record 
+rakhta hai—pilot ne steering kab ghumaayi, engine ka pressure kitna tha, altitude 
+kya thi. Agar koi gadbad hoti hai ya inspection karni hoti hai, toh aviation 
+authorities sabse pehle Black Box ko check karti hain.
 
-Theek waise hi, AUDIT LOG hamare AI Testing Engine ka Black Box hai!
+Theek waise hi, AUDIT TRAIL hamare AI Testing Engine ka "Black Box" hai!
 
 
-2. ISKI ZAROORAT KYUN PADI? (THE BIG PROBLEM IT SOLVES):
+2. YEH PAGE KYUN HAI? (THE BIG ENTERPRISE PROBLEM):
 --------------------------------------------------------------------------------
-Maan lo tum Amazon, Swiggy ya Paytm ke Engineering Manager ho.
-Agar koi bolta hai: "Mera AI tumhare tests ke toote huye selectors ko khud se 
-repair kar deta hai."
+Maan lo tum Amazon, Swiggy, Paytm ya Netflix ke Engineering Director ho.
+Agar koi vendor tumhein bole: "Humara AI tool tumhare tests ke toote huye buttons 
+ko background mein khud hi repair karke tests pass kara dega."
 
 Toh tumhara sabse pehla sawaal hoga:
   "Bhai, AI ne mere code mein apne man se kya change kiya?
    Kaunse button ko replace kiya? Kyun kiya?
-   Kahin AI ne kisi asli bug ko daba kar zabardasti test ko pass toh nahi kar diya?"
+   Kahin AI ne kisi asli fatal bug ko daba kar zabardasti test ko pass toh nahi kar diya?"
 
-Bina PROOF, VERIFICATION aur EXPLANATION ke koi bhi enterprise company kisi 
-AI tool ko apne production deployment pipeline mein allow nahi karegi.
+Bina 100% PROOF, VERIFICATION aur AUDIT RECORD ke koi bhi enterprise company kisi 
+bhi AI tool ko apne deployment pipeline mein allow nahi karegi. Audit Trail wahi 
+bulletproof trust aur compliance layer provide karta hai.
 
 
-3. AUDIT LOG PAGE PAR KYA-KYA RECORD HOTA HAI?
+3. STEP-BY-STEP RECORD MEIN KYA-KYA SAVE HOTA HAI?
 --------------------------------------------------------------------------------
-Jab bhi test chalta hai aur koi selector heal hota hai ya halt hota hai, toh 
-database mein uska ek permanent, immutable technical record save ho jata hai:
+Jab bhi koi test chalta hai aur koi button heal hota hai ya koi bug pakda jata hai, 
+toh database (aur disk storage) mein uska ek permanent, immutable record create 
+ho jata hai:
 
-  [A] Exact Timestamp:
-      - Har decision ka exact time (e.g. 06:45:23 AM) save hota hai.
+  [A] Exact Timestamp & Run ID:
+      - Har action ka exact time (e.g. 01:41:19 AM) aur Run Reference ID save hota hai.
+      - Manager dekh sakta hai ki yeh kis execution run mein hua tha.
 
-  [B] Run ID Reference:
-      - Manager trace kar sakta hai ki yeh change kis test execution mein hua tha 
-        (e.g. Run: run_1791678147...).
+  [B] Step Name & User Goal (Intent):
+      - E.g. Step #1 — Select Product (User Goal: "Add headphones to shopping bag").
 
-  [C] Step Number & User Intent:
-      - Step #1 — Select Product (Intent: "Add Quantum Wireless Headphones to bag").
+  [C] Code Transformation (Red vs Green Diff):
+      - Broken Selector (Red):   - #btn-add-to-cart (Frontend developer ne rename kar diya tha)
+      - Healed Selector (Green): + #dynamic_btn_cart_x89 (AI ne naya button detect karke replace kiya)
 
-  [D] Broken vs Healed Selectors (Code Diff):
-      - Broken (Red):   - #btn-add-to-cart (Frontend dev ne rename kar diya tha)
-      - Healed (Green): + #dynamic_btn_cart_x89 (AI ne naya button detect kiya)
+  [D] AI Match Confidence Score:
+      - E.g. "99% Verified Match". Engine accessibility tree aur semantic intent 
+        ko score karke confidence calculate karta hai.
 
-  [E] Confidence Score:
-      - E.g. "99% Verified Match"
+  [E] AI Natural Language Reasoning (Pura Explanation):
+      - AI paragraph likhkar reason deta hai:
+        "Original selector #btn-add-to-cart missing in DOM due to redesign. Located 
+        dynamic replacement <button> with label 'Claim Headphones Now' satisfying 
+        the business intent 'Add headphones to bag'."
 
-  [F] AI Natural Language Reasoning:
-      - AI paragraph likhkar explain karta hai ki usne yeh decision kyun liya:
-        "Original selector #btn-add-to-cart missing in DOM. AI located replacement 
-        <button> with label 'Claim Headphones Now' satisfying the business intent."
-
-  [G] Smart Triage Record (Bug Halted Proof):
-      - Agar application mein asli bug aaya (jaise HTTP 500 payment crash):
+  [F] Smart Triage Bug Record (Sabse Bada Proof):
+      - Agar application mein asli software bug aaya (jaise payment 500 error):
         Status: GENUINE REGRESSION • HEALING REFUSED
-        Reason: "Critical Application Bug detected: Payment gateway returned 500 error 
-        and price was $0.00. AI engine verified this is a true backend defect, 
-        NOT a harmless UI rename. Healing safely aborted to protect production!"
+        Reason: "Critical Application Bug detected: Payment gateway returned HTTP 500 
+        and cart total was corrupted ($0.00). AI verified this is a genuine software 
+        defect, NOT a cosmetic UI rename. Healing safely aborted to protect production!"
 
 
-4. PAGE PAR CONTROLS & FEATURES:
+4. IS PAGE PAR CONTROLS & FEATURES:
 --------------------------------------------------------------------------------
-  - Live Counters: Total Healed vs Real Bugs Triaged.
-  - Instant Search: Step name, selector ID ya intent text se filter karo.
-  - 1-Click Filter Tabs: 
-      * ALL: Saare records.
-      * Auto-Healed: Harmless mutations jo AI ne repair kiye.
-      * Bugs Triaged: Real software bugs jo AI ne block kiye.
-  - Export JSON Button:
-      * 1-Click mein poora SOC-2 compliance audit log JSON file mein download karo!
+  - 3 Summary KPI Cards:
+      * Mutations Repaired (Harmless UI shifts healed)
+      * Regressions Blocked (Smart Triage prevented false test passing)
+      * Average Match Confidence (Verified AI precision score)
+  - Scannable Enterprise Table View (Default):
+      * Har record ek clean 1-line row mein dikhta hai with time, step, selector 
+        diff arrow, status badge, aur confidence.
+      * Row par click karte hi smooth inline drawer khulta hai jisme pura AI 
+        reasoning breakdown aur raw technical parameters dikhte hain.
+  - View Switcher: Table View [ 📋 ] aur Compact Card Feed [ 🗂️ ] ke beech toggle.
+  - Live Search Bar: Step name, selector ID, ya intent text se instant filter.
+  - 1-Click Filter Tabs: ALL, Auto-Healed, Bugs Triaged.
+  - Export JSON Button: 1-click mein pura SOC-2 compliance audit log JSON file mein download karo!
 
-
-5. HACKATHON JUDGES KE SAMNE PITCH (KILLER LINE):
---------------------------------------------------------------------------------
-Jab judge poochenge:
-  "What if your AI hallucinated and passed a broken checkout flow?"
-
-Tumhara answer:
-  "Sir/Ma'am, that's why we built the Audit Trail. Every single AI decision is 
-   cryptographically logged with a confidence score, before/after selector diffs, 
-   and exact semantic reasoning for full SOC-2 and enterprise compliance!"
 
 
 ================================================================================
-FEATURE #2: DUAL-PANE INTERACTIVE SANDBOX ARENA (/demo-store)
+PAGE 2: DEMO STORE (/demo-store)
 ================================================================================
 
-1. THE CORE IDEA (ASLI DUNIYA KA EXAMPLE):
+1. ASLI DUNIYA KA EXAMPLE (THE ANALOGY):
 --------------------------------------------------------------------------------
-Car companies naye airbags test karne ke liye unhe seedha customer ko nahi 
-deti — wo ek dedicated "Crash Test Arena" banati hain jahan car ko deewar par 
-thok kar dekha jata hai ki safety systems kaam kar rahe hain ya nahi.
+Car companies jab naya airbag ya braking system banati hain, toh wo car ko 
+seedha market mein nahi bechti. Wo pehle ek dedicated "Crash Test Arena" mein car ko 
+deewar par thok kar dekhti hain ki crash ke waqt safety features activate hote hain ya nahi.
 
 Theek waise hi, DEMO STORE hamara Live Testing Ground & Crash Test Arena hai!
-Yahan judges aur users apni aankhon se dekh sakte hain ki jab frontend tootta 
-hai, toh AI use live kaise fix karta hai.
+Yahan judges aur users apni aankhon se dekh sakte hain ki jab frontend tootta hai, 
+toh AI use live kaise fix karta hai.
 
 
-2. DUAL-PANE SPLIT DESIGN (NO REDIRECT TO DASHBOARD):
+2. DUAL-PANE SPLIT DESIGN (ZERO REDIRECT):
 --------------------------------------------------------------------------------
-Poora demo ek hi screen par side-by-side chalta hai:
+Pura testing arena ek hi screen par side-by-side banta hai (koi doosre page par jane ki zaroorat nahi):
 
-  [LEFT PANE — 60% Width]: Live E-Commerce Store UI
-  - Real 3-step checkout workflow:
-    1. Product Page (Quantum Wireless Headphones — $149)
-    2. Checkout Form (Customer Email & Shipping Address)
-    3. Order Confirmation (#order-success-badge)
-  - DOM selector ID tags har button ke niche live visible rehte hain.
+  [LEFT PANE — 60% Width]: Live E-Commerce Sandbox Store
+  - Real 3-step online store workflow:
+    1. Product Page: Quantum Wireless Headphones ($149.00)
+    2. Checkout Drawer: Customer Email & Shipping Address form
+    3. Order Confirmation: Fulfillment tracking screen (#order-success-badge)
+  - Har button aur input field ke niche uska live DOM selector ID saaf visible rehta hai.
 
-  [RIGHT PANE — 40% Width]: Real-Time Autonomous Inspector
-  - Tab 1: Live Step Pipeline & AI Diff
-    * Har step ka live status: PENDING ➔ HEALING ➔ HEALED ya PASSED.
-    * Real selector diff: - Broken vs + Healed (sirf tab jab selector mutate hua ho).
-  - Tab 2: Playwright Real-Time Telemetry Logs
-    * macOS style terminal jahan live timestamps ke sath INFO, WARN, HEAL, PASS, 
-      FAIL logs stream hote hain.
+  [RIGHT PANE — 40% Width]: Real-Time Autonomous Inspector Panel
+  - Tab 1: Live Test Pipeline & AI Diff
+    * Steps ka live status update: Waiting... ➔ AI HEALING... ➔ AUTO-HEALED ya PASSED.
+    * Real selector diff box: - Broken vs + Healed (sirf tab jab selector mutate hua ho).
+  - Tab 2: Real-Time Playwright Telemetry Logs
+    * macOS style dark terminal jahan live timestamps ke sath INFO, WARN, HEAL, 
+      PASS, FAIL logs real time mein stream hote hain.
 
 
 3. THE 4 DEMO MODES (AND WHAT THEY PROVE):
@@ -128,18 +132,17 @@ Top bar par 4 tabs hain jo engine ki alag-alag capabilities prove karte hain:
 
   [A] Version A (Standard Baseline):
       - Store ka normal code bina kisi mutation ke.
-      - User click kare ya bot chalaye, saare 6 steps direct baseline selectors 
-        par pass hote hain (Zero AI needed).
+      - User click kare ya bot chalaye, saare 6 steps direct baseline selectors par pass hote hain.
 
   [B] Version B (Realistic Release & Auto-Heal):
-      - Real-world software release simulate karta hai jahan developers ne 
-        3 selectors rename kar diye (#btn-add-to-cart, #input-checkout-email, 
-        #btn-complete-order) jabki 2-3 selectors unchanged chhod diye.
-      - AI deliberates with 850ms thinking delay, scans DOM accessibility tree, 
-        aur mutated selectors ko heal karta hai jabki normal steps direct pass hote hain.
+      - Real-world release simulate karta hai jahan developers ne 3 selectors rename 
+        kar diye (#btn-add-to-cart, #input-checkout-email, #btn-complete-order) jabki 
+        3 selectors unchanged chhod diye.
+      - AI 850ms deliberate karta hai, accessibility tree scan karta hai, aur mutated 
+        selectors ko heal karta hai jabki normal steps direct pass hote hain.
 
   [C] Live Chaos Mode (Judge's Custom Control Deck):
-      - Top par centered pill capsule dock:
+      - Top par centered segmented pill capsule dock:
         [ 1. Cart ⚡ ]  [ 2. Bag ]  [ 3. Email ⚡ ]  [ 4. Address ]  [ 5. Pay ⚡ ]
       - Judge jo toggle ON karega, SIRF WAHI STEP mutate aur heal hoga!
       - Untoggled steps Version A ki tarah direct pass honge.
@@ -147,8 +150,7 @@ Top bar par 4 tabs hain jo engine ki alag-alag capabilities prove karte hain:
 
   [D] Real Bug Mode (Smart Triage in Action):
       - Steps 1 aur 3 harmlessly auto-heal hote hain.
-      - Lekin Step 5 par $0.00 pricing corruption aur HTTP 500 payment gateway 
-        crash trigger hota hai.
+      - Lekin Step 5 par $0.00 pricing corruption aur HTTP 500 payment crash trigger hota hai.
       - AI halts execution immediately with "BUG HALTED (Genuine_Bug_Halted)"!
       - AI refuses to heal because it's a real server crash, not a selector change.
 
@@ -156,41 +158,27 @@ Top bar par 4 tabs hain jo engine ki alag-alag capabilities prove karte hain:
 4. MANUAL CLICKS VS "AUTO-RUN E2E BOT":
 --------------------------------------------------------------------------------
 Demo Store mein do tareeqe hain test run karne ke:
-
   1. User Manual Clicks:
-     - User khud left store mein "Add to Bag", checkout, aur payment click karta hai.
+     - User khud left store mein "Add to Bag", drawer open, form fill aur payment click karta hai.
      - Har click ke sath right pane mein live pipeline update hoti hai aur 
        terminal mein real-time logs stream hote hain.
-
   2. Auto-Run E2E Bot (Playwright Robot):
-     - Top bar par 1-click button: [ ⚡ Auto-Run E2E Bot ]
-     - Headless Playwright robot background mein chalta hai.
-     - User apni aankhon se dekhta hai:
-       * Left store mein item bag mein judta hai, form fill hota hai, checkout hota hai.
-       * Right pane mein live pipeline aur telemetry logs autonomously sync hote hain!
+     - Top bar par button hai: [ ⚡ Auto-Run E2E Bot ].
+     - Headless Playwright robot background mein chalta hai aur user apni aankhon 
+       se dekhta hai ki left store ke buttons auto-click ho rahe hain, fields fill 
+       ho rahi hain, aur right panel sync ho raha hai!
 
-
-5. HACKATHON JUDGES KE SAMNE PITCH (KILLER LINE):
---------------------------------------------------------------------------------
-Jab judge poochenge:
-  "Is this just a pre-recorded script or actually running in real time?"
-
-Tumhara answer:
-  "Sir/Ma'am, please open our Demo Store sandbox. You can select custom chaos 
-   toggles, mutate specific buttons, or simulate real 500 server crashes yourself. 
-   Our engine will adapt to your exact selections live on this screen, proving 
-   intent-aware autonomous healing with zero smoke and mirrors!"
 
 
 ================================================================================
-FEATURE #3: INTENT-BASED TEST STUDIO (/studio)
+PAGE 3: TEST STUDIO (/studio)
 ================================================================================
 
-1. THE CORE IDEA (ASLI DUNIYA KA EXAMPLE):
+1. ASLI DUNIYA KA EXAMPLE (THE ANALOGY):
 --------------------------------------------------------------------------------
 Jab tum Uber book karte ho, toh tum driver ko yeh nahi bolte:
   "Pehle clutch dabao, fir pehla gear lagao, 20 meter baad 15 degree steering modna..."
-Tum use seedha apna GOAL (Intent) bolte ho:
+Tum use seedha apna Destination / GOAL (Intent) bolte ho:
   "Bhai, mujhe Airport le chalo!" Driver rasta khud dhoond leta hai.
 
 Traditional testing tools (Cypress/Selenium) pehle wale tareeqe par chalte hain—
@@ -199,18 +187,17 @@ TEST STUDIO doosre tareeqe par chalta hai—yahan tum USER GOAL define karte ho,
 aur engine baki sab khud handle karta hai!
 
 
-2. ISKI ZAROORAT KYUN PADI? (THE 50% MAINTENANCE PAIN):
+2. YEH PAGE KYUN HAI? (THE 50% MAINTENANCE PAIN):
 --------------------------------------------------------------------------------
-Har software team mein:
-  - Frontend developers roz buttons ke class names, IDs aur design badalte hain.
-  - Har deployment par 30-40% purane Cypress/Playwright tests fail ho jaate hain.
-  - QA engineers ka aadhe se zyada din code test karne mein nahi, balki purane 
-    toote huye selectors ko update karne mein waste ho jata hai.
+Har software team mein frontend developers roz buttons ke class names, IDs aur 
+design badalte hain. Har deployment par 30-40% purane Cypress/Playwright tests fail 
+ho jaate hain. QA engineers ka aadhe se zyada din code test karne mein nahi, balki 
+purane toote huye selectors ko manually update karne mein waste ho jata hai.
 
 Test Studio is selector maintenance overhead ko poori tarah khatam karta hai!
 
 
-3. TEST STUDIO KAISE KAAM KARTA HAI?
+3. STEP-BY-STEP KAAM KAISE KARTA HAI?
 --------------------------------------------------------------------------------
 Yahan koi bhi (QA tester, Developer, ya non-tech Product Manager) bina code 
 likhe naya test case create kar sakta hai:
@@ -235,40 +222,17 @@ likhe naya test case create kar sakta hai:
 
   [E] 1-Click "Run & Inspect":
       - Right panel par Configured Suites ki list aati hai.
-      - Kisi bhi suite ke aage "Run & Inspect" button dabate hi yeh suite 
-        turant Live Test Runner (/live) par execute hoti hai jahan live graph aur 
-        terminal output stream hota hai!
+      - Kisi bhi suite ke aage "Run & Inspect" button dabate hi spinner aata hai, 
+        aur page turant Live Test Runner (/live) par redirect hota hai jahan live 
+        graph aur terminal output stream hota hai!
 
-
-4. RESUME & INTERVIEW BULLET POINTS (GOLDEN POINTS):
---------------------------------------------------------------------------------
-  - "Architected an Intent-Driven Test Studio: Decoupled end-to-end test cases 
-     from brittle CSS/XPath selectors by modeling user workflows around semantic 
-     intents rather than static DOM selectors."
-  - "Engineered Low-Code Multi-Action Composition: Implemented an intuitive suite 
-     builder supporting click, fill, assert, and navigate actions with live 
-     database persistence and background Playwright orchestrator dispatch."
-  - "Eliminated 60% Maintenance Overhead: Enabled QA teams to author self-repairing 
-     regression suites that survive ongoing UI redesigns without manual test maintenance."
-
-
-5. HACKATHON JUDGES KE SAMNE PITCH (KILLER LINE):
---------------------------------------------------------------------------------
-Jab judge poochenge:
-  "How do QA engineers actually write tests in your system?"
-
-Tumhara answer:
-  "In our Test Studio, QAs write user goals instead of fragile selectors. 
-   Selectors serve only as dynamic initial baselines. If a developer mutates 
-   the UI, our engine relies on the recorded business intent to locate the 
-   replacement element on the fly, eliminating selector maintenance forever!"
 
 
 ================================================================================
-FEATURE #4: REAL-TIME AUTONOMOUS RUNNER CONSOLE (/live)
+PAGE 4: LIVE RUNNER (/live)
 ================================================================================
 
-1. THE CORE IDEA (ASLI DUNIYA KA EXAMPLE):
+1. ASLI DUNIYA KA EXAMPLE (THE ANALOGY):
 --------------------------------------------------------------------------------
 NASA ka Mission Control Room dekha hai?
 Jahan rocket launch hone ke baad har sensor, engine, aur trajectory ka live 
@@ -321,29 +285,48 @@ Top control bar par ek powerful toggle hai:
         * Buttons par click karta hai.
         * Forms type karta hai.
         * Mutated selectors ke naye buttons AI dhoond kar click karta hai!
+      - Test pass hone ke baad window 2.5 second rukti hai taaki tum confirmation screen dekh sako.
 
 
-4. RESUME & INTERVIEW BULLET POINTS (GOLDEN POINTS):
+
+================================================================================
+PAGE 5: DASHBOARD (/ OVERVIEW)
+================================================================================
+
+1. ASLI DUNIYA KA EXAMPLE (THE ANALOGY):
 --------------------------------------------------------------------------------
-  - "Built Real-Time Telemetry Pipeline: Integrated Socket.io full-duplex communication 
-     to stream Playwright browser events, DOM mutation alerts, and AI resolution logs 
-     with sub-50ms latency."
-  - "Visual Healing Graph with State Machine: Engineered an animated node execution 
-     graph depicting step lifecycle transitions (pending, running, healing, healed, 
-     failed) with confidence scoring."
-  - "Dual Execution Architecture: Built support for high-throughput headless test 
-     runs alongside an interactive desktop visual mode with human-observable pacing."
+Car ka Digital Speedometer & Instrument Cluster — jab tum car chalate ho, toh ek 
+glance mein pata chalta hai car ki speed kya hai, fuel kitna bacha hai, battery 
+kaisi hai, aur engine check light on hai ya nahi.
+
+DASHBOARD hamare testing suite ka digital instrument cluster hai!
 
 
-5. HACKATHON JUDGES KE SAMNE PITCH (KILLER LINE):
+2. YEH PAGE KYUN HAI?
 --------------------------------------------------------------------------------
-Jab judge poochenge:
-  "How do developers monitor what the AI is doing during a test execution?"
+Engineering Managers aur QAs ke liye central headquarters jahan se testing suite 
+ki complete health ek glance mein dikhti hai aur 1-click se koi bhi scenario launch hota hai.
 
-Tumhara answer:
-  "Our Live Runner Console provides a full mission control interface. Developers 
-   watch the Intent Graph transition states in real-time, inspect GitHub-style 
-   selector mutation diffs with confidence scores, and stream raw browser telemetry—or 
-   even toggle visual window mode to watch Chrome execute the self-healing steps live!"
+
+3. STEP-BY-STEP COMPONENTS:
+--------------------------------------------------------------------------------
+  [A] Hero Banner & 1-Click Launchers:
+      - 1-Click Launch buttons: Auto-Heal Demo (Recommended), Standard Run, 
+        Live Chaos, aur Real Bug Triage.
+      - 3-step visual explanation: UI Changes ➔ AI Heals ➔ Test Passes.
+
+  [B] 4 Clean Enterprise KPI Cards:
+      - Auto-Heal Rate: 98.4% (Zero false test failures)
+      - Elements Repaired: 34 (Harmless UI mutations adapted)
+      - Real Bugs Blocked: 6 (Smart Triage regressions halted)
+      - Hours Saved: 119h (Manual selector maintenance eliminated)
+
+  [C] Primary Smoke Suite Preview:
+      - Default test suite ka live Intent Graph preview jahan steps ke nodes dikhte hain.
+      - "Open in Live Runner" button directly live console kholta hai.
+
+  [D] Execution History Table:
+      - Pichle saare test runs ki scannable list with Run ID, suite name, run mode, 
+        status (PASSED/HEALED/FAILED), healed count, aur duration in milliseconds.
 
 ================================================================================
