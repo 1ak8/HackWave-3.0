@@ -34,7 +34,7 @@ export default function DemoStore() {
   const [searchParams, setSearchParams] = useSearchParams();
   const urlMode = searchParams.get('mode') || 'standard';
 
-  const { tests, activeRun, triggerRun, terminalLogs, clearLogs, addTerminalLog, refreshAll } = useTests();
+  const { tests, activeRun, setActiveRun, triggerRun, terminalLogs, clearLogs, addTerminalLog, refreshAll } = useTests();
   const defaultTest = tests.find(t => t._id === 'test_default_ecommerce_flow' || t.isSample || t.steps?.length === 6) || tests[0] || null;
 
   // Mode: 'standard' | 'mutated' | 'chaos' | 'bug_mode'
@@ -116,22 +116,29 @@ export default function DemoStore() {
         setItemAddedToast(true);
       }
 
-      // Step 2: Opened drawer?
+      // Step 2: Opened drawer / checkout form?
       const step2 = steps.find(s => s.order === 2 || s.intent?.toLowerCase().includes('cart') || s.name?.toLowerCase().includes('cart'));
-      if (step2 && step2.status !== 'pending') {
-        setStoreStep(2);
+      if (step2 && (step2.status === 'healed' || step2.status === 'passed' || step2.status === 'running')) {
+        // Comfortable visual pause so user sees "Added to Bag" before moving to Checkout form!
+        setTimeout(() => {
+          setStoreStep(prev => (prev === 1 ? 2 : prev));
+        }, 750);
       }
 
       // Step 3: Email filled?
       const emailStep = steps.find(s => s.intent?.toLowerCase().includes('email') || s.name?.toLowerCase().includes('email'));
       if (emailStep && (emailStep.status === 'healed' || emailStep.status === 'passed')) {
-        setEmail('lokesh@hackwave.dev');
+        setTimeout(() => {
+          setEmail('lokesh@hackwave.dev');
+        }, 300);
       }
 
       // Step 4: Address filled?
       const addrStep = steps.find(s => s.intent?.toLowerCase().includes('address') || s.name?.toLowerCase().includes('address'));
       if (addrStep && (addrStep.status === 'healed' || addrStep.status === 'passed')) {
-        setAddress('Building 4, Tech Innovation Hub, Cyber City');
+        setTimeout(() => {
+          setAddress('Building 4, Tech Innovation Hub, Cyber City');
+        }, 300);
       }
 
       // Step 5: Payment / Place Order completed?
@@ -143,12 +150,17 @@ export default function DemoStore() {
         s.order === 5
       );
       if (payStep) {
-        if (payStep.status === 'failed') {
+        if (payStep.status === 'running') {
+          setIsProcessing(true);
+        } else if (payStep.status === 'failed') {
+          setIsProcessing(false);
           setBugHaltToast(true);
-          setIsProcessing(false);
         } else if (payStep.status === 'healed' || payStep.status === 'passed') {
-          setIsProcessing(false);
-          setStoreStep(3); // Transition store to Step 3: Order Confirmation!
+          setIsProcessing(true);
+          setTimeout(() => {
+            setIsProcessing(false);
+            setStoreStep(3); // Transition store to Step 3: Order Confirmation!
+          }, 800);
         }
       }
 
@@ -409,6 +421,7 @@ export default function DemoStore() {
     setActiveSource('bot');
     setIsBotRunning(true);
     setInspectorTab('pipeline');
+    if (setActiveRun) setActiveRun(null); // Clear previous run immediately so stale results NEVER flash!
     
     // Reset local UI inputs WITHOUT resetting activeSource
     setCartCount(0);
