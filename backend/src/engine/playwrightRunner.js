@@ -207,7 +207,9 @@ const runE2ETest = async (runId, testCase, options = {}) => {
 
         // HARMLESS UI SHIFT: Heal and continue!
         if (healDecision.isSafeToResume && healDecision.healedSelector) {
-          const newSelector = healDecision.healedSelector;
+          let newSelector = healDecision.healedSelector
+            .replace(/\[testId=/gi, '[data-testid=')
+            .replace(/\[testid=/gi, '[data-testid=');
           logger.healing(`Applying healed selector: "${newSelector}" (Confidence: ${healDecision.confidence}%)`);
 
           emitRunTelemetry(runId, 'run_log', {

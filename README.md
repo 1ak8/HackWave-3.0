@@ -1,10 +1,10 @@
-# ⚡ AutoHeal Studio — Self-Healing E2E Testing Engine
-> **HackWave 3.0** | Intent-Aware End-to-End Testing that Survives Interface Changes
+# ⚡ NexHeal — Intent-Aware Self-Healing E2E Testing Engine
+> **HackWave** | Intent-Aware End-to-End Testing that Survives Interface Changes
 
-![Build Status](https://img.shields.io/badge/Build-Passing-10b981?style=for-the-badge)
-![Tech Stack](https://img.shields.io/badge/Stack-React%20%7C%20Node%20%7C%20Playwright%20%7C%20MongoDB%20%7C%20AI-059669?style=for-the-badge)
-![UI Design](https://img.shields.io/badge/Theme-Obsidian%20%26%20Emerald-047857?style=for-the-badge)
-![Live Telemetry](https://img.shields.io/badge/Telemetry-Socket.io%20Live-10b981?style=for-the-badge)
+![Build Status](https://img.shields.io/badge/Build-Passing-ea580c?style=for-the-badge)
+![Tech Stack](https://img.shields.io/badge/Stack-React%20%7C%20Node%20%7C%20Playwright%20%7C%20MongoDB%20%7C%20AI-c2410c?style=for-the-badge)
+![UI Design](https://img.shields.io/badge/Theme-Warm%20Terracotta%20%26%20Stone-ea580c?style=for-the-badge)
+![Live Telemetry](https://img.shields.io/badge/Telemetry-Socket.io%20Live-16a34a?style=for-the-badge)
 
 ---
 
@@ -14,7 +14,7 @@ Traditional automated tests (Playwright, Selenium, Cypress) are notoriously brit
 ---
 
 ## 💡 The Solution: Autonomous Intent-Driven Testing
-**AutoHeal Studio** shifts the testing paradigm from rigid CSS selector matching to **Autonomous User Intent Reasoning**. Tests are expressed as high-level user outcomes (`"Complete checkout for headphones with valid credit card"`). 
+**NexHeal** shifts the testing paradigm from rigid CSS selector matching to **Autonomous User Intent Reasoning**. Tests are expressed as high-level user outcomes (`"Complete checkout for headphones with valid credit card"`). 
 
 When UI redesigns occur, the engine:
 1. Detects selector failure before crashing.

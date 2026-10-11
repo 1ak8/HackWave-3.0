@@ -1,8 +1,8 @@
 ================================================================================
-                    AUTOHEAL STUDIO — COMPLETE PAGE-BY-PAGE GUIDE
+                    NEXHEAL STUDIO — COMPLETE PAGE-BY-PAGE GUIDE
 ================================================================================
 
-Yeh document hamare AutoHeal Studio platform ke saare 5 core pages ka complete,
+Yeh document hamare NexHeal Studio platform ke saare 5 core pages ka complete,
 detailed aur step-by-step explanation hai. Har page ko real-life examples,
 problem-solution, technical working aur demo walkthrough ke sath samjhaya gaya hai.
 
@@ -319,7 +319,7 @@ har card se seedha 1-click launch/inspect ka rasta khulta hai.
 3. STEP-BY-STEP COMPONENTS (TOP ➔ BOTTOM):
 
   [A] Hero Welcome Banner:
-      - HackWave 3.0 live badge (pulsing dot) + "AutoHeal Studio" title aur 
+      - HackWave live badge (pulsing dot) + "AutoHeal Studio" title aur 
         one-line positioning: "Playwright E2E tests that autonomously heal 
         broken DOM selectors, and use Smart Triage to halt genuine bugs."
       - 2 Quick Launchers right side:

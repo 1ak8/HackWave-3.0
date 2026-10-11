@@ -16,7 +16,7 @@ const runController = {
       // If no testId or not found, fall back to default suite
       if (!targetTest) {
         const allTests = await store.getTests();
-        targetTest = allTests[0];
+        targetTest = allTests.find(t => t._id === 'test_default_ecommerce_flow' || t.isSample || t.steps?.length === 6) || allTests[0];
       }
 
       if (!targetTest) {

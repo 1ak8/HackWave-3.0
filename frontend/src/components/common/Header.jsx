@@ -17,8 +17,10 @@ export default function Header() {
         return { section: 'Authoring', title: 'Intent Specification Studio' };
       case '/audit':
         return { section: 'Compliance', title: 'Repair Audit Log & Triage' };
+      case '/demo-store':
+        return { section: 'Sandbox', title: 'Target E-Commerce Testing Ground' };
       default:
-        return { section: 'App', title: 'AutoHeal Studio' };
+        return { section: 'App', title: 'NexHeal' };
     }
   };
 
@@ -51,14 +53,24 @@ export default function Header() {
           <span>Sync</span>
         </button>
 
-        <Link
-          to="/demo-store"
-          className="btn btn-primary btn-sm"
-        >
-          <ShoppingBag className="w-4 h-4" />
-          <span>Sandbox Store</span>
-          <ExternalLink className="w-3.5 h-3.5 text-white/70" />
-        </Link>
+        {location.pathname === '/demo-store' ? (
+          <Link
+            to="/live"
+            className="btn btn-secondary btn-sm text-xs font-semibold"
+          >
+            <Zap className="w-3.5 h-3.5 text-brand" />
+            <span>Open Live Runner</span>
+          </Link>
+        ) : (
+          <Link
+            to="/demo-store"
+            className="btn btn-primary btn-sm"
+          >
+            <ShoppingBag className="w-4 h-4" />
+            <span>Sandbox Store</span>
+            <ExternalLink className="w-3.5 h-3.5 text-white/70" />
+          </Link>
+        )}
       </div>
     </header>
   );

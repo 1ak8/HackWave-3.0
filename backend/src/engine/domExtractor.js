@@ -48,7 +48,7 @@ const extractInteractiveDOM = async (page) => {
           text,
           role,
           type,
-          testId,
+          'data-testid': testId || null,
           disabled: isDisabled,
           position: {
             top: Math.round(rect.top),

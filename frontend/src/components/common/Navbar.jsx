@@ -32,15 +32,15 @@ export default function Navbar() {
           {/* Brand Logo */}
           <div className="flex items-center gap-6">
             <Link to="/" className="flex items-center gap-2.5 group">
-              <div className="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center text-white shadow-md shadow-brand-500/25 group-hover:scale-105 transition-transform">
+              <div className="w-9 h-9 rounded-xl bg-brand flex items-center justify-center text-white shadow-md shadow-brand/25 group-hover:scale-105 transition-transform">
                 <Zap className="w-5 h-5 fill-current" />
               </div>
               <div className="flex flex-col">
                 <div className="flex items-center gap-1.5">
                   <span className="font-extrabold text-base tracking-tight text-ink">
-                    AutoHeal
+                    NexHeal
                   </span>
-                  <span className="text-2xs font-mono font-bold px-1.5 py-0.5 rounded bg-brand-50 text-brand-700 border border-brand-200">
+                  <span className="text-2xs font-mono font-bold px-1.5 py-0.5 rounded bg-brand-light text-brand border border-brand-border">
                     STUDIO
                   </span>
                 </div>
@@ -59,7 +59,7 @@ export default function Navbar() {
                     className={({ isActive }) =>
                       `flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                         isActive
-                          ? 'bg-brand-50 text-brand-700 border border-brand-200 shadow-sm'
+                          ? 'bg-brand-light text-brand border border-brand-border shadow-xs'
                           : 'text-ink-secondary hover:text-ink hover:bg-surface'
                       }`
                     }
@@ -84,14 +84,14 @@ export default function Navbar() {
 
             {/* DB Status Badge */}
             <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface border border-border text-xs font-mono text-ink-secondary">
-              <Database className="w-3 h-3 text-brand-600" />
+              <Database className="w-3 h-3 text-brand" />
               <span>{systemHealth?.db?.connected ? 'MongoDB Active' : 'Zero-Setup Engine'}</span>
             </div>
 
             {/* Target App Sandbox Link */}
             <Link
               to="/demo-store"
-              className="flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white transition shadow-sm"
+              className="flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-lg bg-brand hover:bg-brand-hover text-white transition shadow-sm"
             >
               <span>Sandbox Store</span>
               <ExternalLink className="w-3 h-3" />

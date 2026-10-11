@@ -158,7 +158,7 @@ const healBrokenStep = async ({ intent, brokenSelector, domData, mode }) => {
   const prompt = [
     {
       role: 'system',
-      content: `You are AutoHeal-AI, an expert automated test healing engine.
+      content: `You are NexHeal-AI, an expert automated test healing engine.
 Analyze the failed step, determine if this is a HARMLESS UI redesign or a GENUINE APPLICATION FAILURE.
 Return pure JSON:
 {
@@ -185,6 +185,11 @@ ${domData.pageSnippet}`
   try {
     const aiResult = await callLLM(prompt);
     if (aiResult && aiResult.classification && (aiResult.healedSelector || aiResult.classification === 'Genuine_Bug')) {
+      if (aiResult.healedSelector) {
+        aiResult.healedSelector = aiResult.healedSelector
+          .replace(/\[testId=/gi, '[data-testid=')
+          .replace(/\[testid=/gi, '[data-testid=');
+      }
       logger.success(`AI LLM resolved healing: ${aiResult.classification} (Confidence: ${aiResult.confidence}%)`);
       return aiResult;
     }

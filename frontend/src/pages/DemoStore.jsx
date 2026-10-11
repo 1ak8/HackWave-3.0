@@ -8,8 +8,8 @@ import {
   CheckCircle2, 
   RotateCcw,
   Lock,
-  ArrowLeft,
   Check,
+  Headphones,
   Package,
   Terminal,
   Zap,
@@ -35,7 +35,7 @@ export default function DemoStore() {
   const urlMode = searchParams.get('mode') || 'standard';
 
   const { tests, activeRun, triggerRun, terminalLogs, clearLogs, addTerminalLog, refreshAll } = useTests();
-  const defaultTest = tests[0] || null;
+  const defaultTest = tests.find(t => t._id === 'test_default_ecommerce_flow' || t.isSample || t.steps?.length === 6) || tests[0] || null;
 
   // Mode: 'standard' | 'mutated' | 'chaos' | 'bug_mode'
   const [mode, setMode] = useState(urlMode);
@@ -108,30 +108,54 @@ export default function DemoStore() {
   useEffect(() => {
     if (activeSource === 'bot' && activeRun?.steps) {
       const steps = activeRun.steps;
+
       // Step 1: Product added?
-      if (steps[0] && (steps[0].status === 'healed' || steps[0].status === 'passed')) {
+      const step1 = steps.find(s => s.order === 1 || s.intent?.toLowerCase().includes('add') || s.name?.toLowerCase().includes('product'));
+      if (step1 && (step1.status === 'healed' || step1.status === 'passed')) {
         setCartCount(1);
         setItemAddedToast(true);
       }
+
       // Step 2: Opened drawer?
-      if (steps[1] && steps[1].status !== 'pending') {
+      const step2 = steps.find(s => s.order === 2 || s.intent?.toLowerCase().includes('cart') || s.name?.toLowerCase().includes('cart'));
+      if (step2 && step2.status !== 'pending') {
         setStoreStep(2);
       }
+
       // Step 3: Email filled?
-      if (steps[2] && (steps[2].status === 'healed' || steps[2].status === 'passed')) {
+      const emailStep = steps.find(s => s.intent?.toLowerCase().includes('email') || s.name?.toLowerCase().includes('email'));
+      if (emailStep && (emailStep.status === 'healed' || emailStep.status === 'passed')) {
         setEmail('lokesh@hackwave.dev');
       }
+
       // Step 4: Address filled?
-      if (steps[3] && (steps[3].status === 'healed' || steps[3].status === 'passed')) {
+      const addrStep = steps.find(s => s.intent?.toLowerCase().includes('address') || s.name?.toLowerCase().includes('address'));
+      if (addrStep && (addrStep.status === 'healed' || addrStep.status === 'passed')) {
         setAddress('Building 4, Tech Innovation Hub, Cyber City');
       }
-      // Step 5: Payment attempted?
-      if (steps[4]) {
-        if (steps[4].status === 'failed') {
+
+      // Step 5: Payment / Place Order completed?
+      const payStep = steps.find(s => 
+        s.intent?.toLowerCase().includes('payment') || 
+        s.intent?.toLowerCase().includes('authorize') || 
+        s.name?.toLowerCase().includes('payment') ||
+        s.originalSelector?.includes('complete-order') ||
+        s.order === 5
+      );
+      if (payStep) {
+        if (payStep.status === 'failed') {
           setBugHaltToast(true);
-        } else if (steps[4].status === 'healed' || steps[4].status === 'passed') {
-          setStoreStep(3);
+          setIsProcessing(false);
+        } else if (payStep.status === 'healed' || payStep.status === 'passed') {
+          setIsProcessing(false);
+          setStoreStep(3); // Transition store to Step 3: Order Confirmation!
         }
+      }
+
+      // Step 6: Confirmation badge assertion?
+      const confirmStep = steps.find(s => s.order === 6 || s.intent?.toLowerCase().includes('confirm'));
+      if (confirmStep && (confirmStep.status === 'healed' || confirmStep.status === 'passed')) {
+        setStoreStep(3);
       }
     }
   }, [activeSource, activeRun?.steps]);
@@ -443,37 +467,27 @@ export default function DemoStore() {
       case 'chaos':
         return <span className="text-2xs font-bold px-1.5 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-800 font-mono">CHAOS</span>;
       default:
-        return <span className="text-2xs font-bold px-1.5 py-0.5 rounded bg-indigo-950 text-brand border border-indigo-800 font-mono">INFO</span>;
+        return <span className="text-2xs font-bold px-1.5 py-0.5 rounded bg-stone-900 text-emerald-400 border border-stone-800 font-mono">INFO</span>;
     }
   };
 
   return (
-    <div className="min-h-screen bg-surface text-ink flex flex-col font-sans">
+    <div className="flex-1 bg-canvas text-ink flex flex-col font-sans">
       {/* Top Header */}
-      <header className="border-b border-border bg-surface-raised sticky top-0 z-50 px-6 py-3 flex items-center justify-between shadow-xs">
-        <div className="flex items-center gap-4">
-          <Link 
-            to="/" 
-            className="btn btn-secondary btn-sm flex items-center gap-1.5"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Dashboard</span>
-          </Link>
-
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-success"></span>
-            <span className="font-bold text-base tracking-tight text-ink">Apex Audio Testing Arena</span>
-            <span className="badge badge-brand text-xs font-mono font-bold">Interactive Sandbox</span>
-          </div>
+      <header className="border-b border-border bg-surface-raised sticky top-16 z-20 px-6 py-2.5 flex items-center justify-between gap-4 shadow-xs">
+        <div className="flex items-center gap-2.5 shrink-0">
+          <span className="w-2.5 h-2.5 rounded-full bg-success shrink-0"></span>
+          <span className="font-bold text-sm tracking-tight text-ink whitespace-nowrap">Testing Sandbox</span>
+          <span className="badge badge-brand text-2xs font-mono font-bold whitespace-nowrap">Arena</span>
         </div>
 
         {/* 4 Mode Switcher Tabs */}
-        <div className="flex items-center p-1 rounded-xl bg-surface border border-border">
+        <div className="flex items-center p-1 rounded-xl bg-surface border border-border shrink-0 gap-0.5">
           <button
             onClick={() => handleModeChange('standard')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap shrink-0 ${
               mode === 'standard' 
-                ? 'bg-surface-raised text-ink shadow-xs border border-border' 
+                ? 'bg-surface-raised text-ink font-bold shadow-xs border border-border' 
                 : 'text-ink-secondary hover:text-ink'
             }`}
           >
@@ -481,9 +495,9 @@ export default function DemoStore() {
           </button>
           <button
             onClick={() => handleModeChange('mutated')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap shrink-0 ${
               mode === 'mutated' 
-                ? 'bg-brand text-white shadow-xs' 
+                ? 'bg-surface-raised text-ink font-bold shadow-xs border border-border' 
                 : 'text-ink-secondary hover:text-ink'
             }`}
           >
@@ -491,35 +505,41 @@ export default function DemoStore() {
           </button>
           <button
             onClick={() => handleModeChange('chaos')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
               mode === 'chaos' 
-                ? 'bg-amber-500 text-white shadow-xs' 
+                ? 'bg-surface-raised text-ink font-bold shadow-xs border border-border' 
                 : 'text-ink-secondary hover:text-ink'
             }`}
           >
-            <Flame className="w-3.5 h-3.5" />
+            <Flame className={`w-3.5 h-3.5 shrink-0 ${mode === 'chaos' ? 'text-amber-500 animate-pulse' : 'text-ink-tertiary'}`} />
             <span>Live Chaos</span>
-            <span className="text-2xs bg-surface-raised/20 px-1.5 py-0.2 rounded font-mono">{activeChaosCount} active</span>
+            <span className={`text-2xs px-1.5 py-0.5 rounded-full font-mono font-semibold leading-none shrink-0 ${
+              mode === 'chaos'
+                ? 'bg-amber-50 text-amber-800 border border-amber-200/80'
+                : 'bg-stone-100 text-ink-tertiary'
+            }`}>
+              {activeChaosCount} active
+            </span>
           </button>
           <button
             onClick={() => handleModeChange('bug_mode')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1 whitespace-nowrap shrink-0 ${
               mode === 'bug_mode' 
-                ? 'bg-danger text-white shadow-xs' 
+                ? 'bg-surface-raised text-ink font-bold shadow-xs border border-border' 
                 : 'text-ink-secondary hover:text-ink'
             }`}
           >
-            <AlertTriangle className="w-3.5 h-3.5" />
-            Real Bug
+            <AlertTriangle className={`w-3.5 h-3.5 shrink-0 ${mode === 'bug_mode' ? 'text-danger' : 'text-ink-tertiary'}`} />
+            <span>Real Bug</span>
           </button>
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={runAutomatedBot}
             disabled={isBotRunning}
-            className={`btn btn-sm flex items-center gap-1.5 font-bold shadow-sm transition-all ${
+            className={`btn btn-sm whitespace-nowrap shrink-0 flex items-center gap-1.5 font-bold shadow-sm transition-all ${
               isBotRunning 
                 ? 'bg-amber-500 hover:bg-amber-600 text-white animate-pulse' 
                 : 'btn-primary'
@@ -528,12 +548,12 @@ export default function DemoStore() {
           >
             {isBotRunning ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Bot Running E2E Test...</span>
+                <Loader2 className="w-4 h-4 animate-spin shrink-0" />
+                <span>Running Bot...</span>
               </>
             ) : (
               <>
-                <Bot className="w-4 h-4" />
+                <Bot className="w-4 h-4 shrink-0" />
                 <span>Auto-Run E2E Bot</span>
               </>
             )}
@@ -541,95 +561,48 @@ export default function DemoStore() {
 
           <button 
             onClick={resetStore}
-            className="btn btn-ghost btn-sm flex items-center gap-1 text-ink-secondary"
+            className="btn btn-ghost btn-sm whitespace-nowrap shrink-0 flex items-center gap-1 text-ink-secondary hover:text-ink"
             title="Reset Store and Step Pipeline"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            <RotateCcw className="w-3.5 h-3.5 shrink-0" />
             <span>Reset</span>
           </button>
         </div>
       </header>
 
-      {/* Full-width Top Chaos Banner (Centered Segmented Capsule Dock, No Seed Button) */}
+      {/* Full-width Top Chaos Banner */}
       {isChaos ? (
-        <div className="w-full bg-surface-raised border-b border-border px-6 sm:px-8 py-2.5 shadow-xs">
-          <div className="max-w-7xl mx-auto flex items-center justify-center gap-3.5 flex-wrap">
-            <div className="flex items-center gap-1.5 font-bold text-ink text-xs shrink-0">
-              <Flame className="w-4 h-4 text-amber-500 animate-pulse" />
-              <span>Chaos Selectors:</span>
+        <div className="w-full bg-surface-raised border-b border-border px-6 py-2.5 shadow-xs">
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 flex-wrap">
+            <div className="flex items-center gap-2">
+              <Flame className="w-4 h-4 text-amber-500 shrink-0" />
+              <span className="text-xs font-bold text-ink whitespace-nowrap">Mutate Step Selectors:</span>
+              <span className="text-2xs text-ink-tertiary hidden sm:inline">Toggle which elements get mutated during execution</span>
             </div>
 
-            {/* Sleek Segmented Capsule Dock Centered */}
-            <div className="bg-surface p-1 rounded-full border border-border flex items-center gap-1 shadow-inner">
-              {/* 1. Cart */}
-              <button
-                onClick={() => setMutateCart(!mutateCart)}
-                className={`px-3 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1 ${
-                  mutateCart 
-                    ? 'bg-amber-500 text-white font-bold shadow-xs' 
-                    : 'text-ink-secondary hover:text-ink hover:bg-surface-raised/60'
-                }`}
-                title="Toggle Step 1: Cart Button Mutation"
-              >
-                <span>1. Cart</span>
-                {mutateCart && <span className="text-2xs">⚡</span>}
-              </button>
-
-              {/* 2. Bag */}
-              <button
-                onClick={() => setMutateBag(!mutateBag)}
-                className={`px-3 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1 ${
-                  mutateBag 
-                    ? 'bg-amber-500 text-white font-bold shadow-xs' 
-                    : 'text-ink-secondary hover:text-ink hover:bg-surface-raised/60'
-                }`}
-                title="Toggle Step 2: Bag Drawer Mutation"
-              >
-                <span>2. Bag</span>
-                {mutateBag && <span className="text-2xs">⚡</span>}
-              </button>
-
-              {/* 3. Email */}
-              <button
-                onClick={() => setMutateEmail(!mutateEmail)}
-                className={`px-3 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1 ${
-                  mutateEmail 
-                    ? 'bg-amber-500 text-white font-bold shadow-xs' 
-                    : 'text-ink-secondary hover:text-ink hover:bg-surface-raised/60'
-                }`}
-                title="Toggle Step 3: Email Field Mutation"
-              >
-                <span>3. Email</span>
-                {mutateEmail && <span className="text-2xs">⚡</span>}
-              </button>
-
-              {/* 4. Address */}
-              <button
-                onClick={() => setMutateAddress(!mutateAddress)}
-                className={`px-3 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1 ${
-                  mutateAddress 
-                    ? 'bg-amber-500 text-white font-bold shadow-xs' 
-                    : 'text-ink-secondary hover:text-ink hover:bg-surface-raised/60'
-                }`}
-                title="Toggle Step 4: Address Field Mutation"
-              >
-                <span>4. Address</span>
-                {mutateAddress && <span className="text-2xs">⚡</span>}
-              </button>
-
-              {/* 5. Pay */}
-              <button
-                onClick={() => setMutatePay(!mutatePay)}
-                className={`px-3 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1 ${
-                  mutatePay 
-                    ? 'bg-amber-500 text-white font-bold shadow-xs' 
-                    : 'text-ink-secondary hover:text-ink hover:bg-surface-raised/60'
-                }`}
-                title="Toggle Step 5: Payment Action Mutation"
-              >
-                <span>5. Pay</span>
-                {mutatePay && <span className="text-2xs">⚡</span>}
-              </button>
+            {/* Clean Segmented Step Switcher */}
+            <div className="inline-flex items-center p-1 rounded-xl bg-surface border border-border gap-1 flex-wrap">
+              {[
+                { id: 'cart', label: '1. Cart', active: mutateCart, toggle: () => setMutateCart(!mutateCart) },
+                { id: 'bag', label: '2. Bag', active: mutateBag, toggle: () => setMutateBag(!mutateBag) },
+                { id: 'email', label: '3. Email', active: mutateEmail, toggle: () => setMutateEmail(!mutateEmail) },
+                { id: 'address', label: '4. Address', active: mutateAddress, toggle: () => setMutateAddress(!mutateAddress) },
+                { id: 'pay', label: '5. Pay', active: mutatePay, toggle: () => setMutatePay(!mutatePay) },
+              ].map(step => (
+                <button
+                  key={step.id}
+                  onClick={step.toggle}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap ${
+                    step.active
+                      ? 'bg-surface-raised text-brand font-bold border-2 border-brand shadow-xs'
+                      : 'bg-surface-raised text-ink-secondary border border-border hover:text-ink hover:border-stone-400'
+                  }`}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${step.active ? 'bg-brand animate-pulse' : 'bg-stone-300'}`}></span>
+                  <span>{step.label}</span>
+                  {step.active && <span className="text-2xs text-brand font-bold">⚡</span>}
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -669,44 +642,82 @@ export default function DemoStore() {
           {/* STORE STEP 1: Product Showcase */}
           {storeStep === 1 && (
             <div className="card p-6 md:p-8 space-y-6 shadow-card">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                {/* Product Image */}
-                <div className="bg-surface border border-border rounded-xl p-8 flex flex-col items-center justify-center">
-                  <div className="w-36 h-36 rounded-xl bg-gradient-to-tr from-brand-light via-white to-surface border border-border flex items-center justify-center shadow-inner">
-                    <Package className="w-16 h-16 text-brand" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-7 items-center">
+                {/* Product Image / Visual Showcase */}
+                <div className="relative rounded-2xl bg-gradient-to-b from-surface/80 via-surface to-surface-raised border border-border p-6 flex flex-col items-center justify-between min-h-[290px] overflow-hidden group shadow-xs">
+                  {/* Subtle acoustic sound wave rings */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-30">
+                    <div className="w-52 h-52 rounded-full border border-brand/20 animate-pulse"></div>
+                    <div className="w-36 h-36 rounded-full border border-brand/25 absolute"></div>
+                    <div className="w-24 h-24 rounded-full border border-brand/35 absolute"></div>
                   </div>
-                  <div className="mt-4 flex gap-2">
-                    <span className="badge badge-neutral text-2xs font-mono">Bluetooth 5.4</span>
-                    <span className="badge badge-success text-2xs font-mono font-bold">In Stock</span>
+
+                  {/* Top floating pill */}
+                  <div className="w-full flex items-center justify-between z-10">
+                    <span className="badge badge-neutral text-2xs font-mono font-semibold">Model Q-90</span>
+                    <span className="badge badge-success text-2xs font-mono font-bold flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                      In Stock
+                    </span>
+                  </div>
+
+                  {/* Center Headphones Illustration */}
+                  <div className="my-auto z-10 relative flex flex-col items-center py-4">
+                    <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-brand-light via-surface-raised to-surface border border-brand-border/70 flex items-center justify-center shadow-card-md group-hover:scale-105 transition-transform duration-300">
+                      <Headphones className="w-12 h-12 text-brand stroke-[1.75]" />
+                    </div>
+                    <span className="text-2xs font-mono text-ink-tertiary mt-2.5 font-medium tracking-tight">Spatial Drivers • 40mm Neodymium</span>
+                  </div>
+
+                  {/* Bottom feature badges */}
+                  <div className="w-full pt-3 border-t border-border/70 flex items-center justify-center gap-2 z-10 text-2xs font-mono text-ink-secondary">
+                    <span className="px-2 py-0.5 rounded-md bg-surface border border-border">Bluetooth 5.4</span>
+                    <span className="px-2 py-0.5 rounded-md bg-surface border border-border">42h Battery</span>
+                    <span className="px-2 py-0.5 rounded-md bg-surface border border-border">ANC 2.0</span>
                   </div>
                 </div>
 
                 {/* Product Info */}
                 <div className="space-y-4">
                   <div>
-                    <span className="badge badge-brand text-2xs font-bold">Studio Audio Series</span>
-                    <h3 className="text-2xl font-extrabold text-ink tracking-tight mt-1">Quantum Studio Headphones</h3>
-                    <p className="text-xs text-ink-secondary mt-1 leading-relaxed">
-                      Spatial acoustic drivers with adaptive algorithmic active noise cancellation.
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-brand-light border border-brand-border/60 text-brand text-2xs font-mono font-bold uppercase tracking-wider mb-2">
+                      <Sparkles className="w-3 h-3" />
+                      <span>Studio Audio Series</span>
+                    </div>
+                    <h3 className="text-2xl font-extrabold text-ink tracking-tight">Quantum Studio Headphones</h3>
+                    <p className="text-xs text-ink-secondary mt-1.5 leading-relaxed">
+                      Spatial acoustic drivers with adaptive algorithmic active noise cancellation and ultra-low latency wireless streaming.
                     </p>
                   </div>
 
+                  {/* Price Row */}
                   <div className="flex items-baseline gap-3">
                     <span className="text-3xl font-extrabold text-ink font-mono">
                       {isBug ? '$0.00' : '$149.00'}
                     </span>
-                    {isBug && (
+                    {isBug ? (
                       <span className="badge badge-danger text-xs font-mono font-bold">
                         Pricing Regression ($0)
                       </span>
+                    ) : (
+                      <>
+                        <span className="text-xs text-ink-tertiary line-through font-mono">$229.00</span>
+                        <span className="badge badge-success text-2xs font-mono font-bold">SAVE 35%</span>
+                      </>
                     )}
-                    {!isBug && <span className="text-xs text-ink-tertiary line-through font-mono">$229.00</span>}
                   </div>
 
-                  {/* DOM ID Badge Preview */}
-                  <div className="bg-surface p-2.5 rounded-lg border border-border text-xs font-mono flex items-center justify-between">
-                    <span className="text-ink-secondary text-2xs font-semibold">Live Add-to-Cart ID:</span>
-                    <span className={`font-bold ${isCartMutated ? 'text-amber-600' : 'text-brand'}`}>#{addToCartId}</span>
+                  {/* DOM ID Badge Preview — Clean single line */}
+                  <div className="bg-surface/70 px-3 py-2 rounded-lg border border-border flex items-center justify-between text-2xs font-mono">
+                    <span className="text-ink-tertiary flex items-center gap-1.5 font-medium">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                      <span>Target Selector:</span>
+                    </span>
+                    <code className={`font-mono font-bold px-2 py-0.5 rounded ${
+                      isCartMutated ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-surface-raised text-brand border border-border'
+                    }`}>
+                      #{addToCartId}
+                    </code>
                   </div>
 
                   {/* Buttons */}
@@ -720,13 +731,11 @@ export default function DemoStore() {
                         triggerStepAction(1);
                         setTimeout(() => setItemAddedToast(false), 2000);
                       }}
-                      className={`btn w-full py-3 text-sm font-bold shadow-sm ${
-                        isCartMutated ? 'btn-primary' : 'bg-gray-900 hover:bg-black text-white'
-                      }`}
+                      className="btn btn-primary w-full py-3 text-sm font-bold shadow-md flex items-center justify-center gap-2"
                     >
                       {itemAddedToast ? (
                         <>
-                          <Check className="w-4 h-4 text-green-300" />
+                          <Check className="w-4 h-4 text-emerald-200" />
                           <span>Added to Bag! (Step 1 Complete)</span>
                         </>
                       ) : (
@@ -743,10 +752,10 @@ export default function DemoStore() {
                         setStoreStep(2);
                         triggerStepAction(2);
                       }}
-                      className="btn btn-secondary w-full py-2.5 text-sm font-semibold"
+                      className="btn btn-secondary w-full py-2.5 text-xs font-semibold flex items-center justify-between px-4"
                     >
                       <span>{viewCartText}</span>
-                      <span className="badge badge-neutral text-xs font-mono font-bold ml-1">
+                      <span className="text-2xs font-mono font-bold px-2 py-0.5 rounded-full bg-surface border border-border text-ink">
                         Bag ({cartCount})
                       </span>
                     </button>
@@ -929,29 +938,29 @@ export default function DemoStore() {
           )}
 
           {/* Tab Switcher */}
-          <div className="card p-1.5 flex items-center justify-between bg-surface-raised shadow-xs">
+          <div className="p-1 rounded-xl flex items-center justify-between bg-surface border border-border shadow-xs">
             <div className="flex items-center gap-1">
               <button
                 onClick={() => setInspectorTab('pipeline')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 ${
                   inspectorTab === 'pipeline'
-                    ? 'bg-brand text-white shadow-xs'
-                    : 'text-ink-secondary hover:text-ink hover:bg-surface'
+                    ? 'bg-surface-raised text-ink font-bold shadow-xs border border-border'
+                    : 'text-ink-secondary hover:text-ink'
                 }`}
               >
-                <Zap className="w-3.5 h-3.5" />
+                <Zap className={`w-3.5 h-3.5 ${inspectorTab === 'pipeline' ? 'text-brand' : 'text-ink-tertiary'}`} />
                 <span>Live Test Pipeline</span>
               </button>
 
               <button
                 onClick={() => setInspectorTab('terminal')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 ${
                   inspectorTab === 'terminal'
-                    ? 'bg-gray-900 text-white shadow-xs'
-                    : 'text-ink-secondary hover:text-ink hover:bg-surface'
+                    ? 'bg-surface-raised text-ink font-bold shadow-xs border border-border'
+                    : 'text-ink-secondary hover:text-ink'
                 }`}
               >
-                <Terminal className="w-3.5 h-3.5" />
+                <Terminal className={`w-3.5 h-3.5 ${inspectorTab === 'terminal' ? 'text-brand' : 'text-ink-tertiary'}`} />
                 <span>Real-Time Logs ({terminalLogs.length})</span>
               </button>
             </div>

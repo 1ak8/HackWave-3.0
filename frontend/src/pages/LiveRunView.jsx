@@ -22,7 +22,7 @@ export default function LiveRunView() {
   const [headless, setHeadless] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
 
-  const defaultTest = tests[0] || null;
+  const defaultTest = tests.find(t => t._id === 'test_default_ecommerce_flow' || t.isSample || t.steps?.length === 6) || tests[0] || null;
   const stepsToDisplay = activeRun?.steps || defaultTest?.steps || [];
 
   // Automatically track currently running/healing step, and sync selectedStep with latest socket updates!
@@ -65,80 +65,83 @@ export default function LiveRunView() {
   return (
     <div className="w-full max-w-6xl mx-auto px-6 py-8 space-y-6">
       {/* Top Controller Header */}
-      <div className="card p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-6 shadow-card">
-        <div className="space-y-1">
+      <div className="card p-5 flex flex-col xl:flex-row xl:items-center justify-between gap-5 shadow-card">
+        <div className="space-y-1 min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className={`w-2.5 h-2.5 rounded-full ${activeRun?.status === 'running' ? 'bg-brand animate-pulse' : 'bg-success'}`}></span>
-            <span className="text-xs font-mono text-brand uppercase font-bold tracking-wider">
+            <span className={`w-2 h-2 rounded-full ${activeRun?.status === 'running' ? 'bg-brand animate-pulse' : 'bg-success'}`}></span>
+            <span className="text-2xs font-mono text-ink-tertiary uppercase font-bold tracking-wider">
               {activeRun?.status === 'running' ? 'Running Live Test' : 'Test Runner Ready'}
             </span>
           </div>
-          <h1 className="text-2xl font-bold text-ink">
+          <h1 className="text-xl font-bold text-ink truncate">
             {activeRun?.testTitle || defaultTest?.title || 'E-Commerce End-to-End Test Suite'}
           </h1>
-          <p className="text-xs text-ink-secondary">
-            Target: <code className="text-ink font-mono bg-surface px-2 py-0.5 rounded border border-border text-xs font-semibold">{defaultTest?.targetUrl || 'http://localhost:5173/demo-store'}</code>
+          <p className="text-xs text-ink-secondary truncate flex items-center gap-1.5">
+            <span className="text-ink-tertiary text-2xs font-mono">Target:</span>
+            <code className="text-ink font-mono bg-surface px-1.5 py-0.5 rounded border border-border text-2xs truncate">
+              {defaultTest?.targetUrl || 'http://localhost:5173/demo-store'}
+            </code>
           </p>
         </div>
 
         {/* Action Controls */}
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex items-center gap-2 flex-wrap shrink-0">
           {/* Visual Browser Checkbox */}
           <label 
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-lg border text-xs font-mono cursor-pointer transition font-semibold ${
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg border text-2xs font-mono cursor-pointer transition font-medium whitespace-nowrap shrink-0 ${
               !headless 
-                ? 'bg-brand-light border-brand-border text-brand shadow-xs ring-1 ring-brand/30' 
-                : 'bg-surface border-border text-ink-secondary hover:bg-surface'
+                ? 'bg-brand-light border-brand-border text-brand shadow-xs' 
+                : 'bg-surface border-border text-ink-secondary hover:bg-surface/80'
             }`}
             title="When ON: Launches a real Chromium browser window on your desktop so you can watch Playwright physically click buttons and fill inputs live!"
           >
-            <Monitor className={`w-4 h-4 ${!headless ? 'text-brand' : 'text-ink-tertiary'}`} />
+            <Monitor className={`w-3.5 h-3.5 ${!headless ? 'text-brand' : 'text-ink-tertiary'}`} />
             <input
               type="checkbox"
               checked={!headless}
               onChange={(e) => setHeadless(!e.target.checked)}
-              className="accent-brand rounded"
+              className="accent-brand rounded w-3 h-3"
             />
-            <span>{!headless ? 'Desktop Chrome Window: ON' : 'Desktop Window: OFF (Headless)'}</span>
+            <span>{!headless ? 'Desktop Chrome: ON' : 'Desktop: OFF'}</span>
           </label>
 
           <button
             onClick={() => handleExecute('mutated')}
             disabled={isRunning}
-            className="btn btn-primary text-sm px-5 py-2.5 font-bold shadow-sm"
+            className="btn btn-primary btn-sm px-4 py-2 text-xs font-bold whitespace-nowrap shrink-0"
             title="Run test against mutated elements with auto-healing"
           >
-            <Zap className={`w-4 h-4 fill-current ${isRunning ? 'animate-spin' : ''}`} />
+            <Zap className={`w-3.5 h-3.5 fill-current ${isRunning ? 'animate-spin' : ''}`} />
             <span>{isRunning ? 'Running...' : 'Auto-Heal Run'}</span>
           </button>
 
           <button
             onClick={() => handleExecute('standard')}
             disabled={isRunning}
-            className="btn btn-secondary text-sm px-4 py-2.5 font-semibold"
+            className="btn btn-secondary btn-sm px-3 py-2 text-xs font-semibold whitespace-nowrap shrink-0"
             title="Run standard test"
           >
-            <Play className="w-4 h-4 fill-current text-ink-secondary" />
+            <Play className="w-3.5 h-3.5 fill-current text-ink-secondary" />
             <span>Standard</span>
           </button>
 
           <button
             onClick={() => handleExecute('chaos')}
             disabled={isRunning}
-            className="btn bg-amber-500 hover:bg-amber-600 text-white text-sm px-4 py-2.5 font-semibold shadow-sm"
+            className="btn btn-secondary btn-sm px-3 py-2 text-xs font-semibold text-amber-800 hover:text-amber-900 border-amber-200/80 hover:bg-amber-50 whitespace-nowrap shrink-0 flex items-center gap-1"
             title="Randomize UI elements during run"
           >
-            <Flame className="w-4 h-4" />
+            <Flame className="w-3.5 h-3.5 text-amber-500" />
             <span>Chaos</span>
           </button>
 
           <button
             onClick={() => handleExecute('bug_mode')}
             disabled={isRunning}
-            className="btn bg-danger hover:bg-red-700 text-white text-sm px-4 py-2.5 font-semibold shadow-sm"
+            className="btn btn-secondary btn-sm px-3 py-2 text-xs font-semibold text-red-800 hover:text-red-900 border-red-200/80 hover:bg-red-50 whitespace-nowrap shrink-0 flex items-center gap-1"
             title="Trigger a genuine bug to test Smart Triage"
           >
-            <AlertTriangle className="w-4 h-4" />
+            <AlertTriangle className="w-3.5 h-3.5 text-danger" />
             <span>Real Bug</span>
           </button>
 
@@ -148,11 +151,11 @@ export default function LiveRunView() {
                 setActiveRun(prev => prev ? { ...prev, status: 'completed' } : null);
                 setIsRunning(false);
               }}
-              className="btn btn-ghost btn-xs text-xs text-ink-secondary flex items-center gap-1 ml-1"
+              className="btn btn-ghost btn-xs text-2xs text-ink-secondary flex items-center gap-1 ml-1"
               title="Reset state if run was interrupted"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Reset State</span>
+              <RotateCcw className="w-3 h-3" />
+              <span>Reset</span>
             </button>
           )}
         </div>

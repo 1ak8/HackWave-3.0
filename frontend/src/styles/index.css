@@ -21,8 +21,8 @@
   }
 
   ::selection {
-    background: rgba(13, 148, 136, 0.22);
-    color: #0f172a;
+    background: rgba(234, 88, 12, 0.2);
+    color: #1c1917;
   }
 
   ::-webkit-scrollbar {
@@ -33,11 +33,11 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+    background: #d6d0c4;
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+    background: #b5aca4;
   }
 }
 
@@ -48,10 +48,10 @@
   }
   .btn-primary {
     @apply btn text-white shadow-glow hover:shadow-glow-lg;
-    background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+    background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
   }
   .btn-primary:hover {
-    background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
   }
   .btn-secondary {
     @apply btn bg-surface-raised text-ink border border-border hover:border-border-strong hover:bg-surface shadow-card;
@@ -160,24 +160,22 @@
 @layer utilities {
   .scrollbar-thin::-webkit-scrollbar { width: 5px; height: 5px; }
   .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
-  .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
-  .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: #d6d0c4; border-radius: 9999px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: #b5aca4; }
 
   .scrollbar-sidebar::-webkit-scrollbar { width: 4px; }
   .scrollbar-sidebar::-webkit-scrollbar-track { background: transparent; }
-  .scrollbar-sidebar::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
+  .scrollbar-sidebar::-webkit-scrollbar-thumb { background: #d6d0c4; border-radius: 9999px; }
 
-  /* Subtle gradient text helper */
   .text-gradient-brand {
-    background: linear-gradient(135deg, #14b8a6 0%, #0d9488 50%, #0f766e 100%);
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  /* Frosted glass surface (light) */
   .glass-surface {
-    background: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
   }

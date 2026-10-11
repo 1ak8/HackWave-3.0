@@ -13,34 +13,25 @@ export default function App() {
   return (
     <BrowserRouter>
       <TestProvider>
-        <Routes>
-          {/* Target Sandbox Demo Store */}
-          <Route path="/demo-store" element={<DemoStore />} />
+        {/* Main App Layout with Fixed Locked Sidebar on All Pages (Including Demo Store) */}
+        <div className="min-h-screen bg-canvas text-ink font-sans selection:bg-brand-light selection:text-brand">
+          {/* 100% Fixed Locked Left Sidebar */}
+          <Sidebar />
 
-          {/* Main App Layout with Fixed Locked Sidebar */}
-          <Route
-            path="*"
-            element={
-              <div className="min-h-screen bg-surface text-ink font-sans selection:bg-brand-light selection:text-brand">
-                {/* 100% Fixed Locked Left Sidebar */}
-                <Sidebar />
-
-                {/* Right Content Area with Left Offset */}
-                <div className="pl-64 min-h-screen flex flex-col min-w-0">
-                  <Header />
-                  <main className="flex-1 pb-16">
-                    <Routes>
-                      <Route path="/" element={<Dashboard />} />
-                      <Route path="/live" element={<LiveRunView />} />
-                      <Route path="/studio" element={<TestStudio />} />
-                      <Route path="/audit" element={<HealingReport />} />
-                    </Routes>
-                  </main>
-                </div>
-              </div>
-            }
-          />
-        </Routes>
+          {/* Right Content Area with Left Offset */}
+          <div className="pl-64 min-h-screen flex flex-col min-w-0">
+            <Header />
+            <main className="flex-1 pb-16">
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/live" element={<LiveRunView />} />
+                <Route path="/studio" element={<TestStudio />} />
+                <Route path="/audit" element={<HealingReport />} />
+                <Route path="/demo-store" element={<DemoStore />} />
+              </Routes>
+            </main>
+          </div>
+        </div>
       </TestProvider>
     </BrowserRouter>
   );

@@ -16,6 +16,6 @@
 }
 
 .btn-primary-gradient {
-  @apply bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-[0_4px_14px_0_rgb(79,70,229,0.39)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.23)] hover:-translate-y-0.5 transition-all duration-200;
+  @apply bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-[0_4px_14px_0_rgb(5,150,105,0.3)] hover:shadow-[0_6px_20px_rgba(5,150,105,0.2)] hover:-translate-y-0.5 transition-all duration-200;
 }
 

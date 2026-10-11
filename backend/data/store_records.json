@@ -1,6 +1,52 @@
 {
   "tests": [
     {
+      "_id": "test_1791711869155",
+      "title": "checkout ",
+      "description": "",
+      "intent": "checkout ",
+      "targetUrl": "http://localhost:5173/demo-store",
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add headphones to cart",
+          "action": "click",
+          "selector": "#btn-add-to-cart",
+          "value": ""
+        },
+        {
+          "order": 2,
+          "name": "View Cart",
+          "intent": "Open shopping cart drawer",
+          "action": "click",
+          "selector": "#btn-view-cart",
+          "value": ""
+        },
+        {
+          "order": 3,
+          "name": "Provide Email",
+          "intent": "Fill user email address",
+          "action": "fill",
+          "selector": "#input-checkout-email",
+          "value": "lokesh@hackwave.dev"
+        },
+        {
+          "order": 4,
+          "name": "Authorize Payment",
+          "intent": "Submit order and authorize card",
+          "action": "click",
+          "selector": "#btn-complete-order",
+          "value": ""
+        }
+      ],
+      "tags": [
+        "Custom Intent Suite"
+      ],
+      "createdAt": "2026-10-11T09:44:29.155Z",
+      "updatedAt": "2026-10-11T09:44:29.155Z"
+    },
+    {
       "_id": "test_1791688488625",
       "title": "checkout flow ",
       "description": "",
@@ -117,6 +163,1454 @@
     }
   ],
   "runs": [
+    {
+      "_id": "run_1791718070231",
+      "testId": "test_default_ecommerce_flow",
+      "testTitle": "E-Commerce Checkout & Order Fulfillment",
+      "status": "healed",
+      "mode": "mutated",
+      "durationMs": 19871,
+      "healedCount": 3,
+      "totalSteps": 6,
+      "passedSteps": 6,
+      "failedSteps": 0,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add Quantum Wireless Headphones to shopping cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "[data-testid='add-to-cart-action']",
+          "status": "healed",
+          "durationMs": 6065,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 85,
+            "reasoning": "The original '#btn-add-to-cart' no longer exists, but a button that performs the same add‑to‑cart action is present (id='dynamic_btn_cart_x89', data-testid='add-to-cart-action', text='Claim Headphones Now'). This is a UI redesign, not a functional failure, so we can safely heal the selector to target the new element.",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 2,
+          "name": "Open Shopping Cart",
+          "intent": "Open checkout side drawer or cart view",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "passed",
+          "durationMs": 134,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Enter Buyer Email",
+          "intent": "Input customer email in checkout contact field",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#customer_email_contact",
+          "status": "healed",
+          "durationMs": 4030,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 99,
+            "reasoning": "Original selector \"#input-checkout-email\" missing due to redesign. Located dynamic replacement <input> with label \"lokesh@hackwave.dev\" satisfying intent \"Input customer email in checkout contact field\".",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 4,
+          "name": "Enter Shipping Address",
+          "intent": "Provide delivery street address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-address",
+          "resolvedSelector": "#input-checkout-address",
+          "status": "passed",
+          "durationMs": 52,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 5,
+          "name": "Complete Payment",
+          "intent": "Submit order and authorize payment",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#checkout_action_auth_pay",
+          "status": "healed",
+          "durationMs": 3698,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 99,
+            "reasoning": "Original selector \"#btn-complete-order\" missing due to redesign. Located dynamic replacement <button> with label \"Complete Payment ($149.00)\" satisfying intent \"Submit order and authorize payment\".",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 6,
+          "name": "Assert Order Confirmation",
+          "intent": "Confirm that order success screen and tracking code are displayed",
+          "action": "assert",
+          "originalSelector": "#order-success-badge",
+          "resolvedSelector": "#order-success-badge",
+          "status": "passed",
+          "durationMs": 130,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        }
+      ],
+      "createdAt": "2026-10-11T11:27:50.231Z",
+      "updatedAt": "2026-10-11T11:28:10.106Z",
+      "triageClassification": "Harmless_Healed"
+    },
+    {
+      "_id": "run_1791717807931",
+      "testId": "test_default_ecommerce_flow",
+      "testTitle": "E-Commerce Checkout & Order Fulfillment",
+      "status": "failed",
+      "mode": "mutated",
+      "durationMs": 24291,
+      "healedCount": 0,
+      "totalSteps": 6,
+      "passedSteps": 0,
+      "failedSteps": 1,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add Quantum Wireless Headphones to shopping cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "#btn-add-to-cart",
+          "status": "failed",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          },
+          "error": "Healed selector failed: page.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[testId=\\'add-to-cart-action\\']')\u001b[22m\n"
+        },
+        {
+          "order": 2,
+          "name": "Open Shopping Cart",
+          "intent": "Open checkout side drawer or cart view",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Enter Buyer Email",
+          "intent": "Input customer email in checkout contact field",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#input-checkout-email",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 4,
+          "name": "Enter Shipping Address",
+          "intent": "Provide delivery street address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-address",
+          "resolvedSelector": "#input-checkout-address",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 5,
+          "name": "Complete Payment",
+          "intent": "Submit order and authorize payment",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#btn-complete-order",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 6,
+          "name": "Assert Order Confirmation",
+          "intent": "Confirm that order success screen and tracking code are displayed",
+          "action": "assert",
+          "originalSelector": "#order-success-badge",
+          "resolvedSelector": "#order-success-badge",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        }
+      ],
+      "createdAt": "2026-10-11T11:23:27.931Z",
+      "updatedAt": "2026-10-11T11:23:52.229Z",
+      "triageClassification": "Clean"
+    },
+    {
+      "_id": "run_1791717220503",
+      "testId": "test_1791711869155",
+      "testTitle": "checkout ",
+      "status": "healed",
+      "mode": "mutated",
+      "durationMs": 18339,
+      "healedCount": 3,
+      "totalSteps": 4,
+      "passedSteps": 4,
+      "failedSteps": 0,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add headphones to cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "button:has-text(\"Claim Headphones Now\")",
+          "status": "healed",
+          "durationMs": 5578,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 85,
+            "reasoning": "The original '#btn-add-to-cart' ID no longer exists; a new button with id 'dynamic_btn_cart_x89' and text 'Claim Headphones Now' performs the add‑to‑cart action. This is a UI redesign, not a functional failure, so we can heal by targeting the button via its visible text.",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 2,
+          "name": "View Cart",
+          "intent": "Open shopping cart drawer",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "passed",
+          "durationMs": 170,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Provide Email",
+          "intent": "Fill user email address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#input-checkout-address",
+          "status": "healed",
+          "durationMs": 3296,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 99,
+            "reasoning": "Original selector \"#input-checkout-email\" missing due to redesign. Located dynamic replacement <input> with label \"Building 4, Tech Innovation Hub, Cyber City\" satisfying intent \"Fill user email address\".",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 4,
+          "name": "Authorize Payment",
+          "intent": "Submit order and authorize card",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#checkout_action_auth_pay",
+          "status": "healed",
+          "durationMs": 4071,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 99,
+            "reasoning": "Original selector \"#btn-complete-order\" missing due to redesign. Located dynamic replacement <button> with label \"Complete Payment ($149.00)\" satisfying intent \"Submit order and authorize card\".",
+            "classification": "Harmless_UI_Change"
+          }
+        }
+      ],
+      "createdAt": "2026-10-11T11:13:40.503Z",
+      "updatedAt": "2026-10-11T11:13:58.851Z",
+      "triageClassification": "Harmless_Healed"
+    },
+    {
+      "_id": "run_1791716658895",
+      "testId": "test_1791711869155",
+      "testTitle": "checkout ",
+      "status": "passed",
+      "mode": "standard",
+      "durationMs": 7363,
+      "healedCount": 0,
+      "totalSteps": 4,
+      "passedSteps": 4,
+      "failedSteps": 0,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add headphones to cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "#btn-add-to-cart",
+          "status": "passed",
+          "durationMs": 704,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 2,
+          "name": "View Cart",
+          "intent": "Open shopping cart drawer",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "passed",
+          "durationMs": 271,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Provide Email",
+          "intent": "Fill user email address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#input-checkout-email",
+          "status": "passed",
+          "durationMs": 70,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 4,
+          "name": "Authorize Payment",
+          "intent": "Submit order and authorize card",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#btn-complete-order",
+          "status": "passed",
+          "durationMs": 133,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        }
+      ],
+      "createdAt": "2026-10-11T11:04:18.895Z",
+      "updatedAt": "2026-10-11T11:04:26.274Z",
+      "triageClassification": "Clean"
+    },
+    {
+      "_id": "run_1791716638094",
+      "testId": "test_1791711869155",
+      "testTitle": "checkout ",
+      "status": "passed",
+      "mode": "standard",
+      "durationMs": 9343,
+      "healedCount": 0,
+      "totalSteps": 4,
+      "passedSteps": 4,
+      "failedSteps": 0,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add headphones to cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "#btn-add-to-cart",
+          "status": "passed",
+          "durationMs": 870,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 2,
+          "name": "View Cart",
+          "intent": "Open shopping cart drawer",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "passed",
+          "durationMs": 214,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Provide Email",
+          "intent": "Fill user email address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#input-checkout-email",
+          "status": "passed",
+          "durationMs": 82,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 4,
+          "name": "Authorize Payment",
+          "intent": "Submit order and authorize card",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#btn-complete-order",
+          "status": "passed",
+          "durationMs": 114,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        }
+      ],
+      "createdAt": "2026-10-11T11:03:58.094Z",
+      "updatedAt": "2026-10-11T11:04:07.455Z",
+      "triageClassification": "Clean"
+    },
+    {
+      "_id": "run_1791715497730",
+      "testId": "test_1791711869155",
+      "testTitle": "checkout ",
+      "status": "failed",
+      "mode": "mutated",
+      "durationMs": 14867,
+      "healedCount": 0,
+      "totalSteps": 4,
+      "passedSteps": 0,
+      "failedSteps": 1,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add headphones to cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "#btn-add-to-cart",
+          "status": "failed",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          },
+          "error": "Healed selector failed: page.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[testId=\"add-to-cart-action\"]')\u001b[22m\n"
+        },
+        {
+          "order": 2,
+          "name": "View Cart",
+          "intent": "Open shopping cart drawer",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Provide Email",
+          "intent": "Fill user email address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#input-checkout-email",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 4,
+          "name": "Authorize Payment",
+          "intent": "Submit order and authorize card",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#btn-complete-order",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        }
+      ],
+      "createdAt": "2026-10-11T10:44:57.730Z",
+      "updatedAt": "2026-10-11T10:45:12.600Z",
+      "triageClassification": "Clean"
+    },
+    {
+      "_id": "run_1791712462430",
+      "testId": "test_1791711869155",
+      "testTitle": "checkout ",
+      "status": "failed",
+      "mode": "bug_mode",
+      "durationMs": 26920,
+      "healedCount": 0,
+      "totalSteps": 4,
+      "passedSteps": 0,
+      "failedSteps": 1,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add headphones to cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "#btn-add-to-cart",
+          "status": "failed",
+          "durationMs": 11109,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 45,
+            "reasoning": "Target element for intent \"Add headphones to cart\" completely vanished from current view hierarchy. Marking as potential regression.",
+            "classification": "Genuine_Bug"
+          },
+          "error": "Target element for intent \"Add headphones to cart\" completely vanished from current view hierarchy. Marking as potential regression."
+        },
+        {
+          "order": 2,
+          "name": "View Cart",
+          "intent": "Open shopping cart drawer",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Provide Email",
+          "intent": "Fill user email address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#input-checkout-email",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 4,
+          "name": "Authorize Payment",
+          "intent": "Submit order and authorize card",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#btn-complete-order",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        }
+      ],
+      "createdAt": "2026-10-11T09:54:22.430Z",
+      "updatedAt": "2026-10-11T09:54:49.374Z",
+      "triageClassification": "Genuine_Bug_Halted"
+    },
+    {
+      "_id": "run_1791711878597",
+      "testId": "test_1791711869155",
+      "testTitle": "checkout ",
+      "status": "healed",
+      "mode": "mutated",
+      "durationMs": 20237,
+      "healedCount": 3,
+      "totalSteps": 4,
+      "passedSteps": 4,
+      "failedSteps": 0,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add headphones to cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "button:has-text(\"Claim Headphones Now\")",
+          "status": "healed",
+          "durationMs": 7799,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 85,
+            "reasoning": "The original '#btn-add-to-cart' no longer exists; a new button with id 'dynamic_btn_cart_x89' and testId 'add-to-cart-action' now represents the add‑to‑cart action, labeled 'Claim Headphones Now'. This is a UI redesign rather than a missing feature, so a more resilient selector based on visible text (or testId) restores functionality.",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 2,
+          "name": "View Cart",
+          "intent": "Open shopping cart drawer",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "passed",
+          "durationMs": 115,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Provide Email",
+          "intent": "Fill user email address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#input-checkout-address",
+          "status": "healed",
+          "durationMs": 3873,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 99,
+            "reasoning": "Original selector \"#input-checkout-email\" missing due to redesign. Located dynamic replacement <input> with label \"Building 4, Tech Innovation Hub, Cyber City\" satisfying intent \"Fill user email address\".",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 4,
+          "name": "Authorize Payment",
+          "intent": "Submit order and authorize card",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#checkout_action_auth_pay",
+          "status": "healed",
+          "durationMs": 4035,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 99,
+            "reasoning": "Original selector \"#btn-complete-order\" missing due to redesign. Located dynamic replacement <button> with label \"Complete Payment ($149.00)\" satisfying intent \"Submit order and authorize card\".",
+            "classification": "Harmless_UI_Change"
+          }
+        }
+      ],
+      "createdAt": "2026-10-11T09:44:38.597Z",
+      "updatedAt": "2026-10-11T09:44:58.841Z",
+      "triageClassification": "Harmless_Healed"
+    },
+    {
+      "_id": "run_1791711793629",
+      "testId": "test_1791688488625",
+      "testTitle": "checkout flow ",
+      "status": "passed",
+      "mode": "standard",
+      "durationMs": 3317,
+      "healedCount": 0,
+      "totalSteps": 4,
+      "passedSteps": 4,
+      "failedSteps": 0,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add headphones to cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "#btn-add-to-cart",
+          "status": "passed",
+          "durationMs": 92,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 2,
+          "name": "View Cart",
+          "intent": "Open shopping cart drawer",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "passed",
+          "durationMs": 78,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Provide Email",
+          "intent": "Fill user email address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#input-checkout-email",
+          "status": "passed",
+          "durationMs": 26,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 4,
+          "name": "Authorize Payment",
+          "intent": "Submit order and authorize card",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#btn-complete-order",
+          "status": "passed",
+          "durationMs": 63,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        }
+      ],
+      "createdAt": "2026-10-11T09:43:13.629Z",
+      "updatedAt": "2026-10-11T09:43:16.949Z",
+      "triageClassification": "Clean"
+    },
+    {
+      "_id": "run_1791711776493",
+      "testId": "test_1791688488625",
+      "testTitle": "checkout flow ",
+      "status": "failed",
+      "mode": "bug_mode",
+      "durationMs": 10669,
+      "healedCount": 0,
+      "totalSteps": 4,
+      "passedSteps": 0,
+      "failedSteps": 1,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add headphones to cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "#btn-add-to-cart",
+          "status": "failed",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          },
+          "error": "Healed selector failed: page.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[testId=\"add-to-cart-action\"]')\u001b[22m\n"
+        },
+        {
+          "order": 2,
+          "name": "View Cart",
+          "intent": "Open shopping cart drawer",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Provide Email",
+          "intent": "Fill user email address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#input-checkout-email",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 4,
+          "name": "Authorize Payment",
+          "intent": "Submit order and authorize card",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#btn-complete-order",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        }
+      ],
+      "createdAt": "2026-10-11T09:42:56.493Z",
+      "updatedAt": "2026-10-11T09:43:07.193Z",
+      "triageClassification": "Clean"
+    },
+    {
+      "_id": "run_1791711688914",
+      "testId": "test_1791688488625",
+      "testTitle": "checkout flow ",
+      "status": "failed",
+      "mode": "bug_mode",
+      "durationMs": 12579,
+      "healedCount": 2,
+      "totalSteps": 4,
+      "passedSteps": 3,
+      "failedSteps": 1,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add headphones to cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "#dynamic_btn_cart_x89",
+          "status": "healed",
+          "durationMs": 3195,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 99,
+            "reasoning": "Original selector \"#btn-add-to-cart\" missing due to redesign. Located dynamic replacement <button> with label \"Claim Headphones Now\" satisfying intent \"Add headphones to cart\".",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 2,
+          "name": "View Cart",
+          "intent": "Open shopping cart drawer",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "passed",
+          "durationMs": 104,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Provide Email",
+          "intent": "Fill user email address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#input-checkout-address",
+          "status": "healed",
+          "durationMs": 3105,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 99,
+            "reasoning": "Original selector \"#input-checkout-email\" missing due to redesign. Located dynamic replacement <input> with label \"Building 4, Tech Innovation Hub, Cyber City\" satisfying intent \"Fill user email address\".",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 4,
+          "name": "Authorize Payment",
+          "intent": "Submit order and authorize card",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#btn-complete-order",
+          "status": "failed",
+          "durationMs": 3063,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 99,
+            "reasoning": "Critical Application Bug detected: Payment gateway returned HTTP 500 & Cart total anomaly ($0.00). AI engine verified this is a genuine backend regression, NOT a cosmetic selector rename. Healing safely aborted.",
+            "classification": "Genuine_Bug"
+          },
+          "error": "Critical Application Bug detected: Payment gateway returned HTTP 500 & Cart total anomaly ($0.00). AI engine verified this is a genuine backend regression, NOT a cosmetic selector rename. Healing safely aborted."
+        }
+      ],
+      "createdAt": "2026-10-11T09:41:28.914Z",
+      "updatedAt": "2026-10-11T09:41:41.497Z",
+      "triageClassification": "Genuine_Bug_Halted"
+    },
+    {
+      "_id": "run_1791711436256",
+      "testId": "test_1791688488625",
+      "testTitle": "checkout flow ",
+      "status": "failed",
+      "mode": "bug_mode",
+      "durationMs": 45121,
+      "healedCount": 2,
+      "totalSteps": 4,
+      "passedSteps": 3,
+      "failedSteps": 1,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add headphones to cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "#dynamic_btn_cart_x89",
+          "status": "healed",
+          "durationMs": 4725,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 99,
+            "reasoning": "Original selector \"#btn-add-to-cart\" missing due to redesign. Located dynamic replacement <button> with label \"Claim Headphones Now\" satisfying intent \"Add headphones to cart\".",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 2,
+          "name": "View Cart",
+          "intent": "Open shopping cart drawer",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "passed",
+          "durationMs": 664,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Provide Email",
+          "intent": "Fill user email address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#customer_email_contact",
+          "status": "healed",
+          "durationMs": 10811,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 92,
+            "reasoning": "The original selector '#input-checkout-email' no longer exists; the email input is present with id 'customer_email_contact' (type email). This is a UI identifier change, not a functional failure, so the test can be healed by targeting the new id.",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 4,
+          "name": "Authorize Payment",
+          "intent": "Submit order and authorize card",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#btn-complete-order",
+          "status": "failed",
+          "durationMs": 4435,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 99,
+            "reasoning": "Critical Application Bug detected: Payment gateway returned HTTP 500 & Cart total anomaly ($0.00). AI engine verified this is a genuine backend regression, NOT a cosmetic selector rename. Healing safely aborted.",
+            "classification": "Genuine_Bug"
+          },
+          "error": "Critical Application Bug detected: Payment gateway returned HTTP 500 & Cart total anomaly ($0.00). AI engine verified this is a genuine backend regression, NOT a cosmetic selector rename. Healing safely aborted."
+        }
+      ],
+      "createdAt": "2026-10-11T09:37:16.257Z",
+      "updatedAt": "2026-10-11T09:38:01.396Z",
+      "triageClassification": "Genuine_Bug_Halted"
+    },
+    {
+      "_id": "run_1791710952066",
+      "testId": "test_1791688488625",
+      "testTitle": "checkout flow ",
+      "status": "healed",
+      "mode": "mutated",
+      "durationMs": 15081,
+      "healedCount": 3,
+      "totalSteps": 4,
+      "passedSteps": 4,
+      "failedSteps": 0,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add headphones to cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "#dynamic_btn_cart_x89",
+          "status": "healed",
+          "durationMs": 3840,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 99,
+            "reasoning": "Original selector \"#btn-add-to-cart\" missing due to redesign. Located dynamic replacement <button> with label \"Claim Headphones Now\" satisfying intent \"Add headphones to cart\".",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 2,
+          "name": "View Cart",
+          "intent": "Open shopping cart drawer",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "passed",
+          "durationMs": 60,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Provide Email",
+          "intent": "Fill user email address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#customer_email_contact",
+          "status": "healed",
+          "durationMs": 4404,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 88,
+            "reasoning": "The original selector '#input-checkout-email' no longer exists; the email input is now rendered with id 'customer_email_contact'. This is a simple id rename, not a functional failure, so the test can be healed by targeting the new id. The change does not affect the checkout flow logic.",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 4,
+          "name": "Authorize Payment",
+          "intent": "Submit order and authorize card",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#checkout_action_auth_pay",
+          "status": "healed",
+          "durationMs": 3142,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 99,
+            "reasoning": "Original selector \"#btn-complete-order\" missing due to redesign. Located dynamic replacement <button> with label \"Complete Payment ($149.00)\" satisfying intent \"Submit order and authorize card\".",
+            "classification": "Harmless_UI_Change"
+          }
+        }
+      ],
+      "createdAt": "2026-10-11T09:29:12.066Z",
+      "updatedAt": "2026-10-11T09:29:27.151Z",
+      "triageClassification": "Harmless_Healed"
+    },
+    {
+      "_id": "run_1791710936379",
+      "testId": "test_1791688488625",
+      "testTitle": "checkout flow ",
+      "status": "failed",
+      "mode": "bug_mode",
+      "durationMs": 11359,
+      "healedCount": 0,
+      "totalSteps": 4,
+      "passedSteps": 0,
+      "failedSteps": 1,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add headphones to cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "#btn-add-to-cart",
+          "status": "failed",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          },
+          "error": "Healed selector failed: page.click: Timeout 3000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[testId=\\'add-to-cart-action\\']')\u001b[22m\n"
+        },
+        {
+          "order": 2,
+          "name": "View Cart",
+          "intent": "Open shopping cart drawer",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Provide Email",
+          "intent": "Fill user email address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#input-checkout-email",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 4,
+          "name": "Authorize Payment",
+          "intent": "Submit order and authorize card",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#btn-complete-order",
+          "status": "pending",
+          "durationMs": 0,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        }
+      ],
+      "createdAt": "2026-10-11T09:28:56.379Z",
+      "updatedAt": "2026-10-11T09:29:07.743Z",
+      "triageClassification": "Clean"
+    },
+    {
+      "_id": "run_1791710934226",
+      "testId": "test_1791688488625",
+      "testTitle": "checkout flow ",
+      "status": "passed",
+      "mode": "standard",
+      "durationMs": 8037,
+      "healedCount": 0,
+      "totalSteps": 4,
+      "passedSteps": 4,
+      "failedSteps": 0,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add headphones to cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "#btn-add-to-cart",
+          "status": "passed",
+          "durationMs": 435,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 2,
+          "name": "View Cart",
+          "intent": "Open shopping cart drawer",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "passed",
+          "durationMs": 133,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Provide Email",
+          "intent": "Fill user email address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#input-checkout-email",
+          "status": "passed",
+          "durationMs": 100,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 4,
+          "name": "Authorize Payment",
+          "intent": "Submit order and authorize card",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#btn-complete-order",
+          "status": "passed",
+          "durationMs": 77,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        }
+      ],
+      "createdAt": "2026-10-11T09:28:54.226Z",
+      "updatedAt": "2026-10-11T09:29:02.266Z",
+      "triageClassification": "Clean"
+    },
+    {
+      "_id": "run_1791702364182",
+      "testId": "test_1791688488625",
+      "testTitle": "checkout flow ",
+      "status": "healed",
+      "mode": "chaos",
+      "durationMs": 25681,
+      "healedCount": 3,
+      "totalSteps": 4,
+      "passedSteps": 4,
+      "failedSteps": 0,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add headphones to cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "button:has-text(\"Claim Headphones Now\")",
+          "status": "healed",
+          "durationMs": 9753,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 85,
+            "reasoning": "The original selector '#btn-add-to-cart' no longer exists; the add‑to‑cart button now has id 'dynamic_btn_cart_x89' and a testId 'add-to-cart-action' with visible text 'Claim Headphones Now'. This is a typical UI redesign rather than a functional failure, so we can heal by targeting the button via its stable visible label. The healed selector reliably finds the element across runs.",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 2,
+          "name": "View Cart",
+          "intent": "Open shopping cart drawer",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "passed",
+          "durationMs": 85,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Provide Email",
+          "intent": "Fill user email address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#customer_email_contact",
+          "status": "healed",
+          "durationMs": 5469,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 92,
+            "reasoning": "The original selector '#input-checkout-email' no longer exists; the email field is now rendered as an <input> with id 'customer_email_contact'. This is a UI identifier change, not a functional failure, so the test can be healed by targeting the new id. The element is present, enabled, and matches the intended step (fill user email).",
+            "classification": "Harmless_UI_Change"
+          }
+        },
+        {
+          "order": 4,
+          "name": "Authorize Payment",
+          "intent": "Submit order and authorize card",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#checkout_action_auth_pay",
+          "status": "healed",
+          "durationMs": 4969,
+          "healingDetails": {
+            "wasHealed": true,
+            "confidence": 99,
+            "reasoning": "Original selector \"#btn-complete-order\" missing due to redesign. Located dynamic replacement <button> with label \"Complete Payment ($149.00)\" satisfying intent \"Submit order and authorize card\".",
+            "classification": "Harmless_UI_Change"
+          }
+        }
+      ],
+      "createdAt": "2026-10-11T07:06:04.182Z",
+      "updatedAt": "2026-10-11T07:06:29.869Z",
+      "triageClassification": "Harmless_Healed"
+    },
+    {
+      "_id": "run_1791702341148",
+      "testId": "test_1791688488625",
+      "testTitle": "checkout flow ",
+      "status": "passed",
+      "mode": "standard",
+      "durationMs": 10954,
+      "healedCount": 0,
+      "totalSteps": 4,
+      "passedSteps": 4,
+      "failedSteps": 0,
+      "steps": [
+        {
+          "order": 1,
+          "name": "Select Product",
+          "intent": "Add headphones to cart",
+          "action": "click",
+          "originalSelector": "#btn-add-to-cart",
+          "resolvedSelector": "#btn-add-to-cart",
+          "status": "passed",
+          "durationMs": 177,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 2,
+          "name": "View Cart",
+          "intent": "Open shopping cart drawer",
+          "action": "click",
+          "originalSelector": "#btn-view-cart",
+          "resolvedSelector": "#btn-view-cart",
+          "status": "passed",
+          "durationMs": 110,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 3,
+          "name": "Provide Email",
+          "intent": "Fill user email address",
+          "action": "fill",
+          "originalSelector": "#input-checkout-email",
+          "resolvedSelector": "#input-checkout-email",
+          "status": "passed",
+          "durationMs": 43,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        },
+        {
+          "order": 4,
+          "name": "Authorize Payment",
+          "intent": "Submit order and authorize card",
+          "action": "click",
+          "originalSelector": "#btn-complete-order",
+          "resolvedSelector": "#btn-complete-order",
+          "status": "passed",
+          "durationMs": 59,
+          "healingDetails": {
+            "wasHealed": false,
+            "confidence": 0,
+            "reasoning": "",
+            "classification": ""
+          }
+        }
+      ],
+      "createdAt": "2026-10-11T07:05:41.148Z",
+      "updatedAt": "2026-10-11T07:05:52.133Z",
+      "triageClassification": "Clean"
+    },
     {
       "_id": "run_1791699108171",
       "testId": "test_1791688488625",
@@ -2257,6 +3751,613 @@
     }
   ],
   "logs": [
+    {
+      "_id": "heal_1791718088891_znj0",
+      "runId": "run_1791718070231",
+      "testId": "test_default_ecommerce_flow",
+      "stepOrder": 5,
+      "stepName": "Complete Payment",
+      "userIntent": "Submit order and authorize payment",
+      "brokenSelector": "#btn-complete-order",
+      "healedSelector": "#checkout_action_auth_pay",
+      "confidence": 99,
+      "strategyLayer": "Layer 1: Text & Intent Similarity",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector \"#btn-complete-order\" missing due to redesign. Located dynamic replacement <button> with label \"Complete Payment ($149.00)\" satisfying intent \"Submit order and authorize payment\".",
+      "createdAt": "2026-10-11T11:28:08.891Z",
+      "updatedAt": "2026-10-11T11:28:08.891Z"
+    },
+    {
+      "_id": "heal_1791718084312_meh1",
+      "runId": "run_1791718070231",
+      "testId": "test_default_ecommerce_flow",
+      "stepOrder": 3,
+      "stepName": "Enter Buyer Email",
+      "userIntent": "Input customer email in checkout contact field",
+      "brokenSelector": "#input-checkout-email",
+      "healedSelector": "#customer_email_contact",
+      "confidence": 99,
+      "strategyLayer": "Layer 1: Text & Intent Similarity",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector \"#input-checkout-email\" missing due to redesign. Located dynamic replacement <input> with label \"lokesh@hackwave.dev\" satisfying intent \"Input customer email in checkout contact field\".",
+      "createdAt": "2026-10-11T11:28:04.312Z",
+      "updatedAt": "2026-10-11T11:28:04.312Z"
+    },
+    {
+      "_id": "heal_1791718080170_dtbv",
+      "testId": "test_default_ecommerce_flow",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to bag",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 95,
+      "strategyLayer": "Layer 1: Semantic Text & Role Matching",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#dynamic_btn_cart_x89\" satisfying user intent.",
+      "createdAt": "2026-10-11T11:28:00.170Z",
+      "updatedAt": "2026-10-11T11:28:00.170Z"
+    },
+    {
+      "_id": "heal_1791718079320_kexd",
+      "runId": "run_1791718070231",
+      "testId": "test_default_ecommerce_flow",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add Quantum Wireless Headphones to shopping cart",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "[data-testid='add-to-cart-action']",
+      "confidence": 85,
+      "strategyLayer": "Layer 2: Role & Position",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "The original '#btn-add-to-cart' no longer exists, but a button that performs the same add‑to‑cart action is present (id='dynamic_btn_cart_x89', data-testid='add-to-cart-action', text='Claim Headphones Now'). This is a UI redesign, not a functional failure, so we can safely heal the selector to target the new element.",
+      "createdAt": "2026-10-11T11:27:59.320Z",
+      "updatedAt": "2026-10-11T11:27:59.320Z"
+    },
+    {
+      "_id": "heal_1791717238134_98f6",
+      "runId": "run_1791717220503",
+      "testId": "test_1791711869155",
+      "stepOrder": 4,
+      "stepName": "Authorize Payment",
+      "userIntent": "Submit order and authorize card",
+      "brokenSelector": "#btn-complete-order",
+      "healedSelector": "#checkout_action_auth_pay",
+      "confidence": 99,
+      "strategyLayer": "Layer 1: Text & Intent Similarity",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector \"#btn-complete-order\" missing due to redesign. Located dynamic replacement <button> with label \"Complete Payment ($149.00)\" satisfying intent \"Submit order and authorize card\".",
+      "createdAt": "2026-10-11T11:13:58.134Z",
+      "updatedAt": "2026-10-11T11:13:58.134Z"
+    },
+    {
+      "_id": "heal_1791717233654_uuw6",
+      "runId": "run_1791717220503",
+      "testId": "test_1791711869155",
+      "stepOrder": 3,
+      "stepName": "Provide Email",
+      "userIntent": "Fill user email address",
+      "brokenSelector": "#input-checkout-email",
+      "healedSelector": "#input-checkout-address",
+      "confidence": 99,
+      "strategyLayer": "Layer 1: Text & Intent Similarity",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector \"#input-checkout-email\" missing due to redesign. Located dynamic replacement <input> with label \"Building 4, Tech Innovation Hub, Cyber City\" satisfying intent \"Fill user email address\".",
+      "createdAt": "2026-10-11T11:13:53.654Z",
+      "updatedAt": "2026-10-11T11:13:53.654Z"
+    },
+    {
+      "_id": "heal_1791717230188_9ime",
+      "testId": "test_1791711869155",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to bag",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 96,
+      "strategyLayer": "Layer 1: Semantic Text & Role Matching",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#dynamic_btn_cart_x89\" satisfying user intent.",
+      "createdAt": "2026-10-11T11:13:50.188Z",
+      "updatedAt": "2026-10-11T11:13:50.188Z"
+    },
+    {
+      "_id": "heal_1791717229360_3nax",
+      "runId": "run_1791717220503",
+      "testId": "test_1791711869155",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to cart",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "button:has-text(\"Claim Headphones Now\")",
+      "confidence": 85,
+      "strategyLayer": "Layer 1: Text Match",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "The original '#btn-add-to-cart' ID no longer exists; a new button with id 'dynamic_btn_cart_x89' and text 'Claim Headphones Now' performs the add‑to‑cart action. This is a UI redesign, not a functional failure, so we can heal by targeting the button via its visible text.",
+      "createdAt": "2026-10-11T11:13:49.361Z",
+      "updatedAt": "2026-10-11T11:13:49.361Z"
+    },
+    {
+      "_id": "heal_1791712489198_c0xv",
+      "runId": "run_1791712462430",
+      "testId": "test_1791711869155",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to cart",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "NONE (BLOCKED)",
+      "confidence": 45,
+      "strategyLayer": "Layer 5: Fallback Scan",
+      "classification": "Genuine_Bug",
+      "reasoning": "Target element for intent \"Add headphones to cart\" completely vanished from current view hierarchy. Marking as potential regression.",
+      "createdAt": "2026-10-11T09:54:49.198Z",
+      "updatedAt": "2026-10-11T09:54:49.198Z"
+    },
+    {
+      "_id": "heal_1791712473987_iu96",
+      "testId": "test_1791711869155",
+      "stepOrder": 5,
+      "stepName": "Complete Payment",
+      "userIntent": "Authorize card and charge $149",
+      "brokenSelector": "#btn-complete-order",
+      "healedSelector": "NONE (BLOCKED)",
+      "confidence": 99,
+      "strategyLayer": "Triage Layer: Business Logic Assertion",
+      "classification": "Genuine_Bug",
+      "reasoning": "Critical Application Bug detected: Payment gateway returned HTTP 500 & Cart total anomaly ($0.00). AI engine verified this is a genuine backend regression, NOT a cosmetic selector rename. Healing safely aborted.",
+      "createdAt": "2026-10-11T09:54:33.987Z",
+      "updatedAt": "2026-10-11T09:54:33.987Z"
+    },
+    {
+      "_id": "heal_1791712457502_r5ao",
+      "testId": "test_1791711869155",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to bag",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 96,
+      "strategyLayer": "Layer 1: Semantic Text & Role Matching",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#dynamic_btn_cart_x89\" satisfying user intent.",
+      "createdAt": "2026-10-11T09:54:17.503Z",
+      "updatedAt": "2026-10-11T09:54:17.503Z"
+    },
+    {
+      "_id": "heal_1791712446567_z4vm",
+      "testId": "test_1791711869155",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to bag",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 98,
+      "strategyLayer": "Layer 1: Semantic Text & Role Matching",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#dynamic_btn_cart_x89\" satisfying user intent.",
+      "createdAt": "2026-10-11T09:54:06.568Z",
+      "updatedAt": "2026-10-11T09:54:06.568Z"
+    },
+    {
+      "_id": "heal_1791711898285_561e",
+      "runId": "run_1791711878597",
+      "testId": "test_1791711869155",
+      "stepOrder": 4,
+      "stepName": "Authorize Payment",
+      "userIntent": "Submit order and authorize card",
+      "brokenSelector": "#btn-complete-order",
+      "healedSelector": "#checkout_action_auth_pay",
+      "confidence": 99,
+      "strategyLayer": "Layer 1: Text & Intent Similarity",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector \"#btn-complete-order\" missing due to redesign. Located dynamic replacement <button> with label \"Complete Payment ($149.00)\" satisfying intent \"Submit order and authorize card\".",
+      "createdAt": "2026-10-11T09:44:58.285Z",
+      "updatedAt": "2026-10-11T09:44:58.285Z"
+    },
+    {
+      "_id": "heal_1791711893848_fxye",
+      "runId": "run_1791711878597",
+      "testId": "test_1791711869155",
+      "stepOrder": 3,
+      "stepName": "Provide Email",
+      "userIntent": "Fill user email address",
+      "brokenSelector": "#input-checkout-email",
+      "healedSelector": "#input-checkout-address",
+      "confidence": 99,
+      "strategyLayer": "Layer 1: Text & Intent Similarity",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector \"#input-checkout-email\" missing due to redesign. Located dynamic replacement <input> with label \"Building 4, Tech Innovation Hub, Cyber City\" satisfying intent \"Fill user email address\".",
+      "createdAt": "2026-10-11T09:44:53.848Z",
+      "updatedAt": "2026-10-11T09:44:53.848Z"
+    },
+    {
+      "_id": "heal_1791711889885_l6u0",
+      "testId": "test_1791711869155",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to bag",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 95,
+      "strategyLayer": "Layer 1: Semantic Text & Role Matching",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#dynamic_btn_cart_x89\" satisfying user intent.",
+      "createdAt": "2026-10-11T09:44:49.885Z",
+      "updatedAt": "2026-10-11T09:44:49.885Z"
+    },
+    {
+      "_id": "heal_1791711889023_i91k",
+      "runId": "run_1791711878597",
+      "testId": "test_1791711869155",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to cart",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "button:has-text(\"Claim Headphones Now\")",
+      "confidence": 85,
+      "strategyLayer": "Layer 2: Role & Position",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "The original '#btn-add-to-cart' no longer exists; a new button with id 'dynamic_btn_cart_x89' and testId 'add-to-cart-action' now represents the add‑to‑cart action, labeled 'Claim Headphones Now'. This is a UI redesign rather than a missing feature, so a more resilient selector based on visible text (or testId) restores functionality.",
+      "createdAt": "2026-10-11T09:44:49.023Z",
+      "updatedAt": "2026-10-11T09:44:49.023Z"
+    },
+    {
+      "_id": "heal_1791711701319_ls80",
+      "runId": "run_1791711688914",
+      "testId": "test_1791688488625",
+      "stepOrder": 4,
+      "stepName": "Authorize Payment",
+      "userIntent": "Submit order and authorize card",
+      "brokenSelector": "#btn-complete-order",
+      "healedSelector": "NONE (BLOCKED)",
+      "confidence": 99,
+      "strategyLayer": "Triage Layer: Application Integrity Check",
+      "classification": "Genuine_Bug",
+      "reasoning": "Critical Application Bug detected: Payment gateway returned HTTP 500 & Cart total anomaly ($0.00). AI engine verified this is a genuine backend regression, NOT a cosmetic selector rename. Healing safely aborted.",
+      "createdAt": "2026-10-11T09:41:41.319Z",
+      "updatedAt": "2026-10-11T09:41:41.319Z"
+    },
+    {
+      "_id": "heal_1791711697841_pfyg",
+      "runId": "run_1791711688914",
+      "testId": "test_1791688488625",
+      "stepOrder": 3,
+      "stepName": "Provide Email",
+      "userIntent": "Fill user email address",
+      "brokenSelector": "#input-checkout-email",
+      "healedSelector": "#input-checkout-address",
+      "confidence": 99,
+      "strategyLayer": "Layer 1: Text & Intent Similarity",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector \"#input-checkout-email\" missing due to redesign. Located dynamic replacement <input> with label \"Building 4, Tech Innovation Hub, Cyber City\" satisfying intent \"Fill user email address\".",
+      "createdAt": "2026-10-11T09:41:37.841Z",
+      "updatedAt": "2026-10-11T09:41:37.841Z"
+    },
+    {
+      "_id": "heal_1791711694648_7yrq",
+      "testId": "test_1791688488625",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to bag",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 98,
+      "strategyLayer": "Layer 1: Semantic Text & Role Matching",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#dynamic_btn_cart_x89\" satisfying user intent.",
+      "createdAt": "2026-10-11T09:41:34.648Z",
+      "updatedAt": "2026-10-11T09:41:34.648Z"
+    },
+    {
+      "_id": "heal_1791711693810_x0ty",
+      "runId": "run_1791711688914",
+      "testId": "test_1791688488625",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to cart",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 99,
+      "strategyLayer": "Layer 1: Text & Intent Similarity",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector \"#btn-add-to-cart\" missing due to redesign. Located dynamic replacement <button> with label \"Claim Headphones Now\" satisfying intent \"Add headphones to cart\".",
+      "createdAt": "2026-10-11T09:41:33.810Z",
+      "updatedAt": "2026-10-11T09:41:33.810Z"
+    },
+    {
+      "_id": "heal_1791711687525_kxiv",
+      "testId": "test_1791688488625",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to bag",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 97,
+      "strategyLayer": "Layer 1: Semantic Text & Role Matching",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#dynamic_btn_cart_x89\" satisfying user intent.",
+      "createdAt": "2026-10-11T09:41:27.525Z",
+      "updatedAt": "2026-10-11T09:41:27.525Z"
+    },
+    {
+      "_id": "heal_1791711656694_rv4u",
+      "testId": "test_1791688488625",
+      "stepOrder": 3,
+      "stepName": "Enter Buyer Email",
+      "userIntent": "Fill customer contact email",
+      "brokenSelector": "#input-checkout-email",
+      "healedSelector": "#customer_email_contact",
+      "confidence": 95,
+      "strategyLayer": "Layer 2: Proximity & Input Graph",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#customer_email_contact\" satisfying user intent.",
+      "createdAt": "2026-10-11T09:40:56.694Z",
+      "updatedAt": "2026-10-11T09:40:56.694Z"
+    },
+    {
+      "_id": "heal_1791711653513_kw4v",
+      "testId": "test_1791688488625",
+      "stepOrder": 2,
+      "stepName": "Open Shopping Bag",
+      "userIntent": "Open checkout drawer",
+      "brokenSelector": "#btn-view-cart",
+      "healedSelector": "#chaos_nav_bag_92",
+      "confidence": 96,
+      "strategyLayer": "Layer 3: Intent Assertion",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#chaos_nav_bag_92\" satisfying user intent.",
+      "createdAt": "2026-10-11T09:40:53.513Z",
+      "updatedAt": "2026-10-11T09:40:53.513Z"
+    },
+    {
+      "_id": "heal_1791711650357_pnvw",
+      "testId": "test_1791688488625",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to bag",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 98,
+      "strategyLayer": "Layer 1: Semantic Text & Role Matching",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#dynamic_btn_cart_x89\" satisfying user intent.",
+      "createdAt": "2026-10-11T09:40:50.357Z",
+      "updatedAt": "2026-10-11T09:40:50.357Z"
+    },
+    {
+      "_id": "heal_1791711614004_3ke6",
+      "testId": "test_1791688488625",
+      "stepOrder": 5,
+      "stepName": "Complete Payment",
+      "userIntent": "Authorize card and charge $149",
+      "brokenSelector": "#btn-complete-order",
+      "healedSelector": "#checkout_action_auth_pay",
+      "confidence": 96,
+      "strategyLayer": "Layer 3: Intent Assertion",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#checkout_action_auth_pay\" satisfying user intent.",
+      "createdAt": "2026-10-11T09:40:14.004Z",
+      "updatedAt": "2026-10-11T09:40:14.004Z"
+    },
+    {
+      "_id": "heal_1791711608548_p7zv",
+      "testId": "test_1791688488625",
+      "stepOrder": 3,
+      "stepName": "Enter Buyer Email",
+      "userIntent": "Fill customer contact email",
+      "brokenSelector": "#input-checkout-email",
+      "healedSelector": "#customer_email_contact",
+      "confidence": 98,
+      "strategyLayer": "Layer 2: Proximity & Input Graph",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#customer_email_contact\" satisfying user intent.",
+      "createdAt": "2026-10-11T09:40:08.548Z",
+      "updatedAt": "2026-10-11T09:40:08.548Z"
+    },
+    {
+      "_id": "heal_1791711592720_uyp0",
+      "testId": "test_1791688488625",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to bag",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 95,
+      "strategyLayer": "Layer 1: Semantic Text & Role Matching",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#dynamic_btn_cart_x89\" satisfying user intent.",
+      "createdAt": "2026-10-11T09:39:52.720Z",
+      "updatedAt": "2026-10-11T09:39:52.720Z"
+    },
+    {
+      "_id": "heal_1791711468462_9fs6",
+      "runId": "run_1791711436256",
+      "testId": "test_1791688488625",
+      "stepOrder": 4,
+      "stepName": "Authorize Payment",
+      "userIntent": "Submit order and authorize card",
+      "brokenSelector": "#btn-complete-order",
+      "healedSelector": "NONE (BLOCKED)",
+      "confidence": 99,
+      "strategyLayer": "Triage Layer: Application Integrity Check",
+      "classification": "Genuine_Bug",
+      "reasoning": "Critical Application Bug detected: Payment gateway returned HTTP 500 & Cart total anomaly ($0.00). AI engine verified this is a genuine backend regression, NOT a cosmetic selector rename. Healing safely aborted.",
+      "createdAt": "2026-10-11T09:37:48.462Z",
+      "updatedAt": "2026-10-11T09:37:48.462Z"
+    },
+    {
+      "_id": "heal_1791711463542_iaqf",
+      "runId": "run_1791711436256",
+      "testId": "test_1791688488625",
+      "stepOrder": 3,
+      "stepName": "Provide Email",
+      "userIntent": "Fill user email address",
+      "brokenSelector": "#input-checkout-email",
+      "healedSelector": "#customer_email_contact",
+      "confidence": 92,
+      "strategyLayer": "Layer 1: Text Match",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "The original selector '#input-checkout-email' no longer exists; the email input is present with id 'customer_email_contact' (type email). This is a UI identifier change, not a functional failure, so the test can be healed by targeting the new id.",
+      "createdAt": "2026-10-11T09:37:43.542Z",
+      "updatedAt": "2026-10-11T09:37:43.542Z"
+    },
+    {
+      "_id": "heal_1791711451530_mmb6",
+      "testId": "test_1791688488625",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to bag",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 96,
+      "strategyLayer": "Layer 1: Semantic Text & Role Matching",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#dynamic_btn_cart_x89\" satisfying user intent.",
+      "createdAt": "2026-10-11T09:37:31.530Z",
+      "updatedAt": "2026-10-11T09:37:31.530Z"
+    },
+    {
+      "_id": "heal_1791711451212_3vel",
+      "runId": "run_1791711436256",
+      "testId": "test_1791688488625",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to cart",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 99,
+      "strategyLayer": "Layer 1: Text & Intent Similarity",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector \"#btn-add-to-cart\" missing due to redesign. Located dynamic replacement <button> with label \"Claim Headphones Now\" satisfying intent \"Add headphones to cart\".",
+      "createdAt": "2026-10-11T09:37:31.212Z",
+      "updatedAt": "2026-10-11T09:37:31.212Z"
+    },
+    {
+      "_id": "heal_1791710966649_dir6",
+      "runId": "run_1791710952066",
+      "testId": "test_1791688488625",
+      "stepOrder": 4,
+      "stepName": "Authorize Payment",
+      "userIntent": "Submit order and authorize card",
+      "brokenSelector": "#btn-complete-order",
+      "healedSelector": "#checkout_action_auth_pay",
+      "confidence": 99,
+      "strategyLayer": "Layer 1: Text & Intent Similarity",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector \"#btn-complete-order\" missing due to redesign. Located dynamic replacement <button> with label \"Complete Payment ($149.00)\" satisfying intent \"Submit order and authorize card\".",
+      "createdAt": "2026-10-11T09:29:26.649Z",
+      "updatedAt": "2026-10-11T09:29:26.649Z"
+    },
+    {
+      "_id": "heal_1791710963016_xzyd",
+      "runId": "run_1791710952066",
+      "testId": "test_1791688488625",
+      "stepOrder": 3,
+      "stepName": "Provide Email",
+      "userIntent": "Fill user email address",
+      "brokenSelector": "#input-checkout-email",
+      "healedSelector": "#customer_email_contact",
+      "confidence": 88,
+      "strategyLayer": "Layer 1: Text Match",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "The original selector '#input-checkout-email' no longer exists; the email input is now rendered with id 'customer_email_contact'. This is a simple id rename, not a functional failure, so the test can be healed by targeting the new id. The change does not affect the checkout flow logic.",
+      "createdAt": "2026-10-11T09:29:23.016Z",
+      "updatedAt": "2026-10-11T09:29:23.016Z"
+    },
+    {
+      "_id": "heal_1791710958593_1dva",
+      "testId": "test_1791688488625",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to bag",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 95,
+      "strategyLayer": "Layer 1: Semantic Text & Role Matching",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#dynamic_btn_cart_x89\" satisfying user intent.",
+      "createdAt": "2026-10-11T09:29:18.593Z",
+      "updatedAt": "2026-10-11T09:29:18.593Z"
+    },
+    {
+      "_id": "heal_1791710957754_ax0y",
+      "runId": "run_1791710952066",
+      "testId": "test_1791688488625",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to cart",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 99,
+      "strategyLayer": "Layer 1: Text & Intent Similarity",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector \"#btn-add-to-cart\" missing due to redesign. Located dynamic replacement <button> with label \"Claim Headphones Now\" satisfying intent \"Add headphones to cart\".",
+      "createdAt": "2026-10-11T09:29:17.754Z",
+      "updatedAt": "2026-10-11T09:29:17.754Z"
+    },
+    {
+      "_id": "heal_1791702389308_7ot6",
+      "runId": "run_1791702364182",
+      "testId": "test_1791688488625",
+      "stepOrder": 4,
+      "stepName": "Authorize Payment",
+      "userIntent": "Submit order and authorize card",
+      "brokenSelector": "#btn-complete-order",
+      "healedSelector": "#checkout_action_auth_pay",
+      "confidence": 99,
+      "strategyLayer": "Layer 1: Text & Intent Similarity",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector \"#btn-complete-order\" missing due to redesign. Located dynamic replacement <button> with label \"Complete Payment ($149.00)\" satisfying intent \"Submit order and authorize card\".",
+      "createdAt": "2026-10-11T07:06:29.308Z",
+      "updatedAt": "2026-10-11T07:06:29.308Z"
+    },
+    {
+      "_id": "heal_1791702383923_0cuw",
+      "runId": "run_1791702364182",
+      "testId": "test_1791688488625",
+      "stepOrder": 3,
+      "stepName": "Provide Email",
+      "userIntent": "Fill user email address",
+      "brokenSelector": "#input-checkout-email",
+      "healedSelector": "#customer_email_contact",
+      "confidence": 92,
+      "strategyLayer": "Layer 2: Role & Position",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "The original selector '#input-checkout-email' no longer exists; the email field is now rendered as an <input> with id 'customer_email_contact'. This is a UI identifier change, not a functional failure, so the test can be healed by targeting the new id. The element is present, enabled, and matches the intended step (fill user email).",
+      "createdAt": "2026-10-11T07:06:23.923Z",
+      "updatedAt": "2026-10-11T07:06:23.923Z"
+    },
+    {
+      "_id": "heal_1791702378407_973x",
+      "testId": "test_1791688488625",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to bag",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "#dynamic_btn_cart_x89",
+      "confidence": 96,
+      "strategyLayer": "Layer 1: Semantic Text & Role Matching",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "Original selector was mutated in DOM redesign. Located dynamic replacement element \"#dynamic_btn_cart_x89\" satisfying user intent.",
+      "createdAt": "2026-10-11T07:06:18.407Z",
+      "updatedAt": "2026-10-11T07:06:18.407Z"
+    },
+    {
+      "_id": "heal_1791702377550_rjfb",
+      "runId": "run_1791702364182",
+      "testId": "test_1791688488625",
+      "stepOrder": 1,
+      "stepName": "Select Product",
+      "userIntent": "Add headphones to cart",
+      "brokenSelector": "#btn-add-to-cart",
+      "healedSelector": "button:has-text(\"Claim Headphones Now\")",
+      "confidence": 85,
+      "strategyLayer": "Layer 1: Text Match",
+      "classification": "Harmless_UI_Change",
+      "reasoning": "The original selector '#btn-add-to-cart' no longer exists; the add‑to‑cart button now has id 'dynamic_btn_cart_x89' and a testId 'add-to-cart-action' with visible text 'Claim Headphones Now'. This is a typical UI redesign rather than a functional failure, so we can heal by targeting the button via its stable visible label. The healed selector reliably finds the element across runs.",
+      "createdAt": "2026-10-11T07:06:17.550Z",
+      "updatedAt": "2026-10-11T07:06:17.550Z"
+    },
     {
       "_id": "heal_1791699131573_uv07",
       "runId": "run_1791699108171",

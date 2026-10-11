@@ -60,7 +60,7 @@ const startServer = async () => {
   await connectDB();
 
   server.listen(PORT, () => {
-    logger.success(`🚀 AutoHeal Backend Server active on port ${PORT}`);
+    logger.success(`🚀 NexHeal Backend Server active on port ${PORT}`);
     logger.info(`Live Socket telemetry ready for ${CLIENT_URL}`);
   });
 };

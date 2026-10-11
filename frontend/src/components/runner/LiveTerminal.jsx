@@ -21,7 +21,7 @@ export default function LiveTerminal({ logs = [], onClear }) {
       case 'chaos':
         return <span className="text-xs font-bold px-2 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-800 font-mono">CHAOS</span>;
       default:
-        return <span className="text-xs font-bold px-2 py-0.5 rounded bg-indigo-950 text-brand border border-indigo-800 font-mono">INFO</span>;
+        return <span className="text-xs font-bold px-2 py-0.5 rounded bg-stone-900 text-emerald-400 border border-stone-800 font-mono">INFO</span>;
     }
   };
 

@@ -71,7 +71,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
           let statusBadge = null;
 
           if (isHealing) {
-            cardStyle = 'border-amber-400 bg-warning-bg/30 ring-2 ring-amber-400';
+            cardStyle = 'border-warning-border bg-warning-bg/40 ring-1 ring-warning-border';
             statusBadge = (
               <span className="badge badge-warning text-2xs py-0.5 font-bold">
                 <Loader2 className="w-3 h-3 animate-spin" />
@@ -87,7 +87,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
               </span>
             );
           } else if (isFailed) {
-            cardStyle = 'border-danger-border bg-danger-bg ring-1 ring-red-300';
+            cardStyle = 'border-danger-border bg-danger-bg/50 ring-1 ring-danger-border';
             statusBadge = (
               <span className="badge badge-danger text-2xs py-0.5 font-bold">
                 <ShieldAlert className="w-3 h-3" />
@@ -95,7 +95,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
               </span>
             );
           } else if (isPassed) {
-            cardStyle = 'border-success-border bg-success-bg ring-1 ring-green-300';
+            cardStyle = 'border-success-border bg-success-bg/50 ring-1 ring-success-border';
             statusBadge = (
               <span className="badge badge-success text-2xs py-0.5 font-bold">
                 <CheckCircle2 className="w-3 h-3" /> Passed
