@@ -534,172 +534,90 @@ export default function DemoStore() {
       <div className="flex-1 max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
         {/* ================= LEFT PANE: Interactive Store (7 cols) ================= */}
-        <div className="lg:col-span-7 space-y-4">
-          {/* ================= 🔥 SLEEK DEVELOPER CHAOS CONSOLE (INSIDE LEFT PANE) ================= */}
+        <div className="lg:col-span-7 space-y-3">
+          {/* ================= ⚡ COMPACT SLIM CHAOS BAR (ONLY 36px HEIGHT) ================= */}
           {isChaos && (
-            <div className="card bg-[#0f172a] text-slate-100 border-slate-800 p-5 rounded-2xl shadow-md space-y-4">
-              {/* Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2 border-b border-slate-800">
-                <div className="flex items-center gap-2.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
-                  <div className="flex items-center gap-1.5">
-                    <SlidersHorizontal className="w-4 h-4 text-amber-400" />
-                    <span className="font-bold text-sm text-slate-100 font-sans">Live Chaos Injection Console</span>
-                  </div>
-                  <span className="text-2xs font-mono font-bold bg-amber-950 text-amber-300 border border-amber-800 px-2 py-0.5 rounded-full">
-                    {activeChaosCount} of 5 Armed
-                  </span>
+            <div className="flex flex-wrap items-center justify-between gap-2 p-2 px-3 rounded-xl bg-white border border-border shadow-xs text-xs">
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 font-bold text-ink">
+                  <Flame className="w-3.5 h-3.5 text-amber-500" />
+                  <span className="text-xs">Mutate:</span>
                 </div>
 
-                {/* Quick Deck Actions */}
-                <div className="flex items-center gap-2">
+                {/* 5 Compact Micro Toggles */}
+                <div className="flex items-center gap-1">
                   <button
-                    onClick={() => {
-                      setMutateCart(true);
-                      setMutateBag(true);
-                      setMutateEmail(true);
-                      setMutateAddress(true);
-                      setMutatePay(true);
-                    }}
-                    className="text-2xs font-bold px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
+                    onClick={() => setMutateCart(!mutateCart)}
+                    className={`px-2 py-0.5 rounded text-2xs font-semibold font-mono transition ${
+                      mutateCart 
+                        ? 'bg-amber-500 text-white font-bold shadow-xs' 
+                        : 'bg-surface text-ink-secondary hover:text-ink border border-border'
+                    }`}
+                    title="Toggle Step 1 (Cart Button)"
                   >
-                    Arm All
+                    1. Cart {mutateCart ? '⚡' : ''}
                   </button>
+
                   <button
-                    onClick={() => {
-                      setMutateCart(false);
-                      setMutateBag(false);
-                      setMutateEmail(false);
-                      setMutateAddress(false);
-                      setMutatePay(false);
-                    }}
-                    className="text-2xs font-bold px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
+                    onClick={() => setMutateBag(!mutateBag)}
+                    className={`px-2 py-0.5 rounded text-2xs font-semibold font-mono transition ${
+                      mutateBag 
+                        ? 'bg-amber-500 text-white font-bold shadow-xs' 
+                        : 'bg-surface text-ink-secondary hover:text-ink border border-border'
+                    }`}
+                    title="Toggle Step 2 (Bag Drawer)"
                   >
-                    Clear All
+                    2. Bag {mutateBag ? '⚡' : ''}
                   </button>
+
                   <button
-                    onClick={() => setChaosSeed(prev => prev + 1)}
-                    className="text-2xs font-bold px-2.5 py-1 rounded bg-amber-500 hover:bg-amber-600 text-slate-950 transition flex items-center gap-1 shadow-xs"
+                    onClick={() => setMutateEmail(!mutateEmail)}
+                    className={`px-2 py-0.5 rounded text-2xs font-semibold font-mono transition ${
+                      mutateEmail 
+                        ? 'bg-amber-500 text-white font-bold shadow-xs' 
+                        : 'bg-surface text-ink-secondary hover:text-ink border border-border'
+                    }`}
+                    title="Toggle Step 3 (Email Field)"
                   >
-                    <Shuffle className="w-3 h-3" />
-                    <span>Shuffle Seed #{chaosSeed + 1} 🎲</span>
+                    3. Email {mutateEmail ? '⚡' : ''}
+                  </button>
+
+                  <button
+                    onClick={() => setMutateAddress(!mutateAddress)}
+                    className={`px-2 py-0.5 rounded text-2xs font-semibold font-mono transition ${
+                      mutateAddress 
+                        ? 'bg-amber-500 text-white font-bold shadow-xs' 
+                        : 'bg-surface text-ink-secondary hover:text-ink border border-border'
+                    }`}
+                    title="Toggle Step 4 (Address Field)"
+                  >
+                    4. Address {mutateAddress ? '⚡' : ''}
+                  </button>
+
+                  <button
+                    onClick={() => setMutatePay(!mutatePay)}
+                    className={`px-2 py-0.5 rounded text-2xs font-semibold font-mono transition ${
+                      mutatePay 
+                        ? 'bg-amber-500 text-white font-bold shadow-xs' 
+                        : 'bg-surface text-ink-secondary hover:text-ink border border-border'
+                    }`}
+                    title="Toggle Step 5 (Payment Button)"
+                  >
+                    5. Pay {mutatePay ? '⚡' : ''}
                   </button>
                 </div>
               </div>
 
-              {/* 5 Step Mutation Toggles */}
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs font-mono">
-                {/* 1. Cart Button */}
+              {/* Right quick tools: Shuffle Seed */}
+              <div className="flex items-center gap-1.5">
                 <button
-                  onClick={() => setMutateCart(!mutateCart)}
-                  className={`p-2.5 rounded-xl border text-left transition flex flex-col justify-between space-y-1.5 ${
-                    mutateCart
-                      ? 'bg-amber-950/70 border-amber-500/80 text-amber-200 ring-1 ring-amber-500/50 shadow-xs'
-                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
-                  }`}
+                  onClick={() => setChaosSeed(prev => prev + 1)}
+                  className="px-2 py-0.5 rounded text-2xs font-bold bg-surface hover:bg-gray-100 text-ink border border-border flex items-center gap-1 transition"
+                  title="Shuffle with random seed"
                 >
-                  <span className="text-2xs font-bold text-slate-300">1. Cart Button</span>
-                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded w-fit ${
-                    mutateCart ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400'
-                  }`}>
-                    {mutateCart ? '⚡ HEAL' : '✓ PASS'}
-                  </span>
+                  <Shuffle className="w-3 h-3 text-amber-600" />
+                  <span>Seed #{chaosSeed + 1}</span>
                 </button>
-
-                {/* 2. Bag Drawer */}
-                <button
-                  onClick={() => setMutateBag(!mutateBag)}
-                  className={`p-2.5 rounded-xl border text-left transition flex flex-col justify-between space-y-1.5 ${
-                    mutateBag
-                      ? 'bg-amber-950/70 border-amber-500/80 text-amber-200 ring-1 ring-amber-500/50 shadow-xs'
-                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
-                  }`}
-                >
-                  <span className="text-2xs font-bold text-slate-300">2. Bag Drawer</span>
-                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded w-fit ${
-                    mutateBag ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400'
-                  }`}>
-                    {mutateBag ? '⚡ HEAL' : '✓ PASS'}
-                  </span>
-                </button>
-
-                {/* 3. Email Input */}
-                <button
-                  onClick={() => setMutateEmail(!mutateEmail)}
-                  className={`p-2.5 rounded-xl border text-left transition flex flex-col justify-between space-y-1.5 ${
-                    mutateEmail
-                      ? 'bg-amber-950/70 border-amber-500/80 text-amber-200 ring-1 ring-amber-500/50 shadow-xs'
-                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
-                  }`}
-                >
-                  <span className="text-2xs font-bold text-slate-300">3. Email Field</span>
-                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded w-fit ${
-                    mutateEmail ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400'
-                  }`}>
-                    {mutateEmail ? '⚡ HEAL' : '✓ PASS'}
-                  </span>
-                </button>
-
-                {/* 4. Address Input */}
-                <button
-                  onClick={() => setMutateAddress(!mutateAddress)}
-                  className={`p-2.5 rounded-xl border text-left transition flex flex-col justify-between space-y-1.5 ${
-                    mutateAddress
-                      ? 'bg-amber-950/70 border-amber-500/80 text-amber-200 ring-1 ring-amber-500/50 shadow-xs'
-                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
-                  }`}
-                >
-                  <span className="text-2xs font-bold text-slate-300">4. Address Field</span>
-                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded w-fit ${
-                    mutateAddress ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400'
-                  }`}>
-                    {mutateAddress ? '⚡ HEAL' : '✓ PASS'}
-                  </span>
-                </button>
-
-                {/* 5. Payment Button */}
-                <button
-                  onClick={() => setMutatePay(!mutatePay)}
-                  className={`p-2.5 rounded-xl border text-left transition flex flex-col justify-between space-y-1.5 ${
-                    mutatePay
-                      ? 'bg-amber-950/70 border-amber-500/80 text-amber-200 ring-1 ring-amber-500/50 shadow-xs'
-                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
-                  }`}
-                >
-                  <span className="text-2xs font-bold text-slate-300">5. Payment Action</span>
-                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded w-fit ${
-                    mutatePay ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400'
-                  }`}>
-                    {mutatePay ? '⚡ HEAL' : '✓ PASS'}
-                  </span>
-                </button>
-              </div>
-
-              {/* Sub-controls: Text & Layout */}
-              <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-slate-800 text-2xs text-slate-400">
-                <div className="flex items-center gap-2">
-                  <label className="flex items-center gap-1.5 cursor-pointer bg-slate-900 px-2.5 py-1 rounded-md border border-slate-800 hover:border-slate-700 text-slate-300">
-                    <input 
-                      type="checkbox" 
-                      checked={chaosText} 
-                      onChange={(e) => setChaosText(e.target.checked)} 
-                      className="accent-amber-500 rounded" 
-                    />
-                    <span>Scramble Text Labels</span>
-                  </label>
-                  <label className="flex items-center gap-1.5 cursor-pointer bg-slate-900 px-2.5 py-1 rounded-md border border-slate-800 hover:border-slate-700 text-slate-300">
-                    <input 
-                      type="checkbox" 
-                      checked={chaosPosition} 
-                      onChange={(e) => setChaosPosition(e.target.checked)} 
-                      className="accent-amber-500 rounded" 
-                    />
-                    <span>Invert Button Sequence</span>
-                  </label>
-                </div>
-                <span className="font-mono text-amber-400/90">
-                  ⚡ Only items with "HEAL" will break.
-                </span>
               </div>
             </div>
           )}
