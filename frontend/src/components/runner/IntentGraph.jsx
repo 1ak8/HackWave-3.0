@@ -73,7 +73,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
           if (isHealing) {
             cardStyle = 'border-amber-400 bg-warning-bg/30 ring-2 ring-amber-400';
             statusBadge = (
-              <span className="badge badge-warning text-[10px] py-0.5 font-bold">
+              <span className="badge badge-warning text-2xs py-0.5 font-bold">
                 <Loader2 className="w-3 h-3 animate-spin" />
                 Healing...
               </span>
@@ -81,7 +81,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
           } else if (isActuallyHealed) {
             cardStyle = 'border-indigo-300 bg-brand-light/40 ring-1 ring-indigo-300';
             statusBadge = (
-              <span className="badge badge-brand text-[10px] py-0.5 font-bold">
+              <span className="badge badge-brand text-2xs py-0.5 font-bold">
                 <Sparkles className="w-3 h-3" />
                 Healed {step.healingDetails?.confidence ? `(${step.healingDetails.confidence}%)` : ''}
               </span>
@@ -89,7 +89,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
           } else if (isFailed) {
             cardStyle = 'border-red-300 bg-danger-bg ring-1 ring-red-300';
             statusBadge = (
-              <span className="badge badge-danger text-[10px] py-0.5 font-bold">
+              <span className="badge badge-danger text-2xs py-0.5 font-bold">
                 <ShieldAlert className="w-3 h-3" />
                 Bug Triaged
               </span>
@@ -97,14 +97,14 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
           } else if (isPassed) {
             cardStyle = 'border-green-300 bg-success-bg ring-1 ring-green-300';
             statusBadge = (
-              <span className="badge badge-success text-[10px] py-0.5 font-bold">
+              <span className="badge badge-success text-2xs py-0.5 font-bold">
                 <CheckCircle2 className="w-3 h-3" /> Passed
               </span>
             );
           } else if (isRunning) {
             cardStyle = 'border-brand bg-brand-light/30 ring-2 ring-brand';
             statusBadge = (
-              <span className="badge badge-brand text-[10px] py-0.5 font-bold">
+              <span className="badge badge-brand text-2xs py-0.5 font-bold">
                 <Loader2 className="w-3 h-3 animate-spin" /> Running
               </span>
             );
@@ -124,7 +124,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
               {/* Header */}
               <div className="flex items-center justify-between gap-1.5">
                 <div className="flex items-center gap-1.5 min-w-0">
-                  <span className="w-4 h-4 rounded bg-surface border border-border flex items-center justify-center text-[10px] font-mono font-bold text-ink-secondary shrink-0">
+                  <span className="w-4 h-4 rounded bg-surface border border-border flex items-center justify-center text-2xs font-mono font-bold text-ink-secondary shrink-0">
                     {step.order}
                   </span>
                   <ActionIcon className="w-3 h-3 text-ink-secondary shrink-0" />
@@ -136,12 +136,12 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
               </div>
 
               {/* Goal Description (short & punchy) */}
-              <p className="text-[11px] text-ink-secondary line-clamp-1 font-medium">
+              <p className="text-2xs text-ink-secondary line-clamp-1 font-medium">
                 Goal: <span className="text-ink font-semibold">{step.intent}</span>
               </p>
 
               {/* Selector details */}
-              <div className="pt-1.5 border-t border-border flex items-center justify-between gap-2 text-[11px] font-mono">
+              <div className="pt-1.5 border-t border-border flex items-center justify-between gap-2 text-2xs font-mono">
                 <span className="truncate min-w-0">
                   {isActuallyHealed ? (
                     <span className="line-through text-danger mr-1">{step.originalSelector}</span>
@@ -150,7 +150,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
                     {step.resolvedSelector || step.originalSelector}
                   </span>
                 </span>
-                <span className="text-ink-tertiary text-[11px] shrink-0 font-medium">
+                <span className="text-ink-tertiary text-2xs shrink-0 font-medium">
                   {step.durationMs ? `${step.durationMs}ms` : ''}
                 </span>
               </div>

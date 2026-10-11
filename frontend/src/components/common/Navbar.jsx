@@ -40,11 +40,11 @@ export default function Navbar() {
                   <span className="font-extrabold text-base tracking-tight text-slate-900">
                     AutoHeal
                   </span>
-                  <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-brand-50 text-brand-700 border border-brand-200">
+                  <span className="text-2xs font-mono font-bold px-1.5 py-0.5 rounded bg-brand-50 text-brand-700 border border-brand-200">
                     STUDIO
                   </span>
                 </div>
-                <span className="text-[11px] text-slate-500 -mt-0.5 font-medium">Intent-Aware E2E Testing</span>
+                <span className="text-2xs text-slate-500 -mt-0.5 font-medium">Intent-Aware E2E Testing</span>
               </div>
             </Link>
 

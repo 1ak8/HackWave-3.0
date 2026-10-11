@@ -6,6 +6,12 @@ export default {
   ],
   theme: {
     extend: {
+      fontSize: {
+        // Small-text tiers bumped 12px -> 13px for readability.
+        // Line-heights kept identical to defaults so no vertical layout shift.
+        '2xs': ['0.8125rem', { lineHeight: '1rem' }],
+        xs: ['0.8125rem', { lineHeight: '1rem' }],
+      },
       colors: {
         canvas: '#ffffff',
         surface: '#f9fafb',

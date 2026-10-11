@@ -499,7 +499,7 @@ export default function DemoStore() {
           >
             <Flame className="w-3.5 h-3.5" />
             <span>Live Chaos</span>
-            <span className="text-[10px] bg-white/20 px-1.5 py-0.2 rounded font-mono">{activeChaosCount} active</span>
+            <span className="text-2xs bg-white/20 px-1.5 py-0.2 rounded font-mono">{activeChaosCount} active</span>
           </button>
           <button
             onClick={() => handleModeChange('bug_mode')}
@@ -572,7 +572,7 @@ export default function DemoStore() {
                 title="Toggle Step 1: Cart Button Mutation"
               >
                 <span>1. Cart</span>
-                {mutateCart && <span className="text-[10px]">⚡</span>}
+                {mutateCart && <span className="text-2xs">⚡</span>}
               </button>
 
               {/* 2. Bag */}
@@ -586,7 +586,7 @@ export default function DemoStore() {
                 title="Toggle Step 2: Bag Drawer Mutation"
               >
                 <span>2. Bag</span>
-                {mutateBag && <span className="text-[10px]">⚡</span>}
+                {mutateBag && <span className="text-2xs">⚡</span>}
               </button>
 
               {/* 3. Email */}
@@ -600,7 +600,7 @@ export default function DemoStore() {
                 title="Toggle Step 3: Email Field Mutation"
               >
                 <span>3. Email</span>
-                {mutateEmail && <span className="text-[10px]">⚡</span>}
+                {mutateEmail && <span className="text-2xs">⚡</span>}
               </button>
 
               {/* 4. Address */}
@@ -614,7 +614,7 @@ export default function DemoStore() {
                 title="Toggle Step 4: Address Field Mutation"
               >
                 <span>4. Address</span>
-                {mutateAddress && <span className="text-[10px]">⚡</span>}
+                {mutateAddress && <span className="text-2xs">⚡</span>}
               </button>
 
               {/* 5. Pay */}
@@ -628,7 +628,7 @@ export default function DemoStore() {
                 title="Toggle Step 5: Payment Action Mutation"
               >
                 <span>5. Pay</span>
-                {mutatePay && <span className="text-[10px]">⚡</span>}
+                {mutatePay && <span className="text-2xs">⚡</span>}
               </button>
             </div>
           </div>
@@ -922,7 +922,7 @@ export default function DemoStore() {
                 <Bot className="w-4 h-4 animate-bounce" />
                 <span>Playwright Bot Driving Browser...</span>
               </div>
-              <span className="text-[10px] font-mono bg-white/20 px-2 py-0.5 rounded">
+              <span className="text-2xs font-mono bg-white/20 px-2 py-0.5 rounded">
                 Mode: {mode.toUpperCase()}
               </span>
             </div>

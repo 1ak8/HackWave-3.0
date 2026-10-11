@@ -257,7 +257,7 @@ export default function Dashboard() {
                 <h4 className="text-xs font-bold text-ink truncate max-w-[200px]">
                   {defaultTest?.title || 'E-Commerce Checkout & Order Fulfillment'}
                 </h4>
-                <span className="badge badge-brand text-[10px] font-mono font-bold shrink-0">
+                <span className="badge badge-brand text-2xs font-mono font-bold shrink-0">
                   {defaultTest?.steps?.length || 6} Steps
                 </span>
               </div>
@@ -301,7 +301,7 @@ export default function Dashboard() {
                 <span className="font-bold uppercase tracking-wider text-ink-tertiary">
                   Critical E2E Path:
                 </span>
-                <span className="badge badge-brand text-[10px] font-mono font-bold">
+                <span className="badge badge-brand text-2xs font-mono font-bold">
                   {benchmarkSuite?.steps?.length || 6}/6 Steps Covered
                 </span>
               </div>
@@ -314,13 +314,13 @@ export default function Dashboard() {
                     className="py-1 px-2.5 rounded-lg bg-surface border border-border/70 flex items-center justify-between text-xs hover:border-brand/40 transition"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="w-4 h-4 rounded-full bg-brand-light text-brand text-[9px] font-bold flex items-center justify-center shrink-0">
+                      <span className="w-4 h-4 rounded-full bg-brand-light text-brand text-[11px] font-bold flex items-center justify-center shrink-0">
                         {st.order}
                       </span>
                       <span className="font-semibold text-ink text-xs">{st.name}</span>
                     </div>
 
-                    <span className="badge badge-neutral text-[10px] font-mono py-0 px-1.5 font-bold">
+                    <span className="badge badge-neutral text-2xs font-mono py-0 px-1.5 font-bold">
                       {st.action}
                     </span>
                   </div>
