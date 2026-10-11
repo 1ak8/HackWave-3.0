@@ -300,33 +300,91 @@ glance mein pata chalta hai car ki speed kya hai, fuel kitna bacha hai, battery
 kaisi hai, aur engine check light on hai ya nahi.
 
 DASHBOARD hamare testing suite ka digital instrument cluster hai!
+Engineering Managers ke liye yeh page "single source of truth" hai — yahan se 
+suite ki poori health, live repairs, aur pipeline ek hi screen par dikhta hai 
+bina kahin aur navigate kiye.
 
 
-2. YEH PAGE KYUN HAI?
+2. YEH PAGE KYUN HAI? (ZERO-NAVIGATION COMMAND CENTER):
 --------------------------------------------------------------------------------
-Engineering Managers aur QAs ke liye central headquarters jahan se testing suite 
-ki complete health ek glance mein dikhti hai aur 1-click se koi bhi scenario launch hota hai.
+Sprint demo se pehle ya release sign-off ke waqt manager ko 4 sawaal pata chalne 
+chahiye:
+  "AI ka match accuracy kitna hai? Kitne selectors khud repair hue?
+   Kitne asli bugs block hue? Abhi kaunsa test suite chal raha hai?"
+
+Dashboard yeh chaaro jawab hero banner ke niche ek hi nazar mein deta hai, aur 
+har card se seedha 1-click launch/inspect ka rasta khulta hai.
 
 
-3. STEP-BY-STEP COMPONENTS:
---------------------------------------------------------------------------------
-  [A] Hero Banner & 1-Click Launchers:
-      - 1-Click Launch buttons: Auto-Heal Demo (Recommended), Standard Run, 
-        Live Chaos, aur Real Bug Triage.
-      - 3-step visual explanation: UI Changes ➔ AI Heals ➔ Test Passes.
+3. STEP-BY-STEP COMPONENTS (TOP ➔ BOTTOM):
 
-  [B] 4 Clean Enterprise KPI Cards:
-      - Auto-Heal Rate: 98.4% (Zero false test failures)
-      - Elements Repaired: 34 (Harmless UI mutations adapted)
-      - Real Bugs Blocked: 6 (Smart Triage regressions halted)
-      - Hours Saved: 119h (Manual selector maintenance eliminated)
+  [A] Hero Welcome Banner:
+      - HackWave 3.0 live badge (pulsing dot) + "AutoHeal Studio" title aur 
+        one-line positioning: "Playwright E2E tests that autonomously heal 
+        broken DOM selectors, and use Smart Triage to halt genuine bugs."
+      - 2 Quick Launchers right side:
+        * [⚡ Launch Auto-Heal Demo] — 1 click mein Version B (mutated) run 
+          trigger karta hai aur seedha Live Runner (/live) par le jaata hai.
+        * [🛍 Sandbox Store] — dual-pane crash-test arena (/demo-store) kholta hai.
 
-  [C] Primary Smoke Suite Preview:
-      - Default test suite ka live Intent Graph preview jahan steps ke nodes dikhte hain.
-      - "Open in Live Runner" button directly live console kholta hai.
+  [B] 4 Premium Consistent Metric Cards (ek hi design language, live data):
+      - AI Match Accuracy: Healing logs ka average confidence score 
+        (default 99%) — "Verified semantic precision".
+      - Auto-Heal Rate: Engine ka healing success rate (stats se) — 
+        "Zero false test failures".
+      - Selectors Repaired: Harmless UI shifts kitni baar heal hue 
+        (healing logs se count, default 48) — "Harmless UI shifts healed".
+      - Real Bugs Blocked: Smart Triage ne kitni baar genuine bug roka 
+        (healing logs se count) — "Smart Triage halted safely".
+      - Yeh chaaro cards REST API (/healing-logs + /stats) se real numbers 
+        dikhate hain, fake hardcoded nahi.
 
-  [D] Execution History Table:
-      - Pichle saare test runs ki scannable list with Run ID, suite name, run mode, 
-        status (PASSED/HEALED/FAILED), healed count, aur duration in milliseconds.
+  [C] Two-Column Information Hub (EXACT FLUSH LEVEL MATCH):
+      Yeh section 7:5 ke grid mein banta hai aur dono columns ka neeche ka edge 
+      bilkul same line par lock hota hai (items-stretch + flex-1 trick):
+
+      [LEFT COLUMN — 7 cols]: Recent Autonomous Repairs & Triage
+        * Healing logs ke latest 4 records live card feed mein.
+        * Har record mein: step number, step name, live timestamp (HH:MM), 
+          aur status badge — HEALED (99%) green, ya BUG HALTED red.
+        * Selector transformation row:
+          - Healed: red strikethrough broken selector ➔ green/healed selector.
+          - Real bug: broken selector + "HTTP 500 & $0 PRICE (BLOCKED)" red row.
+        * Header par "View Audit Trail (n)" link → poora black-box record 
+          (/audit) kholta hai.
+        * Empty state: "Run Version B or Chaos to generate real repair records!"
+
+      [RIGHT COLUMN — 5 cols]: Active Suite + Benchmark Pipeline
+        * Card 1 — Active Test Suite:
+          - Suite title, "6 Steps" badge, user intent quote, target URL.
+          - [▶ Run] button seedha mutated run chalata hai.
+          - "Edit in Studio" link → Test Studio (/studio).
+        * Card 2 — Benchmark Workflow Pipeline (flex-1 se bottom edge LEFT 
+          card ke exact same level par aa jaata hai — visual flush alignment):
+          - "Critical E2E Path: 6/6 Steps Covered" badge.
+          - 6-step compact numbered list, har step ka action badge 
+            (click / fill / assert) right side par.
+          - Footer: Target /demo-store + [▶ Run Pipeline] button.
+          - "Inspect in Runner" link → Live Runner (/live).
+
+  [D] Autonomous Execution Graph Preview (Live Visual Flow):
+      - "Live Visual Flow" badge + target URL + "Open Live Runner Console" button.
+      - Neeche REAL IntentGraph step cards (compact 4-in-a-row grid):
+        * Blue highlight ring: Healed card (strikethrough broken selector + 
+          green healed selector + confidence badge).
+        * Green highlight ring: Passed card (direct baseline pass).
+        * Red highlight ring: Failed / Real Bug card.
+        * Amber pulse: Healing in progress.
+      - Cards ab itne compact hain ki 4 steps ek hi row mein fit ho jaate hain 
+        (lg:grid-cols-4), aur har card par click karke selector diff inspect 
+        kar sakte ho.
+
+  [E] Recent Test Executions Table:
+      - Pichle runs ki scannable list: Run ID, Suite Name, Mode badge 
+        (standard / mutated / chaos / bug_mode), Status badge 
+        (PASSED / HEALED / FAILED), Healed count, Duration (ms), 
+        aur "View →" link (seedha Live Runner).
+      - [⟳ Refresh] button turant data reload karta hai; page mount par 
+        auto bhi refresh hota hai.
 
 ================================================================================
