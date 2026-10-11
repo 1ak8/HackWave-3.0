@@ -341,6 +341,15 @@ export default function DemoStore() {
     }, 850);
   };
 
+  // Seed shuffler that dynamically mutates live DOM IDs
+  const handleShuffleSeed = () => {
+    const nextSeed = ((chaosSeed || 0) % 9) + 1;
+    setChaosSeed(nextSeed);
+    if (addTerminalLog) {
+      addTerminalLog('chaos', `🎲 Seed #${nextSeed} active! Live DOM IDs scrambled with hash entropy.`);
+    }
+  };
+
   // Automated E2E Bot execution with selective chaos parameters
   const runAutomatedBot = async () => {
     setActiveSource('bot');
@@ -511,116 +520,121 @@ export default function DemoStore() {
         </div>
       </header>
 
-      {/* Clean Mode Status Indicator (Sleek, No Full-Width Yellow Strip) */}
-      <div className="bg-white border-b border-border px-6 py-2 text-xs flex items-center justify-between text-ink-secondary">
-        <div className="flex items-center gap-2">
-          <Info className="w-3.5 h-3.5 text-ink-tertiary shrink-0" />
-          {mode === 'standard' && (
-            <span><strong>Version A Mode:</strong> Unmodified baseline store. All elements pass cleanly on original selectors.</span>
-          )}
-          {mode === 'mutated' && (
-            <span><strong>Version B Mode:</strong> Devs renamed Steps 1, 3, 5, while Steps 2, 4, 6 remain untouched. AI deliberately heals broken steps.</span>
-          )}
-          {mode === 'chaos' && (
-            <span><strong>Judge Chaos Mode:</strong> Toggle individual elements in the console below to choose what breaks. Only toggled items will heal with AI!</span>
-          )}
-          {mode === 'bug_mode' && (
-            <span><strong>Real Bug Mode:</strong> Steps 1 & 3 heal safely, but Step 5 encounters a 500 error & $0 price. AI halts and refuses to false-heal!</span>
-          )}
+      {/* Full-width Top Chaos Banner (When in Chaos mode) */}
+      {isChaos ? (
+        <div className="w-full bg-white border-b border-border px-6 sm:px-8 py-3 shadow-xs">
+          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 font-bold text-ink text-sm">
+                <Flame className="w-4 h-4 text-amber-500 animate-pulse" />
+                <span>Mutate Steps:</span>
+              </div>
+
+              {/* 5 Comfortable Toggle Chips */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setMutateCart(!mutateCart)}
+                  className={`px-3 py-1 rounded-md text-xs font-semibold font-mono transition flex items-center gap-1.5 ${
+                    mutateCart 
+                      ? 'bg-amber-500 text-white font-bold shadow-xs' 
+                      : 'bg-surface text-ink-secondary hover:text-ink border border-border'
+                  }`}
+                  title="Toggle Step 1 (Cart Button)"
+                >
+                  <span>1. Cart</span>
+                  {mutateCart && <span>⚡</span>}
+                </button>
+
+                <button
+                  onClick={() => setMutateBag(!mutateBag)}
+                  className={`px-3 py-1 rounded-md text-xs font-semibold font-mono transition flex items-center gap-1.5 ${
+                    mutateBag 
+                      ? 'bg-amber-500 text-white font-bold shadow-xs' 
+                      : 'bg-surface text-ink-secondary hover:text-ink border border-border'
+                  }`}
+                  title="Toggle Step 2 (Bag Drawer)"
+                >
+                  <span>2. Bag</span>
+                  {mutateBag && <span>⚡</span>}
+                </button>
+
+                <button
+                  onClick={() => setMutateEmail(!mutateEmail)}
+                  className={`px-3 py-1 rounded-md text-xs font-semibold font-mono transition flex items-center gap-1.5 ${
+                    mutateEmail 
+                      ? 'bg-amber-500 text-white font-bold shadow-xs' 
+                      : 'bg-surface text-ink-secondary hover:text-ink border border-border'
+                  }`}
+                  title="Toggle Step 3 (Email Field)"
+                >
+                  <span>3. Email</span>
+                  {mutateEmail && <span>⚡</span>}
+                </button>
+
+                <button
+                  onClick={() => setMutateAddress(!mutateAddress)}
+                  className={`px-3 py-1 rounded-md text-xs font-semibold font-mono transition flex items-center gap-1.5 ${
+                    mutateAddress 
+                      ? 'bg-amber-500 text-white font-bold shadow-xs' 
+                      : 'bg-surface text-ink-secondary hover:text-ink border border-border'
+                  }`}
+                  title="Toggle Step 4 (Address Field)"
+                >
+                  <span>4. Address</span>
+                  {mutateAddress && <span>⚡</span>}
+                </button>
+
+                <button
+                  onClick={() => setMutatePay(!mutatePay)}
+                  className={`px-3 py-1 rounded-md text-xs font-semibold font-mono transition flex items-center gap-1.5 ${
+                    mutatePay 
+                      ? 'bg-amber-500 text-white font-bold shadow-xs' 
+                      : 'bg-surface text-ink-secondary hover:text-ink border border-border'
+                  }`}
+                  title="Toggle Step 5 (Payment Button)"
+                >
+                  <span>5. Pay</span>
+                  {mutatePay && <span>⚡</span>}
+                </button>
+              </div>
+            </div>
+
+            {/* Right side: Functional Seed Button */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleShuffleSeed}
+                className="px-3.5 py-1.5 rounded-md text-xs font-bold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1.5 transition shadow-xs active:scale-95"
+                title="Click to scramble element IDs with dynamic seed"
+              >
+                <Shuffle className="w-3.5 h-3.5 text-amber-600" />
+                <span>Seed #{chaosSeed > 0 ? chaosSeed : 1} 🎲</span>
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (
+        /* Clean Mode Status Indicator for standard/mutated/bug_mode */
+        <div className="bg-white border-b border-border px-6 py-2 text-xs flex items-center justify-between text-ink-secondary">
+          <div className="flex items-center gap-2">
+            <Info className="w-3.5 h-3.5 text-ink-tertiary shrink-0" />
+            {mode === 'standard' && (
+              <span><strong>Version A Mode:</strong> Unmodified baseline store. All elements pass cleanly on original selectors.</span>
+            )}
+            {mode === 'mutated' && (
+              <span><strong>Version B Mode:</strong> Devs renamed Steps 1, 3, 5, while Steps 2, 4, 6 remain untouched. AI deliberately heals broken steps.</span>
+            )}
+            {mode === 'bug_mode' && (
+              <span><strong>Real Bug Mode:</strong> Steps 1 & 3 heal safely, but Step 5 encounters a 500 error & $0 price. AI halts and refuses to false-heal!</span>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Dual-Pane Arena */}
       <div className="flex-1 max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
         {/* ================= LEFT PANE: Interactive Store (7 cols) ================= */}
-        <div className="lg:col-span-7 space-y-3">
-          {/* ================= ⚡ COMPACT SLIM CHAOS BAR (ONLY 36px HEIGHT) ================= */}
-          {isChaos && (
-            <div className="flex flex-wrap items-center justify-between gap-2 p-2 px-3 rounded-xl bg-white border border-border shadow-xs text-xs">
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1 font-bold text-ink">
-                  <Flame className="w-3.5 h-3.5 text-amber-500" />
-                  <span className="text-xs">Mutate:</span>
-                </div>
-
-                {/* 5 Compact Micro Toggles */}
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => setMutateCart(!mutateCart)}
-                    className={`px-2 py-0.5 rounded text-2xs font-semibold font-mono transition ${
-                      mutateCart 
-                        ? 'bg-amber-500 text-white font-bold shadow-xs' 
-                        : 'bg-surface text-ink-secondary hover:text-ink border border-border'
-                    }`}
-                    title="Toggle Step 1 (Cart Button)"
-                  >
-                    1. Cart {mutateCart ? '⚡' : ''}
-                  </button>
-
-                  <button
-                    onClick={() => setMutateBag(!mutateBag)}
-                    className={`px-2 py-0.5 rounded text-2xs font-semibold font-mono transition ${
-                      mutateBag 
-                        ? 'bg-amber-500 text-white font-bold shadow-xs' 
-                        : 'bg-surface text-ink-secondary hover:text-ink border border-border'
-                    }`}
-                    title="Toggle Step 2 (Bag Drawer)"
-                  >
-                    2. Bag {mutateBag ? '⚡' : ''}
-                  </button>
-
-                  <button
-                    onClick={() => setMutateEmail(!mutateEmail)}
-                    className={`px-2 py-0.5 rounded text-2xs font-semibold font-mono transition ${
-                      mutateEmail 
-                        ? 'bg-amber-500 text-white font-bold shadow-xs' 
-                        : 'bg-surface text-ink-secondary hover:text-ink border border-border'
-                    }`}
-                    title="Toggle Step 3 (Email Field)"
-                  >
-                    3. Email {mutateEmail ? '⚡' : ''}
-                  </button>
-
-                  <button
-                    onClick={() => setMutateAddress(!mutateAddress)}
-                    className={`px-2 py-0.5 rounded text-2xs font-semibold font-mono transition ${
-                      mutateAddress 
-                        ? 'bg-amber-500 text-white font-bold shadow-xs' 
-                        : 'bg-surface text-ink-secondary hover:text-ink border border-border'
-                    }`}
-                    title="Toggle Step 4 (Address Field)"
-                  >
-                    4. Address {mutateAddress ? '⚡' : ''}
-                  </button>
-
-                  <button
-                    onClick={() => setMutatePay(!mutatePay)}
-                    className={`px-2 py-0.5 rounded text-2xs font-semibold font-mono transition ${
-                      mutatePay 
-                        ? 'bg-amber-500 text-white font-bold shadow-xs' 
-                        : 'bg-surface text-ink-secondary hover:text-ink border border-border'
-                    }`}
-                    title="Toggle Step 5 (Payment Button)"
-                  >
-                    5. Pay {mutatePay ? '⚡' : ''}
-                  </button>
-                </div>
-              </div>
-
-              {/* Right quick tools: Shuffle Seed */}
-              <div className="flex items-center gap-1.5">
-                <button
-                  onClick={() => setChaosSeed(prev => prev + 1)}
-                  className="px-2 py-0.5 rounded text-2xs font-bold bg-surface hover:bg-gray-100 text-ink border border-border flex items-center gap-1 transition"
-                  title="Shuffle with random seed"
-                >
-                  <Shuffle className="w-3 h-3 text-amber-600" />
-                  <span>Seed #{chaosSeed + 1}</span>
-                </button>
-              </div>
-            </div>
-          )}
+        <div className="lg:col-span-7 space-y-4">
           <div className="flex items-center justify-between pb-1">
             <h2 className="text-base font-bold text-ink flex items-center gap-2">
               <ShoppingBag className="w-4 h-4 text-brand" />
