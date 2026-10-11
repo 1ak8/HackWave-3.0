@@ -48,7 +48,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
             <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span> Healing
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Auto-Healed
+            <span className="w-2.5 h-2.5 rounded-full bg-brand"></span> Auto-Healed
           </span>
           <span className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-danger"></span> Real Bug
@@ -67,7 +67,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
           const isFailed = step.status === 'failed';
           const isRunning = step.status === 'running';
 
-          let cardStyle = 'border-border bg-white hover:border-border-strong shadow-card';
+          let cardStyle = 'border-border bg-surface-raised hover:border-border-strong shadow-card';
           let statusBadge = null;
 
           if (isHealing) {
@@ -79,7 +79,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
               </span>
             );
           } else if (isActuallyHealed) {
-            cardStyle = 'border-indigo-300 bg-brand-light/40 ring-1 ring-indigo-300';
+            cardStyle = 'border-brand-border bg-brand-light/40 ring-1 ring-brand/40';
             statusBadge = (
               <span className="badge badge-brand text-2xs py-0.5 font-bold">
                 <Sparkles className="w-3 h-3" />
@@ -87,7 +87,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
               </span>
             );
           } else if (isFailed) {
-            cardStyle = 'border-red-300 bg-danger-bg ring-1 ring-red-300';
+            cardStyle = 'border-danger-border bg-danger-bg ring-1 ring-red-300';
             statusBadge = (
               <span className="badge badge-danger text-2xs py-0.5 font-bold">
                 <ShieldAlert className="w-3 h-3" />
@@ -95,7 +95,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
               </span>
             );
           } else if (isPassed) {
-            cardStyle = 'border-green-300 bg-success-bg ring-1 ring-green-300';
+            cardStyle = 'border-success-border bg-success-bg ring-1 ring-green-300';
             statusBadge = (
               <span className="badge badge-success text-2xs py-0.5 font-bold">
                 <CheckCircle2 className="w-3 h-3" /> Passed
@@ -113,11 +113,12 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
           return (
             <motion.div
               key={step.order || idx}
-              initial={{ opacity: 0, y: 6 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.12, delay: idx * 0.02 }}
+              whileHover={{ y: -2 }}
+              transition={{ duration: 0.25, delay: idx * 0.04, ease: 'easeOut' }}
               onClick={() => onSelectStep && onSelectStep(step)}
-              className={`p-3 rounded-xl border transition-all cursor-pointer relative space-y-2 ${cardStyle} ${
+              className={`p-3 rounded-xl border transition-colors cursor-pointer relative space-y-2 ${cardStyle} ${
                 isSelected ? 'ring-2 ring-brand border-brand shadow-card-md' : ''
               }`}
             >

@@ -25,7 +25,7 @@ export default function Header() {
   const { section, title } = getPageInfo(location.pathname);
 
   return (
-    <header className="h-16 bg-white border-b border-border sticky top-0 z-30 px-6 sm:px-8 flex items-center justify-between shadow-xs">
+    <header className="h-16 bg-surface-raised border-b border-border sticky top-0 z-30 px-6 sm:px-8 flex items-center justify-between shadow-xs">
       {/* Breadcrumb Navigation */}
       <div className="flex items-center gap-2.5">
         <span className="font-bold text-ink-tertiary uppercase tracking-wider text-xs">{section}</span>

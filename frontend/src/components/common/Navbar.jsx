@@ -26,7 +26,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="border-b border-slate-200 bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+    <nav className="border-b border-border bg-surface-raised/95 backdrop-blur-md sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Brand Logo */}
@@ -37,19 +37,19 @@ export default function Navbar() {
               </div>
               <div className="flex flex-col">
                 <div className="flex items-center gap-1.5">
-                  <span className="font-extrabold text-base tracking-tight text-slate-900">
+                  <span className="font-extrabold text-base tracking-tight text-ink">
                     AutoHeal
                   </span>
                   <span className="text-2xs font-mono font-bold px-1.5 py-0.5 rounded bg-brand-50 text-brand-700 border border-brand-200">
                     STUDIO
                   </span>
                 </div>
-                <span className="text-2xs text-slate-500 -mt-0.5 font-medium">Intent-Aware E2E Testing</span>
+                <span className="text-2xs text-ink-tertiary -mt-0.5 font-medium">Intent-Aware E2E Testing</span>
               </div>
             </Link>
 
             {/* Desktop Navigation Links */}
-            <div className="hidden md:flex items-center gap-1 pl-4 border-l border-slate-200">
+            <div className="hidden md:flex items-center gap-1 pl-4 border-l border-border">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 return (
@@ -60,7 +60,7 @@ export default function Navbar() {
                       `flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                         isActive
                           ? 'bg-brand-50 text-brand-700 border border-brand-200 shadow-sm'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                          : 'text-ink-secondary hover:text-ink hover:bg-surface'
                       }`
                     }
                   >
@@ -75,7 +75,7 @@ export default function Navbar() {
           {/* Right Status Indicators */}
           <div className="flex items-center gap-3">
             {/* Live Socket Stream Indicator */}
-            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-xs font-mono">
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-surface border border-border text-xs font-mono">
               <span className={`w-2 h-2 rounded-full ${socketConnected ? 'bg-emerald-500 animate-pulse' : 'bg-red-400'}`}></span>
               <span className={socketConnected ? 'text-emerald-700 font-semibold' : 'text-red-600'}>
                 {socketConnected ? 'Live Socket Stream' : 'Connecting...'}
@@ -83,7 +83,7 @@ export default function Navbar() {
             </div>
 
             {/* DB Status Badge */}
-            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-xs font-mono text-slate-600">
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface border border-border text-xs font-mono text-ink-secondary">
               <Database className="w-3 h-3 text-brand-600" />
               <span>{systemHealth?.db?.connected ? 'MongoDB Active' : 'Zero-Setup Engine'}</span>
             </div>

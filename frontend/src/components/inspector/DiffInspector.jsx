@@ -137,19 +137,19 @@ export default function DiffInspector({ selectedStep, steps = [], onSelectStep =
       {/* Selector Display Area */}
       {isHealing || isRunning ? (
         /* Actively analyzing state */
-        <div className="bg-amber-50 p-4 rounded-xl border border-amber-300 space-y-2 text-amber-900 text-xs font-mono">
+        <div className="bg-warning-bg p-4 rounded-xl border border-warning-border space-y-2 text-warning-text text-xs font-mono">
           <div className="font-bold flex items-center gap-2">
             <Loader2 className="w-4 h-4 animate-spin text-amber-600 shrink-0" />
             <span>AI Reasoning Engine Analyzing DOM...</span>
           </div>
-          <p className="text-amber-800 leading-relaxed font-sans">
+          <p className="text-warning-text leading-relaxed font-sans">
             Baseline selector missing or mutated. Engine is extracting the accessibility tree and comparing candidate elements against goal "{selectedStep.intent}".
           </p>
         </div>
       ) : isActuallyHealed ? (
         /* Real Diff shown when selector changed */
         <div className="bg-[#0f172a] text-slate-100 p-4 rounded-xl font-mono text-xs space-y-2.5 border border-slate-800 shadow-inner">
-          <div className="flex items-center justify-between text-slate-400 pb-2 border-b border-slate-800">
+          <div className="flex items-center justify-between text-ink-tertiary pb-2 border-b border-slate-800">
             <span className="font-sans font-semibold text-slate-300">DOM Selector Repair Diff</span>
             <span className="text-emerald-400 font-bold font-mono">
               {confidence}% match confidence
@@ -180,12 +180,12 @@ export default function DiffInspector({ selectedStep, steps = [], onSelectStep =
         </div>
       ) : isBug ? (
         /* Genuine bug display */
-        <div className="bg-red-50 p-4 rounded-xl border border-red-200 space-y-2 text-danger text-xs font-mono">
+        <div className="bg-danger-bg p-4 rounded-xl border border-danger-border space-y-2 text-danger text-xs font-mono">
           <div className="font-bold flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 shrink-0" />
             <span>AI Smart Triage Halted Execution</span>
           </div>
-          <p className="text-red-700 leading-relaxed font-sans">
+          <p className="text-danger-text leading-relaxed font-sans">
             {selectedStep.error || 'Server error 500 encountered with pricing anomaly ($0.00). AI engine verified this is a true application defect and refused to false-heal.'}
           </p>
         </div>

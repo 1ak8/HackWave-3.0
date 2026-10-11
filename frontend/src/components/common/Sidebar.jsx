@@ -23,8 +23,8 @@ const navLinks = [
 ];
 
 const quickRuns = [
-  { mode: 'mutated', label: 'Auto-Heal Demo', icon: Zap, color: 'text-indigo-400 hover:text-white bg-indigo-500/10 hover:bg-indigo-500/20', note: 'AI HEAL' },
-  { mode: 'standard', label: 'Standard Run', icon: Play, color: 'text-gray-300 hover:text-white hover:bg-sidebar-hover', note: 'BASE' },
+  { mode: 'mutated', label: 'Auto-Heal Demo', icon: Zap, color: 'text-brand hover:text-white bg-brand/10 hover:bg-brand/20', note: 'AI HEAL' },
+  { mode: 'standard', label: 'Standard Run', icon: Play, color: 'text-ink-secondary hover:text-white hover:bg-sidebar-hover', note: 'BASE' },
   { mode: 'chaos', label: 'Live Chaos Run', icon: Flame, color: 'text-amber-400 hover:text-white hover:bg-amber-500/10', note: 'CHAOS' },
   { mode: 'bug_mode', label: 'Real Bug Triage', icon: AlertTriangle, color: 'text-red-400 hover:text-white hover:bg-red-500/10', note: 'TRIAGE' },
 ];
@@ -93,7 +93,7 @@ export default function Sidebar() {
                     </span>
                   )}
                   {tag && (
-                    <span className="text-xs font-semibold px-2 py-0.5 rounded bg-white/10 text-sidebar-text-muted font-mono">
+                    <span className="text-xs font-semibold px-2 py-0.5 rounded bg-surface-raised/10 text-sidebar-text-muted font-mono">
                       {tag}
                     </span>
                   )}
@@ -129,7 +129,7 @@ export default function Sidebar() {
 
       {/* System Status Footer */}
       <div className="p-3 border-t border-sidebar-border">
-        <div className="bg-white/5 rounded-xl p-3 space-y-2 text-xs font-mono">
+        <div className="bg-surface-raised/5 rounded-xl p-3 space-y-2 text-xs font-mono">
           <div className="flex items-center justify-between">
             <span className="text-sidebar-text-muted">Telemetry:</span>
             <span className={`flex items-center gap-1.5 font-bold ${socketConnected ? 'text-green-400' : 'text-red-400'}`}>

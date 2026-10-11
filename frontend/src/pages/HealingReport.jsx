@@ -145,7 +145,7 @@ export default function HealingReport() {
               onClick={() => setFilter('ALL')}
               className={`px-3 py-1 rounded-lg text-xs font-bold transition ${
                 filter === 'ALL'
-                  ? 'bg-white text-ink shadow-xs border border-border'
+                  ? 'bg-surface-raised text-ink shadow-xs border border-border'
                   : 'text-ink-secondary hover:text-ink'
               }`}
             >
@@ -180,7 +180,7 @@ export default function HealingReport() {
             <button
               onClick={() => setViewMode('table')}
               className={`p-1.5 rounded-lg transition ${
-                viewMode === 'table' ? 'bg-white text-ink shadow-xs' : 'text-ink-tertiary hover:text-ink'
+                viewMode === 'table' ? 'bg-surface-raised text-ink shadow-xs' : 'text-ink-tertiary hover:text-ink'
               }`}
               title="Scannable Table View"
             >
@@ -189,7 +189,7 @@ export default function HealingReport() {
             <button
               onClick={() => setViewMode('cards')}
               className={`p-1.5 rounded-lg transition ${
-                viewMode === 'cards' ? 'bg-white text-ink shadow-xs' : 'text-ink-tertiary hover:text-ink'
+                viewMode === 'cards' ? 'bg-surface-raised text-ink shadow-xs' : 'text-ink-tertiary hover:text-ink'
               }`}
               title="Expanded Card View"
             >
@@ -230,7 +230,7 @@ export default function HealingReport() {
                       <React.Fragment key={log._id}>
                         <tr 
                           onClick={() => setExpandedId(isExpanded ? null : log._id)}
-                          className="hover:bg-gray-50/80 cursor-pointer transition"
+                          className="hover:bg-surface/80 cursor-pointer transition"
                         >
                           {/* Time */}
                           <td className="font-mono text-xs text-ink-tertiary whitespace-nowrap">
@@ -259,17 +259,17 @@ export default function HealingReport() {
                           <td className="font-mono text-xs">
                             {isHealed ? (
                               <div className="flex items-center gap-2 flex-wrap">
-                                <span className="line-through text-danger text-2xs bg-red-50 px-1.5 py-0.5 rounded border border-red-200">
+                                <span className="line-through text-danger text-2xs bg-danger-bg px-1.5 py-0.5 rounded border border-danger-border">
                                   {log.brokenSelector}
                                 </span>
                                 <ArrowRight className="w-3 h-3 text-ink-tertiary" />
-                                <span className="font-bold text-brand bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-200">
+                                <span className="font-bold text-brand bg-brand-light px-1.5 py-0.5 rounded border border-brand-border">
                                   {log.healedSelector}
                                 </span>
                               </div>
                             ) : (
                               <div className="flex items-center gap-2 text-danger">
-                                <span className="text-2xs bg-red-50 px-1.5 py-0.5 rounded border border-red-200 font-bold">
+                                <span className="text-2xs bg-danger-bg px-1.5 py-0.5 rounded border border-danger-border font-bold">
                                   {log.brokenSelector}
                                 </span>
                                 <ArrowRight className="w-3 h-3 text-ink-tertiary" />
@@ -317,9 +317,9 @@ export default function HealingReport() {
 
                         {/* Inline Expandable Drawer (Reveals AI Reason & Rationale) */}
                         {isExpanded && (
-                          <tr className="bg-slate-50">
+                          <tr className="bg-surface">
                             <td colSpan="6" className="p-4 sm:p-5">
-                              <div className="bg-white p-4 rounded-xl border border-border shadow-xs space-y-3">
+                              <div className="bg-surface-raised p-4 rounded-xl border border-border shadow-xs space-y-3">
                                 <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-border text-xs">
                                   <div className="flex items-center gap-2 font-mono">
                                     <Sparkles className="w-3.5 h-3.5 text-brand" />
@@ -336,12 +336,12 @@ export default function HealingReport() {
                                 </p>
 
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono pt-1">
-                                  <div className="p-2.5 rounded-lg bg-red-50/70 border border-red-200">
+                                  <div className="p-2.5 rounded-lg bg-danger-bg/70 border border-danger-border">
                                     <span className="text-2xs text-danger font-bold block mb-1">ORIGINAL SELECTOR:</span>
                                     <code className="text-danger font-bold text-xs">{log.brokenSelector}</code>
                                   </div>
 
-                                  <div className={`p-2.5 rounded-lg border ${isHealed ? 'bg-green-50/70 border-green-200' : 'bg-red-50/70 border-red-200'}`}>
+                                  <div className={`p-2.5 rounded-lg border ${isHealed ? 'bg-success-bg/70 border-success-border' : 'bg-danger-bg/70 border-danger-border'}`}>
                                     <span className={`text-2xs font-bold block mb-1 ${isHealed ? 'text-success-text' : 'text-danger'}`}>
                                       {isHealed ? 'RESOLVED ELEMENT:' : 'TRIAGE STATUS:'}
                                     </span>

@@ -21,7 +21,7 @@ export default function LiveTerminal({ logs = [], onClear }) {
       case 'chaos':
         return <span className="text-xs font-bold px-2 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-800 font-mono">CHAOS</span>;
       default:
-        return <span className="text-xs font-bold px-2 py-0.5 rounded bg-indigo-950 text-indigo-400 border border-indigo-800 font-mono">INFO</span>;
+        return <span className="text-xs font-bold px-2 py-0.5 rounded bg-indigo-950 text-brand border border-indigo-800 font-mono">INFO</span>;
     }
   };
 
@@ -30,17 +30,17 @@ export default function LiveTerminal({ logs = [], onClear }) {
       {/* Title Bar */}
       <div className="bg-gray-900/90 px-5 py-3 border-b border-gray-800 flex items-center justify-between select-none">
         <div className="flex items-center gap-2.5">
-          <Terminal className="w-4 h-4 text-indigo-400" />
+          <Terminal className="w-4 h-4 text-brand" />
           <span className="text-sm text-gray-200 font-bold font-sans">
             Playwright Telemetry Stream
           </span>
-          <span className="text-xs text-gray-400 font-mono">({logs.length} logged events)</span>
+          <span className="text-xs text-ink-tertiary font-mono">({logs.length} logged events)</span>
         </div>
 
         {onClear && (
           <button
             onClick={onClear}
-            className="text-xs text-gray-400 hover:text-white flex items-center gap-1.5 transition px-2.5 py-1 rounded hover:bg-gray-800 font-sans font-medium"
+            className="text-xs text-ink-tertiary hover:text-white flex items-center gap-1.5 transition px-2.5 py-1 rounded hover:bg-gray-800 font-sans font-medium"
             title="Clear terminal stream"
           >
             <Trash2 className="w-3.5 h-3.5" />
@@ -50,15 +50,15 @@ export default function LiveTerminal({ logs = [], onClear }) {
       </div>
 
       {/* Terminal Output */}
-      <div className="p-4 overflow-y-auto flex-1 space-y-2 text-sm text-gray-300 leading-relaxed max-h-[420px] min-h-[260px] scrollbar-thin">
+      <div className="p-4 overflow-y-auto flex-1 space-y-2 text-sm text-ink-secondary leading-relaxed max-h-[420px] min-h-[260px] scrollbar-thin">
         {logs.length === 0 ? (
-          <div className="text-gray-500 text-center py-16 italic font-sans text-sm">
+          <div className="text-ink-tertiary text-center py-16 italic font-sans text-sm">
             Telemetry stream listening... Trigger a test execution to watch real-time browser actions.
           </div>
         ) : (
           logs.map((log, index) => (
             <div key={index} className="flex items-start gap-2.5 hover:bg-gray-900/60 p-1.5 rounded font-mono text-sm">
-              <span className="text-gray-500 text-xs select-none shrink-0 font-mono pt-0.5">
+              <span className="text-ink-tertiary text-xs select-none shrink-0 font-mono pt-0.5">
                 {log.timestamp}
               </span>
               <span className="shrink-0">

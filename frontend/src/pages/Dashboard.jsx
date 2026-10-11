@@ -61,10 +61,10 @@ export default function Dashboard() {
   return (
     <div className="w-full max-w-6xl mx-auto px-6 py-8 space-y-8">
       {/* Hero Welcome Banner */}
-      <div className="card p-8 bg-gradient-to-br from-white via-surface to-brand-light/20 border-border shadow-card space-y-4">
+      <div className="card p-8 bg-gradient-to-br from-surface-raised via-surface-raised to-brand-light/40 border-border shadow-card space-y-4 animate-fade-in-up">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-light text-brand border border-brand-border text-xs font-bold font-mono">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-light text-brand border border-brand-border text-xs font-bold font-mono animate-glow-pulse">
               <span className="w-2 h-2 rounded-full bg-brand animate-pulse"></span>
               HackWave 3.0 • Intent-Aware Autonomous E2E Testing
             </div>
@@ -99,12 +99,12 @@ export default function Dashboard() {
       </div>
 
       {/* 4 Premium Consistent Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 stagger-children">
         {/* Card 1: AI Match Accuracy */}
-        <div className="card p-5 space-y-3 hover:border-border-strong transition-all shadow-card">
+        <div className="card p-5 space-y-3 hover:border-brand-border hover:shadow-card-md transition-all duration-200">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-ink-secondary">AI Match Accuracy</span>
-            <div className="w-8 h-8 rounded-lg bg-indigo-50 border border-indigo-100 text-brand flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-brand-light border border-brand-border text-brand flex items-center justify-center">
               <Sparkles className="w-4 h-4" />
             </div>
           </div>
@@ -115,10 +115,10 @@ export default function Dashboard() {
         </div>
 
         {/* Card 2: Auto-Heal Rate */}
-        <div className="card p-5 space-y-3 hover:border-border-strong transition-all shadow-card">
+        <div className="card p-5 space-y-3 hover:border-brand-border hover:shadow-card-md transition-all duration-200">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-ink-secondary">Auto-Heal Rate</span>
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-100 text-emerald-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-success-bg border border-success-border text-emerald-600 flex items-center justify-center">
               <ShieldCheck className="w-4 h-4" />
             </div>
           </div>
@@ -129,10 +129,10 @@ export default function Dashboard() {
         </div>
 
         {/* Card 3: Selectors Repaired */}
-        <div className="card p-5 space-y-3 hover:border-border-strong transition-all shadow-card">
+        <div className="card p-5 space-y-3 hover:border-brand-border hover:shadow-card-md transition-all duration-200">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-ink-secondary">Selectors Repaired</span>
-            <div className="w-8 h-8 rounded-lg bg-amber-50 border border-amber-100 text-amber-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-warning-bg border border-warning-border text-amber-600 flex items-center justify-center">
               <Cpu className="w-4 h-4" />
             </div>
           </div>
@@ -143,10 +143,10 @@ export default function Dashboard() {
         </div>
 
         {/* Card 4: Real Bugs Blocked */}
-        <div className="card p-5 space-y-3 hover:border-border-strong transition-all shadow-card">
+        <div className="card p-5 space-y-3 hover:border-brand-border hover:shadow-card-md transition-all duration-200">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-ink-secondary">Real Bugs Blocked</span>
-            <div className="w-8 h-8 rounded-lg bg-rose-50 border border-rose-100 text-rose-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-danger-bg border border-danger-border text-rose-600 flex items-center justify-center">
               <AlertTriangle className="w-4 h-4" />
             </div>
           </div>
@@ -188,11 +188,11 @@ export default function Dashboard() {
                 return (
                   <div
                     key={log._id}
-                    className="p-3 rounded-xl border border-border/80 bg-surface hover:bg-gray-50/80 transition space-y-2 text-xs"
+                    className="p-3 rounded-xl border border-border/80 bg-surface hover:bg-surface/80 transition space-y-2 text-xs"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded bg-white border border-border flex items-center justify-center font-mono font-bold text-2xs text-ink-secondary">
+                        <span className="w-5 h-5 rounded bg-surface-raised border border-border flex items-center justify-center font-mono font-bold text-2xs text-ink-secondary">
                           {log.stepOrder || 1}
                         </span>
                         <span className="font-bold text-ink">{log.stepName}</span>
@@ -216,13 +216,13 @@ export default function Dashboard() {
 
                     {/* Selector Transformation */}
                     {isHealed ? (
-                      <div className="bg-white p-2 rounded-lg border border-border font-mono text-2xs flex items-center justify-between flex-wrap gap-2">
+                      <div className="bg-surface-raised p-2 rounded-lg border border-border font-mono text-2xs flex items-center justify-between flex-wrap gap-2">
                         <span className="line-through text-danger">{log.brokenSelector}</span>
                         <ArrowRight className="w-3 h-3 text-ink-tertiary" />
                         <span className="font-bold text-brand">{log.healedSelector}</span>
                       </div>
                     ) : (
-                      <div className="bg-red-50 p-2 rounded-lg border border-red-200 text-danger text-2xs font-mono flex items-center justify-between">
+                      <div className="bg-danger-bg p-2 rounded-lg border border-danger-border text-danger text-2xs font-mono flex items-center justify-between">
                         <span>{log.brokenSelector}</span>
                         <span className="font-bold">HTTP 500 & $0 PRICE (BLOCKED)</span>
                       </div>

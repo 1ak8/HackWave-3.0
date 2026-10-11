@@ -87,8 +87,8 @@ export default function LiveRunView() {
           <label 
             className={`flex items-center gap-2 px-3.5 py-2 rounded-lg border text-xs font-mono cursor-pointer transition font-semibold ${
               !headless 
-                ? 'bg-indigo-50 border-indigo-300 text-brand shadow-xs ring-1 ring-indigo-200' 
-                : 'bg-surface border-border text-ink-secondary hover:bg-gray-100'
+                ? 'bg-brand-light border-brand-border text-brand shadow-xs ring-1 ring-brand/30' 
+                : 'bg-surface border-border text-ink-secondary hover:bg-surface'
             }`}
             title="When ON: Launches a real Chromium browser window on your desktop so you can watch Playwright physically click buttons and fill inputs live!"
           >
@@ -196,7 +196,7 @@ export default function LiveRunView() {
 
         {/* Clean Progress Bar */}
         <div className="flex items-center gap-3 w-full sm:w-60">
-          <div className="flex-1 bg-gray-200 h-2.5 rounded-full overflow-hidden">
+          <div className="flex-1 bg-border h-2.5 rounded-full overflow-hidden">
             <div 
               className="bg-brand h-full rounded-full transition-all duration-300"
               style={{ width: `${percentComplete}%` }}

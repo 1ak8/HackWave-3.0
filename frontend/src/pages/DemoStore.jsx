@@ -443,14 +443,14 @@ export default function DemoStore() {
       case 'chaos':
         return <span className="text-2xs font-bold px-1.5 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-800 font-mono">CHAOS</span>;
       default:
-        return <span className="text-2xs font-bold px-1.5 py-0.5 rounded bg-indigo-950 text-indigo-400 border border-indigo-800 font-mono">INFO</span>;
+        return <span className="text-2xs font-bold px-1.5 py-0.5 rounded bg-indigo-950 text-brand border border-indigo-800 font-mono">INFO</span>;
     }
   };
 
   return (
     <div className="min-h-screen bg-surface text-ink flex flex-col font-sans">
       {/* Top Header */}
-      <header className="border-b border-border bg-white sticky top-0 z-50 px-6 py-3 flex items-center justify-between shadow-xs">
+      <header className="border-b border-border bg-surface-raised sticky top-0 z-50 px-6 py-3 flex items-center justify-between shadow-xs">
         <div className="flex items-center gap-4">
           <Link 
             to="/" 
@@ -473,7 +473,7 @@ export default function DemoStore() {
             onClick={() => handleModeChange('standard')}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
               mode === 'standard' 
-                ? 'bg-white text-ink shadow-xs border border-border' 
+                ? 'bg-surface-raised text-ink shadow-xs border border-border' 
                 : 'text-ink-secondary hover:text-ink'
             }`}
           >
@@ -499,7 +499,7 @@ export default function DemoStore() {
           >
             <Flame className="w-3.5 h-3.5" />
             <span>Live Chaos</span>
-            <span className="text-2xs bg-white/20 px-1.5 py-0.2 rounded font-mono">{activeChaosCount} active</span>
+            <span className="text-2xs bg-surface-raised/20 px-1.5 py-0.2 rounded font-mono">{activeChaosCount} active</span>
           </button>
           <button
             onClick={() => handleModeChange('bug_mode')}
@@ -552,7 +552,7 @@ export default function DemoStore() {
 
       {/* Full-width Top Chaos Banner (Centered Segmented Capsule Dock, No Seed Button) */}
       {isChaos ? (
-        <div className="w-full bg-white border-b border-border px-6 sm:px-8 py-2.5 shadow-xs">
+        <div className="w-full bg-surface-raised border-b border-border px-6 sm:px-8 py-2.5 shadow-xs">
           <div className="max-w-7xl mx-auto flex items-center justify-center gap-3.5 flex-wrap">
             <div className="flex items-center gap-1.5 font-bold text-ink text-xs shrink-0">
               <Flame className="w-4 h-4 text-amber-500 animate-pulse" />
@@ -560,14 +560,14 @@ export default function DemoStore() {
             </div>
 
             {/* Sleek Segmented Capsule Dock Centered */}
-            <div className="bg-slate-100 p-1 rounded-full border border-slate-200 flex items-center gap-1 shadow-inner">
+            <div className="bg-surface p-1 rounded-full border border-border flex items-center gap-1 shadow-inner">
               {/* 1. Cart */}
               <button
                 onClick={() => setMutateCart(!mutateCart)}
                 className={`px-3 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1 ${
                   mutateCart 
                     ? 'bg-amber-500 text-white font-bold shadow-xs' 
-                    : 'text-slate-600 hover:text-ink hover:bg-white/60'
+                    : 'text-ink-secondary hover:text-ink hover:bg-surface-raised/60'
                 }`}
                 title="Toggle Step 1: Cart Button Mutation"
               >
@@ -581,7 +581,7 @@ export default function DemoStore() {
                 className={`px-3 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1 ${
                   mutateBag 
                     ? 'bg-amber-500 text-white font-bold shadow-xs' 
-                    : 'text-slate-600 hover:text-ink hover:bg-white/60'
+                    : 'text-ink-secondary hover:text-ink hover:bg-surface-raised/60'
                 }`}
                 title="Toggle Step 2: Bag Drawer Mutation"
               >
@@ -595,7 +595,7 @@ export default function DemoStore() {
                 className={`px-3 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1 ${
                   mutateEmail 
                     ? 'bg-amber-500 text-white font-bold shadow-xs' 
-                    : 'text-slate-600 hover:text-ink hover:bg-white/60'
+                    : 'text-ink-secondary hover:text-ink hover:bg-surface-raised/60'
                 }`}
                 title="Toggle Step 3: Email Field Mutation"
               >
@@ -609,7 +609,7 @@ export default function DemoStore() {
                 className={`px-3 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1 ${
                   mutateAddress 
                     ? 'bg-amber-500 text-white font-bold shadow-xs' 
-                    : 'text-slate-600 hover:text-ink hover:bg-white/60'
+                    : 'text-ink-secondary hover:text-ink hover:bg-surface-raised/60'
                 }`}
                 title="Toggle Step 4: Address Field Mutation"
               >
@@ -623,7 +623,7 @@ export default function DemoStore() {
                 className={`px-3 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1 ${
                   mutatePay 
                     ? 'bg-amber-500 text-white font-bold shadow-xs' 
-                    : 'text-slate-600 hover:text-ink hover:bg-white/60'
+                    : 'text-ink-secondary hover:text-ink hover:bg-surface-raised/60'
                 }`}
                 title="Toggle Step 5: Payment Action Mutation"
               >
@@ -635,7 +635,7 @@ export default function DemoStore() {
         </div>
       ) : (
         /* Clean Mode Status Indicator for standard/mutated/bug_mode */
-        <div className="bg-white border-b border-border px-6 py-2 text-xs flex items-center justify-between text-ink-secondary">
+        <div className="bg-surface-raised border-b border-border px-6 py-2 text-xs flex items-center justify-between text-ink-secondary">
           <div className="flex items-center gap-2">
             <Info className="w-3.5 h-3.5 text-ink-tertiary shrink-0" />
             {mode === 'standard' && (
@@ -856,7 +856,7 @@ export default function DemoStore() {
                 </div>
 
                 {bugHaltToast && (
-                  <div className="p-3.5 rounded-lg bg-red-100 border border-red-300 text-danger text-xs space-y-1">
+                  <div className="p-3.5 rounded-lg bg-danger-bg border border-danger-border text-danger text-xs space-y-1">
                     <p className="font-bold flex items-center gap-1.5">
                       <AlertTriangle className="w-4 h-4" />
                       HTTP 500 Internal Server Error & Corrupted Price
@@ -922,21 +922,21 @@ export default function DemoStore() {
                 <Bot className="w-4 h-4 animate-bounce" />
                 <span>Playwright Bot Driving Browser...</span>
               </div>
-              <span className="text-2xs font-mono bg-white/20 px-2 py-0.5 rounded">
+              <span className="text-2xs font-mono bg-surface-raised/20 px-2 py-0.5 rounded">
                 Mode: {mode.toUpperCase()}
               </span>
             </div>
           )}
 
           {/* Tab Switcher */}
-          <div className="card p-1.5 flex items-center justify-between bg-white shadow-xs">
+          <div className="card p-1.5 flex items-center justify-between bg-surface-raised shadow-xs">
             <div className="flex items-center gap-1">
               <button
                 onClick={() => setInspectorTab('pipeline')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
                   inspectorTab === 'pipeline'
                     ? 'bg-brand text-white shadow-xs'
-                    : 'text-ink-secondary hover:text-ink hover:bg-gray-100'
+                    : 'text-ink-secondary hover:text-ink hover:bg-surface'
                 }`}
               >
                 <Zap className="w-3.5 h-3.5" />
@@ -948,7 +948,7 @@ export default function DemoStore() {
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
                   inspectorTab === 'terminal'
                     ? 'bg-gray-900 text-white shadow-xs'
-                    : 'text-ink-secondary hover:text-ink hover:bg-gray-100'
+                    : 'text-ink-secondary hover:text-ink hover:bg-surface'
                 }`}
               >
                 <Terminal className="w-3.5 h-3.5" />
@@ -999,7 +999,7 @@ export default function DemoStore() {
                       key={s.order}
                       className={`p-3 rounded-xl border transition-all text-xs space-y-2 ${
                         isHealing || isRunning ? 'border-amber-400 bg-warning-bg/40 ring-1 ring-amber-400' :
-                        isActuallyHealed ? 'border-indigo-300 bg-brand-light/30' :
+                        isActuallyHealed ? 'border-brand-border bg-brand-light/30' :
                         isPassed ? 'border-success-border bg-success-bg/30' :
                         isFailed ? 'border-danger-border bg-danger-bg/40' :
                         'border-border bg-surface'
@@ -1008,7 +1008,7 @@ export default function DemoStore() {
                       {/* Step Header */}
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span className="w-5 h-5 rounded-md bg-white border border-border flex items-center justify-center font-mono font-bold text-2xs text-ink-secondary">
+                          <span className="w-5 h-5 rounded-md bg-surface-raised border border-border flex items-center justify-center font-mono font-bold text-2xs text-ink-secondary">
                             {s.order}
                           </span>
                           <span className="font-bold text-ink text-xs">{s.name}</span>
@@ -1055,15 +1055,15 @@ export default function DemoStore() {
 
                       {/* AI Thinking State */}
                       {(isHealing || isRunning) && (
-                        <div className="bg-amber-100 p-2 rounded-lg border border-amber-300 text-amber-900 font-mono text-2xs flex items-center gap-2">
-                          <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0 text-amber-700" />
+                        <div className="bg-warning-bg p-2 rounded-lg border border-warning-border text-warning-text font-mono text-2xs flex items-center gap-2">
+                          <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0 text-warning-text" />
                           <span>Scanning accessibility tree & semantic intent...</span>
                         </div>
                       )}
 
                       {/* Selector Diff Box: ONLY SHOWN WHEN ACTUALLY HEALED & DIFFERENT! */}
                       {isActuallyHealed && !isHealing && !isRunning && (
-                        <div className="bg-white p-2 rounded-lg border border-indigo-200 font-mono text-2xs space-y-1">
+                        <div className="bg-surface-raised p-2 rounded-lg border border-brand-border font-mono text-2xs space-y-1">
                           <div className="flex items-center justify-between text-danger">
                             <span>- Broken:</span>
                             <span className="line-through font-bold">{s.orig}</span>
@@ -1077,7 +1077,7 @@ export default function DemoStore() {
 
                       {/* Passed Clean Selector (No diff box because nothing broke!) */}
                       {isPassed && !isHealing && !isRunning && (
-                        <div className="bg-white p-1.5 rounded border border-border font-mono text-2xs text-ink-secondary flex items-center justify-between">
+                        <div className="bg-surface-raised p-1.5 rounded border border-border font-mono text-2xs text-ink-secondary flex items-center justify-between">
                           <span>Baseline:</span>
                           <span className="font-bold text-success-text">{s.orig} (Passed directly)</span>
                         </div>
@@ -1085,7 +1085,7 @@ export default function DemoStore() {
 
                       {/* Bug Triage Explanation */}
                       {isFailed && (
-                        <div className="bg-red-50 p-2.5 rounded-lg border border-red-200 text-danger text-2xs space-y-1">
+                        <div className="bg-danger-bg p-2.5 rounded-lg border border-danger-border text-danger text-2xs space-y-1">
                           <p className="font-bold flex items-center gap-1">
                             <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
                             Smart Triage: Refused to False-Heal
@@ -1113,23 +1113,23 @@ export default function DemoStore() {
                     <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
                     <span className="w-2.5 h-2.5 rounded-full bg-green-500"></span>
                   </div>
-                  <span className="text-xs text-gray-300 font-bold font-sans ml-2">
+                  <span className="text-xs text-ink-secondary font-bold font-sans ml-2">
                     Live Telemetry Stream
                   </span>
                 </div>
-                <span className="text-2xs text-gray-500 font-mono">{terminalLogs.length} events</span>
+                <span className="text-2xs text-ink-tertiary font-mono">{terminalLogs.length} events</span>
               </div>
 
               {/* Logs Stream */}
               <div className="p-3.5 overflow-y-auto flex-1 space-y-2 text-xs leading-relaxed scrollbar-thin">
                 {terminalLogs.length === 0 ? (
-                  <div className="text-gray-600 text-center py-16 italic font-sans text-xs">
+                  <div className="text-ink-secondary text-center py-16 italic font-sans text-xs">
                     Listening for browser events... Click buttons in the store or click "Auto-Run E2E Bot" to stream live logs.
                   </div>
                 ) : (
                   terminalLogs.map((log, index) => (
                     <div key={index} className="flex items-start gap-2 hover:bg-gray-900/60 p-1 rounded font-mono text-2xs">
-                      <span className="text-gray-500 select-none shrink-0 font-mono pt-0.5">
+                      <span className="text-ink-tertiary select-none shrink-0 font-mono pt-0.5">
                         {log.timestamp}
                       </span>
                       <span className="shrink-0">
@@ -1138,7 +1138,7 @@ export default function DemoStore() {
                       <span className={`break-all ${
                         log.type === 'error' ? 'text-red-400 font-semibold' :
                         log.type === 'healing' ? 'text-amber-300 font-semibold' :
-                        log.type === 'success' ? 'text-emerald-400 font-semibold' : 'text-gray-300'
+                        log.type === 'success' ? 'text-emerald-400 font-semibold' : 'text-ink-secondary'
                       }`}>
                         {log.message}
                       </span>

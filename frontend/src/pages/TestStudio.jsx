@@ -177,7 +177,7 @@ export default function TestStudio() {
                   <div key={idx} className="p-4 bg-surface border border-border rounded-xl space-y-3.5 shadow-xs">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2.5">
-                        <span className="w-6 h-6 rounded-md bg-white border border-border text-xs font-mono font-bold flex items-center justify-center text-ink-secondary">
+                        <span className="w-6 h-6 rounded-md bg-surface-raised border border-border text-xs font-mono font-bold flex items-center justify-center text-ink-secondary">
                           {st.order}
                         </span>
                         <input
@@ -193,7 +193,7 @@ export default function TestStudio() {
                         <select
                           value={st.action}
                           onChange={(e) => handleStepChange(idx, 'action', e.target.value)}
-                          className="bg-white text-xs font-mono text-ink border border-border rounded-md px-2.5 py-1.5 font-bold shadow-xs"
+                          className="bg-surface-raised text-xs font-mono text-ink border border-border rounded-md px-2.5 py-1.5 font-bold shadow-xs"
                         >
                           <option value="click">click</option>
                           <option value="fill">fill</option>
