@@ -511,191 +511,198 @@ export default function DemoStore() {
         </div>
       </header>
 
-      {/* Mode Guidance Sub-Bar */}
-      <div className={`px-6 py-2.5 border-b text-xs flex items-center justify-between font-medium ${
-        mode === 'standard' ? 'bg-gray-50 border-gray-200 text-ink-secondary' :
-        mode === 'mutated' ? 'bg-indigo-50 border-indigo-200 text-indigo-900' :
-        mode === 'chaos' ? 'bg-amber-50 border-amber-200 text-amber-900' :
-        'bg-red-50 border-red-200 text-red-900'
-      }`}>
+      {/* Clean Mode Status Indicator (Sleek, No Full-Width Yellow Strip) */}
+      <div className="bg-white border-b border-border px-6 py-2 text-xs flex items-center justify-between text-ink-secondary">
         <div className="flex items-center gap-2">
-          <Info className="w-4 h-4 shrink-0" />
+          <Info className="w-3.5 h-3.5 text-ink-tertiary shrink-0" />
           {mode === 'standard' && (
-            <span><strong>Version A Mode:</strong> Unmodified baseline store. Click through the order flow below or run the bot to see all steps pass normally.</span>
+            <span><strong>Version A Mode:</strong> Unmodified baseline store. All elements pass cleanly on original selectors.</span>
           )}
           {mode === 'mutated' && (
-            <span><strong>Version B Mode (Realistic Release):</strong> Devs renamed Steps 1, 3, 5, while Steps 2, 4, 6 remain untouched. Watch AI deliberately heal mutated steps while normal steps pass directly!</span>
+            <span><strong>Version B Mode:</strong> Devs renamed Steps 1, 3, 5, while Steps 2, 4, 6 remain untouched. AI deliberately heals broken steps.</span>
           )}
           {mode === 'chaos' && (
-            <span><strong>Judge's Custom Chaos Mode:</strong> Select which exact elements you want to mutate below. ONLY toggled items will break & heal with AI! Everything else passes cleanly like Version A.</span>
+            <span><strong>Judge Chaos Mode:</strong> Toggle individual elements in the console below to choose what breaks. Only toggled items will heal with AI!</span>
           )}
           {mode === 'bug_mode' && (
-            <span><strong>Real Bug Mode (Smart Triage):</strong> Steps 1 & 3 are harmlessly auto-healed, but Step 5 encounters a real 500 error & $0 price. AI halts and REFUSES to false-heal!</span>
+            <span><strong>Real Bug Mode:</strong> Steps 1 & 3 heal safely, but Step 5 encounters a 500 error & $0 price. AI halts and refuses to false-heal!</span>
           )}
         </div>
       </div>
-
-      {/* ================= 🔥 JUDGE'S CHAOS CONTROL DECK (EXCLUSIVE FOR CHAOS MODE) ================= */}
-      {isChaos && (
-        <div className="bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 border-b border-amber-200 px-6 py-3.5 shadow-inner">
-          <div className="max-w-7xl mx-auto space-y-2.5">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div className="flex items-center gap-2">
-                <SlidersHorizontal className="w-4 h-4 text-amber-600" />
-                <span className="font-extrabold text-sm text-amber-950">Judge's Custom Chaos Injection Deck</span>
-                <span className="text-2xs font-mono font-bold bg-amber-200/80 text-amber-900 px-2 py-0.5 rounded-full">
-                  {activeChaosCount} of 5 Mutations Active
-                </span>
-              </div>
-
-              {/* Quick Actions */}
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => {
-                    setMutateCart(true);
-                    setMutateBag(true);
-                    setMutateEmail(true);
-                    setMutateAddress(true);
-                    setMutatePay(true);
-                  }}
-                  className="btn btn-xs bg-amber-200 hover:bg-amber-300 text-amber-900 font-bold"
-                >
-                  Mutate All 5
-                </button>
-                <button
-                  onClick={() => {
-                    setMutateCart(false);
-                    setMutateBag(false);
-                    setMutateEmail(false);
-                    setMutateAddress(false);
-                    setMutatePay(false);
-                  }}
-                  className="btn btn-xs bg-white hover:bg-gray-100 text-ink-secondary border border-border font-bold"
-                >
-                  Clear All (All Pass)
-                </button>
-                <button
-                  onClick={() => setChaosSeed(prev => prev + 1)}
-                  className="btn btn-xs bg-amber-600 hover:bg-amber-700 text-white font-bold flex items-center gap-1 shadow-xs"
-                >
-                  <Shuffle className="w-3 h-3" />
-                  <span>Shuffle Seed #{chaosSeed + 1} 🎲</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Individual Step Toggles Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-xs font-semibold">
-              {/* Toggle 1: Cart Button */}
-              <button
-                onClick={() => setMutateCart(!mutateCart)}
-                className={`p-2 rounded-lg border text-left transition flex items-center justify-between ${
-                  mutateCart 
-                    ? 'bg-amber-500 text-white border-amber-600 shadow-xs' 
-                    : 'bg-white text-ink-secondary border-amber-200 hover:bg-amber-50'
-                }`}
-              >
-                <span>1. Cart Button</span>
-                <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${mutateCart ? 'bg-white/20' : 'bg-gray-100'}`}>
-                  {mutateCart ? 'HEAL' : 'PASS'}
-                </span>
-              </button>
-
-              {/* Toggle 2: Bag Trigger */}
-              <button
-                onClick={() => setMutateBag(!mutateBag)}
-                className={`p-2 rounded-lg border text-left transition flex items-center justify-between ${
-                  mutateBag 
-                    ? 'bg-amber-500 text-white border-amber-600 shadow-xs' 
-                    : 'bg-white text-ink-secondary border-amber-200 hover:bg-amber-50'
-                }`}
-              >
-                <span>2. Bag Drawer</span>
-                <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${mutateBag ? 'bg-white/20' : 'bg-gray-100'}`}>
-                  {mutateBag ? 'HEAL' : 'PASS'}
-                </span>
-              </button>
-
-              {/* Toggle 3: Email Input */}
-              <button
-                onClick={() => setMutateEmail(!mutateEmail)}
-                className={`p-2 rounded-lg border text-left transition flex items-center justify-between ${
-                  mutateEmail 
-                    ? 'bg-amber-500 text-white border-amber-600 shadow-xs' 
-                    : 'bg-white text-ink-secondary border-amber-200 hover:bg-amber-50'
-                }`}
-              >
-                <span>3. Email Field</span>
-                <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${mutateEmail ? 'bg-white/20' : 'bg-gray-100'}`}>
-                  {mutateEmail ? 'HEAL' : 'PASS'}
-                </span>
-              </button>
-
-              {/* Toggle 4: Address Input */}
-              <button
-                onClick={() => setMutateAddress(!mutateAddress)}
-                className={`p-2 rounded-lg border text-left transition flex items-center justify-between ${
-                  mutateAddress 
-                    ? 'bg-amber-500 text-white border-amber-600 shadow-xs' 
-                    : 'bg-white text-ink-secondary border-amber-200 hover:bg-amber-50'
-                }`}
-              >
-                <span>4. Address Field</span>
-                <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${mutateAddress ? 'bg-white/20' : 'bg-gray-100'}`}>
-                  {mutateAddress ? 'HEAL' : 'PASS'}
-                </span>
-              </button>
-
-              {/* Toggle 5: Payment Button */}
-              <button
-                onClick={() => setMutatePay(!mutatePay)}
-                className={`p-2 rounded-lg border text-left transition flex items-center justify-between ${
-                  mutatePay 
-                    ? 'bg-amber-500 text-white border-amber-600 shadow-xs' 
-                    : 'bg-white text-ink-secondary border-amber-200 hover:bg-amber-50'
-                }`}
-              >
-                <span>5. Payment Action</span>
-                <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${mutatePay ? 'bg-white/20' : 'bg-gray-100'}`}>
-                  {mutatePay ? 'HEAL' : 'PASS'}
-                </span>
-              </button>
-
-              {/* Visual Chaos: Text & Position */}
-              <div className="flex items-center gap-1.5 bg-white p-1 rounded-lg border border-amber-200">
-                <button
-                  onClick={() => setChaosText(!chaosText)}
-                  className={`flex-1 py-1 px-1.5 rounded text-[11px] font-bold text-center transition ${
-                    chaosText ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'text-ink-tertiary hover:text-ink'
-                  }`}
-                  title="Randomize text labels"
-                >
-                  Text
-                </button>
-                <button
-                  onClick={() => setChaosPosition(!chaosPosition)}
-                  className={`flex-1 py-1 px-1.5 rounded text-[11px] font-bold text-center transition ${
-                    chaosPosition ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'text-ink-tertiary hover:text-ink'
-                  }`}
-                  title="Invert layout positions"
-                >
-                  Layout
-                </button>
-              </div>
-            </div>
-
-            <p className="text-[11px] text-amber-800">
-              💡 <strong>Judge Proof:</strong> Only the elements with <strong>HEAL</strong> toggled above will break and be repaired by AI. Elements with <strong>PASS</strong> will pass directly on their baseline selectors without AI!
-            </p>
-          </div>
-        </div>
-      )}
 
       {/* Dual-Pane Arena */}
       <div className="flex-1 max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
         {/* ================= LEFT PANE: Interactive Store (7 cols) ================= */}
         <div className="lg:col-span-7 space-y-4">
+          {/* ================= 🔥 SLEEK DEVELOPER CHAOS CONSOLE (INSIDE LEFT PANE) ================= */}
+          {isChaos && (
+            <div className="card bg-[#0f172a] text-slate-100 border-slate-800 p-5 rounded-2xl shadow-md space-y-4">
+              {/* Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2 border-b border-slate-800">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+                  <div className="flex items-center gap-1.5">
+                    <SlidersHorizontal className="w-4 h-4 text-amber-400" />
+                    <span className="font-bold text-sm text-slate-100 font-sans">Live Chaos Injection Console</span>
+                  </div>
+                  <span className="text-2xs font-mono font-bold bg-amber-950 text-amber-300 border border-amber-800 px-2 py-0.5 rounded-full">
+                    {activeChaosCount} of 5 Armed
+                  </span>
+                </div>
+
+                {/* Quick Deck Actions */}
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      setMutateCart(true);
+                      setMutateBag(true);
+                      setMutateEmail(true);
+                      setMutateAddress(true);
+                      setMutatePay(true);
+                    }}
+                    className="text-2xs font-bold px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
+                  >
+                    Arm All
+                  </button>
+                  <button
+                    onClick={() => {
+                      setMutateCart(false);
+                      setMutateBag(false);
+                      setMutateEmail(false);
+                      setMutateAddress(false);
+                      setMutatePay(false);
+                    }}
+                    className="text-2xs font-bold px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
+                  >
+                    Clear All
+                  </button>
+                  <button
+                    onClick={() => setChaosSeed(prev => prev + 1)}
+                    className="text-2xs font-bold px-2.5 py-1 rounded bg-amber-500 hover:bg-amber-600 text-slate-950 transition flex items-center gap-1 shadow-xs"
+                  >
+                    <Shuffle className="w-3 h-3" />
+                    <span>Shuffle Seed #{chaosSeed + 1} 🎲</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* 5 Step Mutation Toggles */}
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs font-mono">
+                {/* 1. Cart Button */}
+                <button
+                  onClick={() => setMutateCart(!mutateCart)}
+                  className={`p-2.5 rounded-xl border text-left transition flex flex-col justify-between space-y-1.5 ${
+                    mutateCart
+                      ? 'bg-amber-950/70 border-amber-500/80 text-amber-200 ring-1 ring-amber-500/50 shadow-xs'
+                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
+                  }`}
+                >
+                  <span className="text-2xs font-bold text-slate-300">1. Cart Button</span>
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded w-fit ${
+                    mutateCart ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400'
+                  }`}>
+                    {mutateCart ? '⚡ HEAL' : '✓ PASS'}
+                  </span>
+                </button>
+
+                {/* 2. Bag Drawer */}
+                <button
+                  onClick={() => setMutateBag(!mutateBag)}
+                  className={`p-2.5 rounded-xl border text-left transition flex flex-col justify-between space-y-1.5 ${
+                    mutateBag
+                      ? 'bg-amber-950/70 border-amber-500/80 text-amber-200 ring-1 ring-amber-500/50 shadow-xs'
+                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
+                  }`}
+                >
+                  <span className="text-2xs font-bold text-slate-300">2. Bag Drawer</span>
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded w-fit ${
+                    mutateBag ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400'
+                  }`}>
+                    {mutateBag ? '⚡ HEAL' : '✓ PASS'}
+                  </span>
+                </button>
+
+                {/* 3. Email Input */}
+                <button
+                  onClick={() => setMutateEmail(!mutateEmail)}
+                  className={`p-2.5 rounded-xl border text-left transition flex flex-col justify-between space-y-1.5 ${
+                    mutateEmail
+                      ? 'bg-amber-950/70 border-amber-500/80 text-amber-200 ring-1 ring-amber-500/50 shadow-xs'
+                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
+                  }`}
+                >
+                  <span className="text-2xs font-bold text-slate-300">3. Email Field</span>
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded w-fit ${
+                    mutateEmail ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400'
+                  }`}>
+                    {mutateEmail ? '⚡ HEAL' : '✓ PASS'}
+                  </span>
+                </button>
+
+                {/* 4. Address Input */}
+                <button
+                  onClick={() => setMutateAddress(!mutateAddress)}
+                  className={`p-2.5 rounded-xl border text-left transition flex flex-col justify-between space-y-1.5 ${
+                    mutateAddress
+                      ? 'bg-amber-950/70 border-amber-500/80 text-amber-200 ring-1 ring-amber-500/50 shadow-xs'
+                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
+                  }`}
+                >
+                  <span className="text-2xs font-bold text-slate-300">4. Address Field</span>
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded w-fit ${
+                    mutateAddress ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400'
+                  }`}>
+                    {mutateAddress ? '⚡ HEAL' : '✓ PASS'}
+                  </span>
+                </button>
+
+                {/* 5. Payment Button */}
+                <button
+                  onClick={() => setMutatePay(!mutatePay)}
+                  className={`p-2.5 rounded-xl border text-left transition flex flex-col justify-between space-y-1.5 ${
+                    mutatePay
+                      ? 'bg-amber-950/70 border-amber-500/80 text-amber-200 ring-1 ring-amber-500/50 shadow-xs'
+                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
+                  }`}
+                >
+                  <span className="text-2xs font-bold text-slate-300">5. Payment Action</span>
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded w-fit ${
+                    mutatePay ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400'
+                  }`}>
+                    {mutatePay ? '⚡ HEAL' : '✓ PASS'}
+                  </span>
+                </button>
+              </div>
+
+              {/* Sub-controls: Text & Layout */}
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-slate-800 text-2xs text-slate-400">
+                <div className="flex items-center gap-2">
+                  <label className="flex items-center gap-1.5 cursor-pointer bg-slate-900 px-2.5 py-1 rounded-md border border-slate-800 hover:border-slate-700 text-slate-300">
+                    <input 
+                      type="checkbox" 
+                      checked={chaosText} 
+                      onChange={(e) => setChaosText(e.target.checked)} 
+                      className="accent-amber-500 rounded" 
+                    />
+                    <span>Scramble Text Labels</span>
+                  </label>
+                  <label className="flex items-center gap-1.5 cursor-pointer bg-slate-900 px-2.5 py-1 rounded-md border border-slate-800 hover:border-slate-700 text-slate-300">
+                    <input 
+                      type="checkbox" 
+                      checked={chaosPosition} 
+                      onChange={(e) => setChaosPosition(e.target.checked)} 
+                      className="accent-amber-500 rounded" 
+                    />
+                    <span>Invert Button Sequence</span>
+                  </label>
+                </div>
+                <span className="font-mono text-amber-400/90">
+                  ⚡ Only items with "HEAL" will break.
+                </span>
+              </div>
+            </div>
+          )}
           <div className="flex items-center justify-between pb-1">
             <h2 className="text-base font-bold text-ink flex items-center gap-2">
               <ShoppingBag className="w-4 h-4 text-brand" />
