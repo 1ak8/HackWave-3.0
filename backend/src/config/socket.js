@@ -6,7 +6,7 @@ let io = null;
 const initSocket = (server, clientUrl) => {
   io = new Server(server, {
     cors: {
-      origin: clientUrl || '*',
+      origin: '*',
       methods: ['GET', 'POST'],
       credentials: true
     }
