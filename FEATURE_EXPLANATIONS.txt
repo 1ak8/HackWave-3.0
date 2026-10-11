@@ -1,0 +1,89 @@
+================================================================================
+                    AUTOHEAL STUDIO — FEATURE EXPLANATIONS
+================================================================================
+
+================================================================================
+FEATURE #1: AUDIT LOG & COMPLIANCE TRAIL (/audit)
+================================================================================
+
+1. THE CORE IDEA (ASLI DUNIYA KA EXAMPLE):
+--------------------------------------------------------------------------------
+Jab koi aeroplane udta hai, toh flight ka ek "Black Box" hota hai jo har ek 
+second ka record rakhta hai ki flight ke dauran kab, kahan aur kya hua.
+
+Theek waise hi, AUDIT LOG hamare AI Testing Engine ka Black Box hai!
+
+
+2. ISKI ZAROORAT KYUN PADI? (THE BIG PROBLEM IT SOLVES):
+--------------------------------------------------------------------------------
+Maan lo tum Amazon, Swiggy ya Paytm ke Engineering Manager ho.
+Agar koi bolta hai: "Mera AI tumhare tests ke toote huye selectors ko khud se 
+repair kar deta hai."
+
+Toh tumhara sabse pehla sawaal hoga:
+  "Bhai, AI ne mere code mein apne man se kya change kiya?
+   Kaunse button ko replace kiya? Kyun kiya?
+   Kahin AI ne kisi asli bug ko daba kar zabardasti test ko pass toh nahi kar diya?"
+
+Bina PROOF, VERIFICATION aur EXPLANATION ke koi bhi enterprise company kisi 
+AI tool ko apne production deployment pipeline mein allow nahi karegi.
+
+
+3. AUDIT LOG PAGE PAR KYA-KYA RECORD HOTA HAI?
+--------------------------------------------------------------------------------
+Jab bhi test chalta hai aur koi selector heal hota hai ya halt hota hai, toh 
+database mein uska ek permanent, immutable technical record save ho jata hai:
+
+  [A] Exact Timestamp:
+      - Har decision ka exact time (e.g. 06:45:23 AM) save hota hai.
+
+  [B] Run ID Reference:
+      - Manager trace kar sakta hai ki yeh change kis test execution mein hua tha 
+        (e.g. Run: run_1791678147...).
+
+  [C] Step Number & User Intent:
+      - Step #1 — Select Product (Intent: "Add Quantum Wireless Headphones to bag").
+
+  [D] Broken vs Healed Selectors (Code Diff):
+      - Broken (Red):   - #btn-add-to-cart (Frontend dev ne rename kar diya tha)
+      - Healed (Green): + #dynamic_btn_cart_x89 (AI ne naya button detect kiya)
+
+  [E] Confidence Score:
+      - E.g. "99% Verified Match"
+
+  [F] AI Natural Language Reasoning:
+      - AI paragraph likhkar explain karta hai ki usne yeh decision kyun liya:
+        "Original selector #btn-add-to-cart missing in DOM. AI located replacement 
+        <button> with label 'Claim Headphones Now' satisfying the business intent."
+
+  [G] Smart Triage Record (Bug Halted Proof):
+      - Agar application mein asli bug aaya (jaise HTTP 500 payment crash):
+        Status: GENUINE REGRESSION • HEALING REFUSED
+        Reason: "Critical Application Bug detected: Payment gateway returned 500 error 
+        and price was $0.00. AI engine verified this is a true backend defect, 
+        NOT a harmless UI rename. Healing safely aborted to protect production!"
+
+
+4. PAGE PAR CONTROLS & FEATURES:
+--------------------------------------------------------------------------------
+  - Live Counters: Total Healed vs Real Bugs Triaged.
+  - Instant Search: Step name, selector ID ya intent text se filter karo.
+  - 1-Click Filter Tabs: 
+      * ALL: Saare records.
+      * Auto-Healed: Harmless mutations jo AI ne repair kiye.
+      * Bugs Triaged: Real software bugs jo AI ne block kiye.
+  - Export JSON Button:
+      * 1-Click mein poora SOC-2 compliance audit log JSON file mein download karo!
+
+
+5. HACKATHON JUDGES KE SAMNE PITCH (KILLER LINE):
+--------------------------------------------------------------------------------
+Jab judge poochenge:
+  "What if your AI hallucinated and passed a broken checkout flow?"
+
+Tumhara answer:
+  "Sir/Ma'am, that's why we built the Audit Trail. Every single AI decision is 
+   cryptographically logged with a confidence score, before/after selector diffs, 
+   and exact semantic reasoning for full SOC-2 and enterprise compliance!"
+
+================================================================================

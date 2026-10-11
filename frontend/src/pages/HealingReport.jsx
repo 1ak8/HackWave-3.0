@@ -6,7 +6,9 @@ import {
   Search, 
   Sparkles, 
   CheckCircle2,
-  Filter
+  Filter,
+  Download,
+  Clock
 } from 'lucide-react';
 import { useTests } from '../context/TestContext';
 
@@ -24,6 +26,16 @@ export default function HealingReport() {
     return matchesFilter && matchesSearch;
   });
 
+  const exportAuditJSON = () => {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(healingLogs, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `autoheal-audit-report-${Date.now()}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+  };
+
   return (
     <div className="w-full max-w-7xl mx-auto px-6 sm:px-8 py-8 space-y-8">
       {/* Header */}
@@ -32,16 +44,16 @@ export default function HealingReport() {
           <div className="flex items-center gap-2.5">
             <FileText className="w-4 h-4 text-brand" />
             <span className="text-xs font-mono text-brand uppercase font-bold tracking-wider">
-              Compliance & Verification
+              Compliance & Audit Trail
             </span>
           </div>
           <h1 className="text-2xl font-bold text-ink mt-1.5 tracking-tight">Autonomous Repair Audit Log</h1>
           <p className="text-sm text-ink-secondary mt-1">
-            Cryptographically logged record of all dynamic repairs, triage classifications, and blocked regressions.
+            Permanent, immutable ledger of all selector repairs, AI confidence scores, and Smart Triage failure reports.
           </p>
         </div>
 
-        {/* Counter Pills */}
+        {/* Counter Pills & Export */}
         <div className="flex items-center gap-3">
           <div className="px-4 py-2 rounded-xl bg-success-bg border border-success-border text-center shadow-xs">
             <span className="text-xs text-success-text block font-mono font-bold">Repaired</span>
@@ -51,6 +63,14 @@ export default function HealingReport() {
             <span className="text-xs text-danger-text block font-mono font-bold">Triaged</span>
             <span className="text-base font-extrabold text-danger font-mono">{stats.genuineBugsBlocked || 0}</span>
           </div>
+          <button
+            onClick={exportAuditJSON}
+            className="btn btn-secondary btn-sm flex items-center gap-1.5"
+            title="Export complete SOC-2 compliance audit log as JSON"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Export JSON</span>
+          </button>
         </div>
       </div>
 
@@ -137,7 +157,16 @@ export default function HealingReport() {
                     </div>
                   </div>
 
-                  <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-2xs font-mono text-ink-tertiary flex items-center gap-1 bg-surface px-2 py-0.5 rounded border border-border">
+                      <Clock className="w-3 h-3 text-ink-tertiary" />
+                      <span>{log.createdAt ? new Date(log.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'Live Event'}</span>
+                    </span>
+                    {log.runId && (
+                      <span className="text-2xs font-mono text-ink-tertiary bg-surface px-2 py-0.5 rounded border border-border hidden sm:inline">
+                        Run: {String(log.runId).substring(0, 12)}
+                      </span>
+                    )}
                     {isHealed ? (
                       <span className="badge badge-success text-xs font-mono font-bold px-3 py-1">
                         <CheckCircle2 className="w-3.5 h-3.5" />
