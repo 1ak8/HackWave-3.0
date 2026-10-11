@@ -6,7 +6,7 @@ const runController = {
   // POST /api/runs/execute
   async triggerRun(req, res) {
     try {
-      const { testId, mode = 'standard', headless } = req.body;
+      const { testId, mode = 'standard', headless, chaosParams } = req.body;
 
       let targetTest = null;
       if (testId) {
@@ -57,7 +57,8 @@ const runController = {
       // Fire and forget Playwright execution in background so client gets instant runId
       runE2ETest(initialRun._id, targetTest, {
         mode,
-        headless: headless !== undefined ? headless : (process.env.HEADLESS_BROWSER !== 'false')
+        headless: headless !== undefined ? headless : (process.env.HEADLESS_BROWSER !== 'false'),
+        chaosParams
       }).catch(err => {
         logger.error(`Error in run execution: ${err.message}`);
       });

@@ -21,7 +21,11 @@ import {
   Loader2,
   ChevronRight,
   Info,
-  Bot
+  Bot,
+  Sliders,
+  SlidersHorizontal,
+  ToggleLeft,
+  ToggleRight
 } from 'lucide-react';
 import { useTests } from '../context/TestContext';
 
@@ -38,11 +42,19 @@ export default function DemoStore() {
   // Active source: 'manual' (user clicks) vs 'bot' (Playwright headless runner)
   const [activeSource, setActiveSource] = useState('manual');
 
-  // Chaos tweaks
-  const [chaosText, setChaosText] = useState(false);
-  const [chaosPosition, setChaosPosition] = useState(false);
-  const [chaosClasses, setChaosClasses] = useState(false);
-  const [chaosSeed, setChaosSeed] = useState(0);
+  // ================= JUDGE'S LIVE CHAOS CONTROL DECK =================
+  // Individual step mutation toggles:
+  const [mutateCart, setMutateCart] = useState(searchParams.get('mutateCart') !== 'false');
+  const [mutateBag, setMutateBag] = useState(searchParams.get('mutateBag') === 'true');
+  const [mutateEmail, setMutateEmail] = useState(searchParams.get('mutateEmail') !== 'false');
+  const [mutateAddress, setMutateAddress] = useState(searchParams.get('mutateAddress') === 'true');
+  const [mutatePay, setMutatePay] = useState(searchParams.get('mutatePay') !== 'false');
+
+  // Visual Chaos tweaks
+  const [chaosText, setChaosText] = useState(searchParams.get('chaosText') === 'true');
+  const [chaosPosition, setChaosPosition] = useState(searchParams.get('chaosPosition') === 'true');
+  const [chaosClasses, setChaosClasses] = useState(searchParams.get('chaosClasses') === 'true');
+  const [chaosSeed, setChaosSeed] = useState(parseInt(searchParams.get('chaosSeed') || '0'));
 
   // E-commerce store states
   const [cartCount, setCartCount] = useState(0);
@@ -155,57 +167,63 @@ export default function DemoStore() {
     }
   };
 
-  // In mutated, chaos, and bug_mode: Steps 1 & 3 have renamed selectors.
-  // In bug_mode: Step 5 is also where the real bug triggers!
-  const isMutated = mode === 'mutated' || mode === 'chaos' || mode === 'bug_mode';
+  // In mutated, chaos, and bug_mode:
+  // In mutated: Steps 1, 3, 5 are mutated by default.
+  // In chaos: EXACTLY the steps chosen by the judge are mutated!
+  // In bug_mode: Steps 1 & 3 are mutated & healed, and Step 5 halts!
+  const isMutated = mode === 'mutated';
   const isBug = mode === 'bug_mode';
+  const isChaos = mode === 'chaos';
+
+  // Count active chaos toggles for judge's badge
+  const activeChaosCount = [mutateCart, mutateBag, mutateEmail, mutateAddress, mutatePay].filter(Boolean).length;
 
   /*
-   * REALISTIC SELECTOR SETUP:
-   * In Version B & Bug Mode:
-   * - Step 1: #btn-add-to-cart -> #dynamic_btn_cart_x89 (MUTATED, AI HEALS)
-   * - Step 2: #btn-view-cart -> KEPT UNCHANGED (PASSES DIRECTLY)
-   * - Step 3: #input-checkout-email -> #customer_email_contact (MUTATED, AI HEALS)
-   * - Step 4: #input-checkout-address -> KEPT UNCHANGED (PASSES DIRECTLY)
-   * - Step 5: #btn-complete-order -> in Ver B: #checkout_action_auth_pay (AI HEALS)
-   *                               -> in Bug Mode: 500 error & $0 price (AI REFUSES TO HEAL!)
-   * - Step 6: #order-success-badge -> KEPT UNCHANGED (PASSES DIRECTLY)
+   * DYNAMIC SELECTOR DETERMINATION (JUDGE'S RULES):
+   * If in Chaos Mode: Only the toggled steps mutate!
+   * If in Version B: Steps 1, 3, 5 mutate, while 2, 4, 6 stay clean.
+   * If in Standard: All stay clean baseline.
    */
 
-  // Step 1: Mutated in Version B, Chaos, and Bug Mode
-  const addToCartId = isMutated || chaosClasses 
-    ? (chaosSeed > 0 ? `dynamic_cart_btn_${chaosSeed}` : 'dynamic_btn_cart_x89') 
+  // Step 1: Add to Cart button
+  const isCartMutated = isChaos ? mutateCart : (isMutated || isBug || chaosClasses);
+  const addToCartId = isCartMutated
+    ? (chaosSeed > 0 ? `chaos_cart_btn_${chaosSeed}` : 'dynamic_btn_cart_x89')
     : 'btn-add-to-cart';
 
-  const addToCartText = chaosText 
-    ? 'Grab Deal Now!' 
-    : (isMutated ? 'Claim Headphones Now' : 'Add to Bag');
+  const addToCartText = (isChaos && chaosText)
+    ? 'Grab Audio Deal Now!' 
+    : (isCartMutated ? 'Claim Headphones Now' : 'Add to Bag');
 
-  // Step 2: Unchanged in Version B & Bug Mode! (Only mutates if Chaos is explicitly enabled)
-  const viewCartId = mode === 'chaos' && (chaosClasses || chaosSeed > 0)
-    ? `nav_bag_trigger_${chaosSeed}`
+  // Step 2: View Bag Trigger
+  const isBagMutated = isChaos ? mutateBag : false;
+  const viewCartId = isBagMutated
+    ? (chaosSeed > 0 ? `chaos_nav_bag_${chaosSeed}` : 'chaos_nav_bag_92')
     : 'btn-view-cart';
 
-  const viewCartText = 'View Bag & Checkout';
+  const viewCartText = (isChaos && chaosText && isBagMutated) ? 'Proceed to Bag Now' : 'View Bag & Checkout';
 
-  // Step 3: Mutated in Version B, Chaos, and Bug Mode
-  const emailFieldId = isMutated || chaosClasses 
-    ? (chaosSeed > 0 ? `customer_email_${chaosSeed}` : 'customer_email_contact') 
+  // Step 3: Customer Email field
+  const isEmailMutated = isChaos ? mutateEmail : (isMutated || isBug || chaosClasses);
+  const emailFieldId = isEmailMutated
+    ? (chaosSeed > 0 ? `chaos_email_${chaosSeed}` : 'customer_email_contact')
     : 'input-checkout-email';
 
-  // Step 4: Unchanged in Version B & Bug Mode! (Only mutates if Chaos is explicitly enabled)
-  const addressFieldId = mode === 'chaos' && (chaosClasses || chaosSeed > 0)
-    ? `shipping_dest_${chaosSeed}`
+  // Step 4: Shipping Address field
+  const isAddressMutated = isChaos ? mutateAddress : false;
+  const addressFieldId = isAddressMutated
+    ? (chaosSeed > 0 ? `chaos_address_${chaosSeed}` : 'chaos_dest_address')
     : 'input-checkout-address';
 
-  // Step 5: In Version B & Chaos: #checkout_action_auth_pay
-  const checkoutBtnId = isMutated || chaosClasses 
-    ? (chaosSeed > 0 ? `auth_pay_action_${chaosSeed}` : 'checkout_action_auth_pay') 
+  // Step 5: Payment Action button
+  const isPayMutated = isChaos ? mutatePay : (isMutated || isBug || chaosClasses);
+  const checkoutBtnId = isPayMutated
+    ? (chaosSeed > 0 ? `chaos_pay_action_${chaosSeed}` : 'checkout_action_auth_pay')
     : 'btn-complete-order';
 
-  const checkoutBtnText = chaosText 
-    ? 'Authorize & Charge' 
-    : (isMutated ? 'Complete Payment ($149.00)' : 'Place Order');
+  const checkoutBtnText = (isChaos && chaosText)
+    ? 'Authorize & Charge Card' 
+    : (isPayMutated ? 'Complete Payment ($149.00)' : 'Place Order');
 
   // Trigger manual step progression WITH LIVE REAL-TIME LOGGING
   const triggerStepAction = (order, isFailure = false, errorMsg = null) => {
@@ -240,7 +258,8 @@ export default function DemoStore() {
       return;
     }
 
-    // 3. MUTATED & REAL BUG MODE (Steps 1 & 3 are mutated, Steps 2, 4, 6 are unchanged)
+    // 3. SELECTIVE MUTATION CHECK:
+    // Only steps that are ACTUALLY mutated will heal! All other steps pass directly like Version A!
     const isThisStepMutated = (order === 1 && addToCartId !== 'btn-add-to-cart') ||
       (order === 2 && viewCartId !== 'btn-view-cart') ||
       (order === 3 && emailFieldId !== 'input-checkout-email') ||
@@ -251,8 +270,11 @@ export default function DemoStore() {
       // Clean pass without needing AI!
       setManualSteps(prev => prev.map(s => s.order === order ? { ...s, status: 'passed', healed: null } : s));
       if (addTerminalLog) {
+        if (order === 1) addTerminalLog('info', 'Step #1: Baseline selector #btn-add-to-cart found (Unchanged). Passed directly.');
         if (order === 2) addTerminalLog('info', 'Step #2: Baseline selector #btn-view-cart found (Unchanged). Passed directly.');
+        if (order === 3) addTerminalLog('info', 'Step #3: Baseline selector #input-checkout-email found (Unchanged). Passed directly.');
         if (order === 4) addTerminalLog('info', 'Step #4: Baseline selector #input-checkout-address found (Unchanged). Passed directly.');
+        if (order === 5) addTerminalLog('info', 'Step #5: Baseline selector #btn-complete-order found (Unchanged). Passed directly.');
         if (order === 6) addTerminalLog('success', 'Step #6: Order confirmation verified (#order-success-badge). Direct pass.');
       }
       return;
@@ -265,9 +287,15 @@ export default function DemoStore() {
       if (order === 1) {
         addTerminalLog('warn', 'Selector Failure on Step #1! Missing: #btn-add-to-cart. Invoking AI Reasoning Engine...');
         addTerminalLog('healing', 'AI Engine analyzing accessibility tree for intent: "Add headphones to bag"...');
+      } else if (order === 2) {
+        addTerminalLog('warn', 'Selector Failure on Step #2! Missing: #btn-view-cart. Invoking AI Reasoning Engine...');
+        addTerminalLog('healing', 'AI Engine analyzing accessibility tree for intent: "Open checkout drawer"...');
       } else if (order === 3) {
         addTerminalLog('warn', 'Selector Failure on Step #3! Missing: #input-checkout-email. Invoking AI Reasoning Engine...');
         addTerminalLog('healing', 'AI Engine analyzing accessibility tree for intent: "Fill customer contact email"...');
+      } else if (order === 4) {
+        addTerminalLog('warn', 'Selector Failure on Step #4! Missing: #input-checkout-address. Invoking AI Reasoning Engine...');
+        addTerminalLog('healing', 'AI Engine analyzing accessibility tree for intent: "Fill destination delivery address"...');
       } else if (order === 5) {
         addTerminalLog('warn', 'Selector Failure on Step #5! Missing: #btn-complete-order. Invoking AI Reasoning Engine...');
         addTerminalLog('healing', 'AI Engine analyzing accessibility tree for intent: "Authorize card and charge $149"...');
@@ -296,9 +324,15 @@ export default function DemoStore() {
         if (order === 1) {
           addTerminalLog('success', `✔ Healed: [#btn-add-to-cart] -> [${resolvedSel}] (${conf}% confidence via Semantic Text & Role Matching)`);
           addTerminalLog('info', `Action dispatched on resolved element: ${resolvedSel}`);
+        } else if (order === 2) {
+          addTerminalLog('success', `✔ Healed: [#btn-view-cart] -> [${resolvedSel}] (${conf}% confidence via Navigation Role Matching)`);
+          addTerminalLog('info', `Opened checkout drawer on resolved element: ${resolvedSel}`);
         } else if (order === 3) {
           addTerminalLog('success', `✔ Healed: [#input-checkout-email] -> [${resolvedSel}] (${conf}% confidence via Proximity Graph)`);
           addTerminalLog('info', `Filled contact email on resolved element: ${resolvedSel}`);
+        } else if (order === 4) {
+          addTerminalLog('success', `✔ Healed: [#input-checkout-address] -> [${resolvedSel}] (${conf}% confidence via Delivery Address Heuristic)`);
+          addTerminalLog('info', `Filled destination address on resolved element: ${resolvedSel}`);
         } else if (order === 5) {
           addTerminalLog('success', `✔ Healed: [#btn-complete-order] -> [${resolvedSel}] (${conf}% confidence via Intent Assertion)`);
           addTerminalLog('info', `Payment authorization dispatched on: ${resolvedSel}`);
@@ -307,13 +341,13 @@ export default function DemoStore() {
     }, 850);
   };
 
-  // Automated E2E Bot execution (Fixed & Robust!)
+  // Automated E2E Bot execution with selective chaos parameters
   const runAutomatedBot = async () => {
     setActiveSource('bot');
     setIsBotRunning(true);
     setInspectorTab('pipeline');
     
-    // Reset local UI inputs WITHOUT resetting activeSource to 'manual'
+    // Reset local UI inputs WITHOUT resetting activeSource
     setCartCount(0);
     setStoreStep(1);
     setEmail('');
@@ -327,7 +361,11 @@ export default function DemoStore() {
       if (addTerminalLog) {
         addTerminalLog('info', `🤖 Starting Headless Playwright Bot for [${mode.toUpperCase()}] mode...`);
       }
-      await triggerRun(defaultTest?._id, mode, true);
+
+      // If in Chaos mode, pass the judge's exact choices to the Playwright runner!
+      const chaosParams = `mutateCart=${mutateCart}&mutateBag=${mutateBag}&mutateEmail=${mutateEmail}&mutateAddress=${mutateAddress}&mutatePay=${mutatePay}&chaosPosition=${chaosPosition}&chaosText=${chaosText}&chaosSeed=${chaosSeed}`;
+
+      await triggerRun(defaultTest?._id, mode, true, isChaos ? { chaosParams } : {});
     } catch (err) {
       console.error('Failed to run bot:', err);
       setIsBotRunning(false);
@@ -414,14 +452,15 @@ export default function DemoStore() {
           </button>
           <button
             onClick={() => handleModeChange('chaos')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
               mode === 'chaos' 
                 ? 'bg-amber-500 text-white shadow-xs' 
                 : 'text-ink-secondary hover:text-ink'
             }`}
           >
             <Flame className="w-3.5 h-3.5" />
-            Live Chaos
+            <span>Live Chaos</span>
+            <span className="text-[10px] bg-white/20 px-1.5 py-0.2 rounded font-mono">{activeChaosCount} active</span>
           </button>
           <button
             onClick={() => handleModeChange('bug_mode')}
@@ -488,43 +527,169 @@ export default function DemoStore() {
             <span><strong>Version B Mode (Realistic Release):</strong> Devs renamed Steps 1, 3, 5, while Steps 2, 4, 6 remain untouched. Watch AI deliberately heal mutated steps while normal steps pass directly!</span>
           )}
           {mode === 'chaos' && (
-            <span><strong>Live Chaos Mode:</strong> Toggle mutations or click "Shuffle Now" to scramble elements while testing. AI uses semantic intent to heal!</span>
+            <span><strong>Judge's Custom Chaos Mode:</strong> Select which exact elements you want to mutate below. ONLY toggled items will break & heal with AI! Everything else passes cleanly like Version A.</span>
           )}
           {mode === 'bug_mode' && (
             <span><strong>Real Bug Mode (Smart Triage):</strong> Steps 1 & 3 are harmlessly auto-healed, but Step 5 encounters a real 500 error & $0 price. AI halts and REFUSES to false-heal!</span>
           )}
         </div>
-
-        {mode === 'chaos' && (
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setChaosSeed(prev => prev + 1)}
-              className="btn btn-xs bg-amber-600 hover:bg-amber-700 text-white font-bold flex items-center gap-1"
-            >
-              <Shuffle className="w-3 h-3" />
-              <span>Shuffle Now 🎲</span>
-            </button>
-            <label className="flex items-center gap-1 text-xs cursor-pointer">
-              <input 
-                type="checkbox" 
-                checked={chaosText} 
-                onChange={(e) => setChaosText(e.target.checked)} 
-                className="accent-amber-600 rounded" 
-              />
-              <span>Scramble Text</span>
-            </label>
-            <label className="flex items-center gap-1 text-xs cursor-pointer">
-              <input 
-                type="checkbox" 
-                checked={chaosPosition} 
-                onChange={(e) => setChaosPosition(e.target.checked)} 
-                className="accent-amber-600 rounded" 
-              />
-              <span>Invert Order</span>
-            </label>
-          </div>
-        )}
       </div>
+
+      {/* ================= 🔥 JUDGE'S CHAOS CONTROL DECK (EXCLUSIVE FOR CHAOS MODE) ================= */}
+      {isChaos && (
+        <div className="bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 border-b border-amber-200 px-6 py-3.5 shadow-inner">
+          <div className="max-w-7xl mx-auto space-y-2.5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal className="w-4 h-4 text-amber-600" />
+                <span className="font-extrabold text-sm text-amber-950">Judge's Custom Chaos Injection Deck</span>
+                <span className="text-2xs font-mono font-bold bg-amber-200/80 text-amber-900 px-2 py-0.5 rounded-full">
+                  {activeChaosCount} of 5 Mutations Active
+                </span>
+              </div>
+
+              {/* Quick Actions */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    setMutateCart(true);
+                    setMutateBag(true);
+                    setMutateEmail(true);
+                    setMutateAddress(true);
+                    setMutatePay(true);
+                  }}
+                  className="btn btn-xs bg-amber-200 hover:bg-amber-300 text-amber-900 font-bold"
+                >
+                  Mutate All 5
+                </button>
+                <button
+                  onClick={() => {
+                    setMutateCart(false);
+                    setMutateBag(false);
+                    setMutateEmail(false);
+                    setMutateAddress(false);
+                    setMutatePay(false);
+                  }}
+                  className="btn btn-xs bg-white hover:bg-gray-100 text-ink-secondary border border-border font-bold"
+                >
+                  Clear All (All Pass)
+                </button>
+                <button
+                  onClick={() => setChaosSeed(prev => prev + 1)}
+                  className="btn btn-xs bg-amber-600 hover:bg-amber-700 text-white font-bold flex items-center gap-1 shadow-xs"
+                >
+                  <Shuffle className="w-3 h-3" />
+                  <span>Shuffle Seed #{chaosSeed + 1} 🎲</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Individual Step Toggles Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-xs font-semibold">
+              {/* Toggle 1: Cart Button */}
+              <button
+                onClick={() => setMutateCart(!mutateCart)}
+                className={`p-2 rounded-lg border text-left transition flex items-center justify-between ${
+                  mutateCart 
+                    ? 'bg-amber-500 text-white border-amber-600 shadow-xs' 
+                    : 'bg-white text-ink-secondary border-amber-200 hover:bg-amber-50'
+                }`}
+              >
+                <span>1. Cart Button</span>
+                <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${mutateCart ? 'bg-white/20' : 'bg-gray-100'}`}>
+                  {mutateCart ? 'HEAL' : 'PASS'}
+                </span>
+              </button>
+
+              {/* Toggle 2: Bag Trigger */}
+              <button
+                onClick={() => setMutateBag(!mutateBag)}
+                className={`p-2 rounded-lg border text-left transition flex items-center justify-between ${
+                  mutateBag 
+                    ? 'bg-amber-500 text-white border-amber-600 shadow-xs' 
+                    : 'bg-white text-ink-secondary border-amber-200 hover:bg-amber-50'
+                }`}
+              >
+                <span>2. Bag Drawer</span>
+                <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${mutateBag ? 'bg-white/20' : 'bg-gray-100'}`}>
+                  {mutateBag ? 'HEAL' : 'PASS'}
+                </span>
+              </button>
+
+              {/* Toggle 3: Email Input */}
+              <button
+                onClick={() => setMutateEmail(!mutateEmail)}
+                className={`p-2 rounded-lg border text-left transition flex items-center justify-between ${
+                  mutateEmail 
+                    ? 'bg-amber-500 text-white border-amber-600 shadow-xs' 
+                    : 'bg-white text-ink-secondary border-amber-200 hover:bg-amber-50'
+                }`}
+              >
+                <span>3. Email Field</span>
+                <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${mutateEmail ? 'bg-white/20' : 'bg-gray-100'}`}>
+                  {mutateEmail ? 'HEAL' : 'PASS'}
+                </span>
+              </button>
+
+              {/* Toggle 4: Address Input */}
+              <button
+                onClick={() => setMutateAddress(!mutateAddress)}
+                className={`p-2 rounded-lg border text-left transition flex items-center justify-between ${
+                  mutateAddress 
+                    ? 'bg-amber-500 text-white border-amber-600 shadow-xs' 
+                    : 'bg-white text-ink-secondary border-amber-200 hover:bg-amber-50'
+                }`}
+              >
+                <span>4. Address Field</span>
+                <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${mutateAddress ? 'bg-white/20' : 'bg-gray-100'}`}>
+                  {mutateAddress ? 'HEAL' : 'PASS'}
+                </span>
+              </button>
+
+              {/* Toggle 5: Payment Button */}
+              <button
+                onClick={() => setMutatePay(!mutatePay)}
+                className={`p-2 rounded-lg border text-left transition flex items-center justify-between ${
+                  mutatePay 
+                    ? 'bg-amber-500 text-white border-amber-600 shadow-xs' 
+                    : 'bg-white text-ink-secondary border-amber-200 hover:bg-amber-50'
+                }`}
+              >
+                <span>5. Payment Action</span>
+                <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${mutatePay ? 'bg-white/20' : 'bg-gray-100'}`}>
+                  {mutatePay ? 'HEAL' : 'PASS'}
+                </span>
+              </button>
+
+              {/* Visual Chaos: Text & Position */}
+              <div className="flex items-center gap-1.5 bg-white p-1 rounded-lg border border-amber-200">
+                <button
+                  onClick={() => setChaosText(!chaosText)}
+                  className={`flex-1 py-1 px-1.5 rounded text-[11px] font-bold text-center transition ${
+                    chaosText ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'text-ink-tertiary hover:text-ink'
+                  }`}
+                  title="Randomize text labels"
+                >
+                  Text
+                </button>
+                <button
+                  onClick={() => setChaosPosition(!chaosPosition)}
+                  className={`flex-1 py-1 px-1.5 rounded text-[11px] font-bold text-center transition ${
+                    chaosPosition ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'text-ink-tertiary hover:text-ink'
+                  }`}
+                  title="Invert layout positions"
+                >
+                  Layout
+                </button>
+              </div>
+            </div>
+
+            <p className="text-[11px] text-amber-800">
+              💡 <strong>Judge Proof:</strong> Only the elements with <strong>HEAL</strong> toggled above will break and be repaired by AI. Elements with <strong>PASS</strong> will pass directly on their baseline selectors without AI!
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Dual-Pane Arena */}
       <div className="flex-1 max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -581,7 +746,7 @@ export default function DemoStore() {
                   {/* DOM ID Badge Preview */}
                   <div className="bg-surface p-2.5 rounded-lg border border-border text-xs font-mono flex items-center justify-between">
                     <span className="text-ink-secondary text-2xs font-semibold">Live Add-to-Cart ID:</span>
-                    <span className="font-bold text-brand">#{addToCartId}</span>
+                    <span className={`font-bold ${isCartMutated ? 'text-amber-600' : 'text-brand'}`}>#{addToCartId}</span>
                   </div>
 
                   {/* Buttons */}
@@ -596,7 +761,7 @@ export default function DemoStore() {
                         setTimeout(() => setItemAddedToast(false), 2000);
                       }}
                       className={`btn w-full py-3 text-sm font-bold shadow-sm ${
-                        isMutated ? 'btn-primary' : 'bg-gray-900 hover:bg-black text-white'
+                        isCartMutated ? 'btn-primary' : 'bg-gray-900 hover:bg-black text-white'
                       }`}
                     >
                       {itemAddedToast ? (
@@ -663,11 +828,11 @@ export default function DemoStore() {
                 <div>
                   <label className="block text-xs font-bold text-ink mb-1 flex justify-between">
                     <span>Customer Email (Step 3)</span>
-                    <span className="text-xs font-mono text-ink-tertiary">#{emailFieldId}</span>
+                    <span className={`text-xs font-mono ${isEmailMutated ? 'text-amber-600 font-bold' : 'text-ink-tertiary'}`}>#{emailFieldId}</span>
                   </label>
                   <input
                     id={emailFieldId}
-                    name={isMutated ? 'buyer_email' : 'email'}
+                    name={isEmailMutated ? 'buyer_email' : 'email'}
                     type="email"
                     value={email}
                     onChange={(e) => {
@@ -681,12 +846,12 @@ export default function DemoStore() {
 
                 <div>
                   <label className="block text-xs font-bold text-ink mb-1 flex justify-between">
-                    <span>Shipping Address (Step 4 — Unchanged Baseline)</span>
-                    <span className="text-xs font-mono text-ink-tertiary">#{addressFieldId}</span>
+                    <span>Shipping Address (Step 4)</span>
+                    <span className={`text-xs font-mono ${isAddressMutated ? 'text-amber-600 font-bold' : 'text-ink-tertiary'}`}>#{addressFieldId}</span>
                   </label>
                   <input
                     id={addressFieldId}
-                    name={isMutated ? 'delivery_addr' : 'address'}
+                    name={isAddressMutated ? 'delivery_addr' : 'address'}
                     type="text"
                     value={address}
                     onChange={(e) => {
@@ -720,7 +885,7 @@ export default function DemoStore() {
                     className={`btn w-full py-3.5 text-sm font-bold shadow-sm ${
                       isBug
                         ? 'btn-danger'
-                        : isMutated
+                        : isPayMutated
                         ? 'btn-primary'
                         : 'bg-gray-900 hover:bg-black text-white'
                     }`}
@@ -744,7 +909,7 @@ export default function DemoStore() {
 
                 <div className="bg-surface p-2 rounded-lg border border-border text-xs font-mono flex items-center justify-between">
                   <span className="text-ink-secondary text-2xs">Payment Action ID:</span>
-                  <span className="font-bold text-brand">#{checkoutBtnId}</span>
+                  <span className={`font-bold ${isPayMutated ? 'text-amber-600' : 'text-brand'}`}>#{checkoutBtnId}</span>
                 </div>
               </div>
             </div>

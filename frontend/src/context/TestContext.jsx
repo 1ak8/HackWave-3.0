@@ -181,13 +181,14 @@ export function TestProvider({ children }) {
     setTerminalLogs(prev => [...prev.slice(-100), { timestamp, type, message }]);
   };
 
-  const triggerRun = async (testId, mode = 'standard', headless = true) => {
+  const triggerRun = async (testId, mode = 'standard', headless = true, extraOptions = {}) => {
     try {
       addTerminalLog('info', `Triggering run on test [${testId || 'Default'}] in [${mode.toUpperCase()}] mode...`);
       const res = await apiClient.post('/runs/execute', {
         testId,
         mode,
-        headless
+        headless,
+        ...extraOptions
       });
       const runId = res.data.runId;
       // Fetch initial run

@@ -20,10 +20,11 @@ const runE2ETest = async (runId, testCase, options = {}) => {
   let failedCount = 0;
   let triageClassification = 'Clean';
 
-  // Construct target URL with test mode query
+  // Construct target URL with test mode query and custom chaos options
   let targetUrl = testCase.targetUrl || 'http://localhost:5173/demo-store';
   const urlSeparator = targetUrl.includes('?') ? '&' : '?';
-  const fullTargetUrl = `${targetUrl}${urlSeparator}mode=${mode}&runId=${runId}`;
+  const chaosQuery = options.chaosParams ? `&${options.chaosParams}` : '';
+  const fullTargetUrl = `${targetUrl}${urlSeparator}mode=${mode}&runId=${runId}${chaosQuery}`;
 
   // Initialize Run state in database
   const runSteps = (testCase.steps || []).map(s => ({
