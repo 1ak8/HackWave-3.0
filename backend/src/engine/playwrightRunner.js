@@ -23,6 +23,9 @@ const runE2ETest = async (runId, testCase, options = {}) => {
 
   // Construct target URL with test mode query and custom chaos options
   let targetUrl = testCase.targetUrl || 'http://localhost:5173/demo-store';
+  if (process.env.CLIENT_URL && !process.env.CLIENT_URL.includes('localhost') && process.env.CLIENT_URL !== '*') {
+    targetUrl = targetUrl.replace(/https?:\/\/localhost:\d+/i, process.env.CLIENT_URL.replace(/\/$/, ''));
+  }
   const urlSeparator = targetUrl.includes('?') ? '&' : '?';
   const chaosQuery = options.chaosParams ? `&${options.chaosParams}` : '';
   const fullTargetUrl = `${targetUrl}${urlSeparator}mode=${mode}&runId=${runId}${chaosQuery}`;
