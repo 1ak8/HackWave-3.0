@@ -145,14 +145,15 @@ export default function LiveRunView() {
             <span>Real Bug</span>
           </button>
 
-          {activeRun?.status === 'running' && (
+          {activeRun && (
             <button
               onClick={() => {
-                setActiveRun(prev => prev ? { ...prev, status: 'completed' } : null);
+                setActiveRun(null);
                 setIsRunning(false);
+                setSelectedStep(null);
               }}
               className="btn btn-ghost btn-xs text-2xs text-ink-secondary flex items-center gap-1 ml-1"
-              title="Reset state if run was interrupted"
+              title="Reset runner state to baseline"
             >
               <RotateCcw className="w-3 h-3" />
               <span>Reset</span>

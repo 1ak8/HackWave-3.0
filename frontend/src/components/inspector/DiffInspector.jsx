@@ -26,10 +26,11 @@ export default function DiffInspector({ selectedStep, steps = [], onSelectStep =
   const healing = selectedStep.healingDetails || {};
   const isHealing = selectedStep.status === 'healing';
   const isRunning = selectedStep.status === 'running';
-  const isPending = selectedStep.status === 'pending';
+  const isPending = selectedStep.status === 'pending' || !selectedStep.status;
   const isActuallyHealed = selectedStep.status === 'healed' && 
     selectedStep.resolvedSelector && 
     selectedStep.resolvedSelector !== selectedStep.originalSelector;
+  const isPassed = selectedStep.status === 'passed';
 
   const isBug = selectedStep.status === 'failed' || healing.classification === 'Genuine_Bug';
   const confidence = healing.confidence || 0;
@@ -108,15 +109,15 @@ export default function DiffInspector({ selectedStep, steps = [], onSelectStep =
               Regression Triaged
             </span>
           )}
-          {!isActuallyHealed && !isBug && !isHealing && !isRunning && !isPending && (
+          {isPassed && !isActuallyHealed && !isBug && !isHealing && !isRunning && !isPending && (
             <span className="badge badge-success text-2xs px-2 py-0.5 font-medium">
               <CheckCircle2 className="w-3 h-3" />
               Baseline Pass
             </span>
           )}
-          {isPending && (
+          {isPending && !isRunning && !isHealing && (
             <span className="badge badge-neutral text-2xs px-2 py-0.5 font-mono">
-              Waiting...
+              Ready / Pending
             </span>
           )}
         </div>
@@ -196,17 +197,17 @@ export default function DiffInspector({ selectedStep, steps = [], onSelectStep =
             {selectedStep.error || 'Server error 500 encountered with pricing anomaly ($0.00). AI engine verified this is a true application defect and refused to false-heal.'}
           </p>
         </div>
-      ) : isPending ? (
-        /* Pending execution */
-        <div className="bg-surface p-3 rounded-md border border-border flex items-center justify-between font-mono text-xs">
-          <span className="text-ink-secondary">Target Selector (Pending):</span>
-          <span className="font-semibold text-ink-tertiary">{selectedStep.originalSelector}</span>
-        </div>
-      ) : (
+      ) : isPassed ? (
         /* Baseline Clean Pass */
         <div className="bg-surface p-3 rounded-md border border-border flex items-center justify-between font-mono text-xs">
           <span className="text-ink-secondary">Selector Verified (Baseline):</span>
           <span className="font-semibold text-[#1a7f37]">{selectedStep.originalSelector} (Clean Pass)</span>
+        </div>
+      ) : (
+        /* Pending / Ready before test execution */
+        <div className="bg-surface p-3 rounded-md border border-border flex items-center justify-between font-mono text-xs">
+          <span className="text-ink-secondary">Target Selector (Ready):</span>
+          <span className="font-semibold text-ink-secondary font-mono">{selectedStep.originalSelector}</span>
         </div>
       )}
 
@@ -228,9 +229,9 @@ export default function DiffInspector({ selectedStep, steps = [], onSelectStep =
             ? 'Selector mutated or missing in DOM. AI located dynamic replacement element via accessibility role and intent analysis.'
             : isRunning
             ? 'Playwright actively executing direct action on target selector in browser.'
-            : isPending
-            ? 'This step is queued to execute in the pipeline.'
-            : 'Target component responded normally to baseline selector without requiring dynamic healing.'}
+            : isPassed
+            ? 'Target component responded normally to baseline selector without requiring dynamic healing.'
+            : 'Step queued and ready. Click Launch Auto-Heal Demo or Standard run to execute.'}
         </p>
       </div>
     </div>

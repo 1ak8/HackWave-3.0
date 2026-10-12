@@ -37,27 +37,32 @@ export function TestProvider({ children }) {
 
       if (testsRes.status === 'fulfilled') setTests(testsRes.value.data.tests || []);
       if (runsRes.status === 'fulfilled') {
-        setRuns(runsRes.value.data.runs || []);
-        if (runsRes.value.data.runs && runsRes.value.data.runs.length > 0) {
-          setActiveRun(prev => {
-            const remote = runsRes.value.data.runs.find(r => r._id === prev?._id) || runsRes.value.data.runs[0];
-            if (!prev) return remote;
-            // Never let a background refresh clobber live socket progress:
-            // DB only persists run steps at start (all pending) and completion.
-            const hasLocalProgress = prev.steps && prev.steps.some(s => s.status && s.status !== 'pending');
-            if (remote._id === prev._id && hasLocalProgress) {
-              const mergedSteps = remote.steps.map(remoteStep => {
-                const local = prev.steps.find(s => s.order === remoteStep.order);
-                if (local && local.status && local.status !== 'pending') return local;
-                return remoteStep;
-              });
-              const healedCount = mergedSteps.filter(s => s.status === 'healed' && s.resolvedSelector && s.resolvedSelector !== s.originalSelector).length;
-              const status = prev.status === 'running' ? 'running' : remote.status;
-              return { ...remote, ...prev, status, steps: mergedSteps, healedCount: Math.max(prev.healedCount || 0, healedCount) };
-            }
-            return remote;
-          });
-        }
+        const fetchedRuns = runsRes.value.data.runs || [];
+        setRuns(fetchedRuns);
+        setActiveRun(prev => {
+          // On initial page load / refresh (prev is null):
+          // ONLY attach activeRun if a test is actively executing in flight!
+          // NEVER preload a completed run from database on fresh page load!
+          if (!prev) {
+            const inFlightRun = fetchedRuns.find(r => r.status === 'running');
+            return inFlightRun || null;
+          }
+          // If a run is already active in current session:
+          const remote = fetchedRuns.find(r => r._id === prev._id);
+          if (!remote) return prev;
+          // Never let a background refresh clobber live socket progress:
+          const hasLocalProgress = prev.steps && prev.steps.some(s => s.status && s.status !== 'pending');
+          if (remote._id === prev._id && hasLocalProgress && prev.status === 'running') {
+            const mergedSteps = remote.steps.map(remoteStep => {
+              const local = prev.steps.find(s => s.order === remoteStep.order);
+              if (local && local.status && local.status !== 'pending') return local;
+              return remoteStep;
+            });
+            const healedCount = mergedSteps.filter(s => s.status === 'healed' && s.resolvedSelector && s.resolvedSelector !== s.originalSelector).length;
+            return { ...remote, ...prev, status: 'running', steps: mergedSteps, healedCount: Math.max(prev.healedCount || 0, healedCount) };
+          }
+          return remote;
+        });
       }
       if (statsRes.status === 'fulfilled') setStats(statsRes.value.data.stats || stats);
       if (logsRes.status === 'fulfilled') setHealingLogs(logsRes.value.data.logs || []);
