@@ -2,10 +2,12 @@ import React, { useRef, useEffect } from 'react';
 import { Terminal, Trash2 } from 'lucide-react';
 
 export default function LiveTerminal({ logs = [], onClear }) {
-  const terminalEndRef = useRef(null);
+  const terminalContainerRef = useRef(null);
 
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (terminalContainerRef.current) {
+      terminalContainerRef.current.scrollTop = terminalContainerRef.current.scrollHeight;
+    }
   }, [logs]);
 
   const getTagBadge = (type) => {
@@ -50,7 +52,10 @@ export default function LiveTerminal({ logs = [], onClear }) {
       </div>
 
       {/* Terminal Output */}
-      <div className="p-3.5 overflow-y-auto flex-1 space-y-1.5 text-xs text-[#8b949e] leading-relaxed max-h-[420px] min-h-[260px] scrollbar-thin">
+      <div 
+        ref={terminalContainerRef}
+        className="p-3.5 overflow-y-auto flex-1 space-y-1.5 text-xs text-[#8b949e] leading-relaxed max-h-[420px] min-h-[260px] scrollbar-thin"
+      >
         {logs.length === 0 ? (
           <div className="text-[#8b949e] text-center py-16 italic font-sans text-xs">
             Telemetry stream listening... Trigger a test execution to watch real-time browser actions.
@@ -74,7 +79,6 @@ export default function LiveTerminal({ logs = [], onClear }) {
             </div>
           ))
         )}
-        <div ref={terminalEndRef} />
       </div>
     </div>
   );

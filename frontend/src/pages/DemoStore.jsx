@@ -81,7 +81,7 @@ export default function DemoStore() {
   ];
 
   const [manualSteps, setManualSteps] = useState(getFreshSteps());
-  const terminalEndRef = useRef(null);
+  const demoTerminalContainerRef = useRef(null);
 
   useEffect(() => {
     if (urlMode) {
@@ -90,7 +90,9 @@ export default function DemoStore() {
   }, [urlMode]);
 
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (demoTerminalContainerRef.current) {
+      demoTerminalContainerRef.current.scrollTop = demoTerminalContainerRef.current.scrollHeight;
+    }
   }, [terminalLogs]);
 
   // Keep bot running state in sync with activeRun
@@ -1170,7 +1172,10 @@ export default function DemoStore() {
               </div>
 
               {/* Logs Stream */}
-              <div className="p-3 overflow-y-auto flex-1 space-y-1.5 text-xs leading-relaxed scrollbar-thin">
+              <div 
+                ref={demoTerminalContainerRef}
+                className="p-3 overflow-y-auto flex-1 space-y-1.5 text-xs leading-relaxed scrollbar-thin"
+              >
                 {terminalLogs.length === 0 ? (
                   <div className="text-[#8b949e] text-center py-16 italic font-sans text-xs">
                     Listening for browser events... Click buttons in the store or click "Auto-Run E2E Bot" to stream live logs.
@@ -1194,7 +1199,6 @@ export default function DemoStore() {
                     </div>
                   ))
                 )}
-                <div ref={terminalEndRef} />
               </div>
             </div>
           )}
