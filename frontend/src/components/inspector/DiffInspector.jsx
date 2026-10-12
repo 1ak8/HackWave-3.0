@@ -169,7 +169,7 @@ export default function DiffInspector({ selectedStep, steps = [], onSelectStep =
             <span className="break-all font-mono line-through">
               {selectedStep.originalSelector}
             </span>
-            <span className="ml-auto text-[10px] bg-[#cf222e] text-white px-1.5 py-0.2 rounded font-sans font-medium shrink-0">
+            <span className="ml-auto text-2xs bg-[#cf222e] text-white px-1.5 py-0.5 rounded font-sans font-medium shrink-0">
               BROKEN
             </span>
           </div>
@@ -180,7 +180,7 @@ export default function DiffInspector({ selectedStep, steps = [], onSelectStep =
             <span className="break-all font-mono font-semibold">
               {selectedStep.resolvedSelector}
             </span>
-            <span className="ml-auto text-[10px] bg-[#1a7f37] text-white px-1.5 py-0.2 rounded font-sans font-medium shrink-0">
+            <span className="ml-auto text-2xs bg-[#1a7f37] text-white px-1.5 py-0.5 rounded font-sans font-medium shrink-0">
               AUTO-HEALED
             </span>
           </div>

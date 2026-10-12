@@ -359,7 +359,7 @@ export default function Dashboard() {
                     className="py-1 px-2 rounded-md bg-surface border border-border flex items-center justify-between text-xs hover:bg-surface-raised transition-colors"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="w-4 h-4 rounded-full bg-surface-raised border border-border text-ink text-[10px] font-mono font-medium flex items-center justify-center shrink-0">
+                      <span className="w-4 h-4 rounded-full bg-surface-raised border border-border text-ink text-2xs font-mono font-medium flex items-center justify-center shrink-0">
                         {st.order}
                       </span>
                       <span className="font-medium text-ink text-xs">{st.name}</span>

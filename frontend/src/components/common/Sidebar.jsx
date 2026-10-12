@@ -87,7 +87,7 @@ export default function Sidebar() {
             </div>
             <div className="min-w-0 flex items-center gap-2">
               <span className="font-semibold text-sm text-ink tracking-tight">NexHeal</span>
-              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full border border-border text-ink-secondary bg-surface-raised">
+              <span className="text-2xs font-mono px-1.5 py-0.2 rounded-full border border-border text-ink-secondary bg-surface-raised">
                 public
               </span>
             </div>
@@ -96,7 +96,7 @@ export default function Sidebar() {
 
         {/* Navigation Menu */}
         <div className="px-3 pt-3 pb-2 space-y-0.5">
-          <p className="px-2 mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-ink-tertiary font-mono">
+          <p className="px-2 mb-1.5 text-2xs font-semibold uppercase tracking-wider text-ink-tertiary font-mono">
             Repositories & Tools
           </p>
           {navLinks.map(({ to, label, icon: Icon, badge, tag }) => (
@@ -121,13 +121,13 @@ export default function Sidebar() {
                     <span className="truncate">{label}</span>
                   </span>
                   {badge && (
-                    <span className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded-full bg-[#dafbe1] text-[#1a7f37] border border-[#4ac26b] flex items-center gap-1 shrink-0">
+                    <span className="text-2xs font-mono font-medium px-1.5 py-0.5 rounded-full bg-[#dafbe1] text-[#1a7f37] border border-[#4ac26b] flex items-center gap-1 shrink-0">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#1a7f37] animate-pulse"></span>
                       {badge}
                     </span>
                   )}
                   {tag && (
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-surface text-ink-tertiary border border-border shrink-0">
+                    <span className="text-2xs font-mono px-1.5 py-0.5 rounded-full bg-surface text-ink-tertiary border border-border shrink-0">
                       {tag}
                     </span>
                   )}
@@ -140,7 +140,7 @@ export default function Sidebar() {
         {/* 2x2 Quick Test Launch Control Deck */}
         <div className="px-3 pt-2 pb-2">
           <div className="flex items-center justify-between px-2 mb-1.5">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-ink-tertiary font-mono">
+            <span className="text-2xs font-semibold uppercase tracking-wider text-ink-tertiary font-mono">
               Workflow Dispatch
             </span>
             <span className="text-2xs text-ink-tertiary font-mono">1-click</span>
@@ -163,7 +163,7 @@ export default function Sidebar() {
                 </div>
                 <div>
                   <p className="text-xs font-semibold text-ink leading-tight truncate">{label}</p>
-                  <p className="text-[10px] text-ink-secondary font-mono truncate">{sub}</p>
+                  <p className="text-2xs text-ink-secondary font-mono truncate">{sub}</p>
                 </div>
               </button>
             ))}

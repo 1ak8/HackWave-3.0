@@ -7,8 +7,10 @@ export default {
   theme: {
     extend: {
       fontSize: {
-        '2xs': ['0.8125rem', { lineHeight: '1rem' }],
-        xs: ['0.8125rem', { lineHeight: '1rem' }],
+        '2xs': ['0.84375rem', { lineHeight: '1.125rem' }],
+        xs: ['0.875rem', { lineHeight: '1.25rem' }],
+        sm: ['0.9375rem', { lineHeight: '1.375rem' }],
+        base: ['1rem', { lineHeight: '1.5rem' }],
       },
       colors: {
         // GitHub Primer Canvas & Surfaces
