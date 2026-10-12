@@ -1,6 +1,6 @@
 import React from 'react';
-import { useLocation, Link } from 'react-router-dom';
-import { ShoppingBag, ExternalLink, RefreshCw, Zap, ChevronRight } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
+import { RefreshCw, Zap, ChevronRight } from 'lucide-react';
 import { useTests } from '../../context/TestContext';
 
 export default function Header() {
@@ -52,25 +52,6 @@ export default function Header() {
           <RefreshCw className="w-4 h-4 text-ink-secondary" />
           <span>Sync</span>
         </button>
-
-        {location.pathname === '/demo-store' ? (
-          <Link
-            to="/live"
-            className="btn btn-secondary btn-sm text-xs font-semibold"
-          >
-            <Zap className="w-3.5 h-3.5 text-brand" />
-            <span>Open Live Runner</span>
-          </Link>
-        ) : (
-          <Link
-            to="/demo-store"
-            className="btn btn-primary btn-sm"
-          >
-            <ShoppingBag className="w-4 h-4" />
-            <span>Sandbox Store</span>
-            <ExternalLink className="w-3.5 h-3.5 text-white/70" />
-          </Link>
-        )}
       </div>
     </header>
   );
