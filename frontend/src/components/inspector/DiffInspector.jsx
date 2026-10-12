@@ -178,7 +178,7 @@ export default function DiffInspector({ selectedStep, steps = [], onSelectStep =
           {/* Healed Replacement (+) Green line */}
           <div className="bg-[#dafbe1] text-[#1a7f37] px-3 py-2 flex items-center gap-2">
             <span className="text-[#1a7f37] font-bold select-none text-xs">+</span>
-            <span className="break-all font-mono font-semibold">
+            <span className="break-all font-mono font-medium">
               {selectedStep.resolvedSelector}
             </span>
             <span className="ml-auto text-2xs bg-[#1a7f37] text-white px-1.5 py-0.5 rounded font-sans font-medium shrink-0">

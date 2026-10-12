@@ -259,21 +259,21 @@ export default function HealingReport() {
                           <td className="font-mono text-xs">
                             {isHealed ? (
                               <div className="flex items-center gap-1.5 flex-wrap">
-                                <span className="line-through text-[#cf222e] text-2xs bg-[#ffebe9] px-1.5 py-0.5 rounded border border-[#ff8182]/40">
+                                <span className="line-through text-[#cf222e] text-2xs font-normal bg-[#f6f8fa] px-2 py-0.5 rounded border border-[#d0d7de]">
                                   {log.brokenSelector}
                                 </span>
                                 <ArrowRight className="w-3 h-3 text-ink-tertiary" />
-                                <span className="font-semibold text-accent bg-[#ddf4ff] px-1.5 py-0.5 rounded border border-[#54aeff]/40">
+                                <span className="text-[#0969da] text-2xs font-medium bg-[#f6f8fa] px-2 py-0.5 rounded border border-[#d0d7de]">
                                   {log.healedSelector}
                                 </span>
                               </div>
                             ) : (
                               <div className="flex items-center gap-1.5 text-[#cf222e]">
-                                <span className="text-2xs bg-[#ffebe9] px-1.5 py-0.5 rounded border border-[#ff8182]/40 font-semibold">
+                                <span className="text-2xs bg-[#f6f8fa] text-[#cf222e] px-2 py-0.5 rounded border border-[#d0d7de] font-normal">
                                   {log.brokenSelector}
                                 </span>
                                 <ArrowRight className="w-3 h-3 text-ink-tertiary" />
-                                <span className="text-2xs font-semibold text-[#cf222e]">HALTED (500 ERROR)</span>
+                                <span className="text-2xs font-medium text-[#cf222e] bg-[#f6f8fa] px-2 py-0.5 rounded border border-[#d0d7de]">HALTED (500 ERROR)</span>
                               </div>
                             )}
                           </td>
@@ -336,16 +336,16 @@ export default function HealingReport() {
                                 </p>
 
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs font-mono pt-1">
-                                  <div className="p-2 rounded bg-[#ffebe9] border border-[#ff8182]/40">
-                                    <span className="text-2xs text-[#cf222e] font-semibold block mb-0.5">ORIGINAL SELECTOR:</span>
-                                    <code className="text-[#cf222e] font-semibold text-xs">{log.brokenSelector}</code>
+                                  <div className="p-2 rounded bg-[#f6f8fa] border border-[#d0d7de]">
+                                    <span className="text-2xs text-[#cf222e] font-medium block mb-0.5">ORIGINAL SELECTOR:</span>
+                                    <code className="text-[#cf222e] font-normal text-xs">{log.brokenSelector}</code>
                                   </div>
 
-                                  <div className={`p-2 rounded border ${isHealed ? 'bg-[#dafbe1] border-[#4ac26b]/40' : 'bg-[#ffebe9] border-[#ff8182]/40'}`}>
-                                    <span className={`text-2xs font-semibold block mb-0.5 ${isHealed ? 'text-[#1a7f37]' : 'text-[#cf222e]'}`}>
+                                  <div className="p-2 rounded bg-[#f6f8fa] border border-[#d0d7de]">
+                                    <span className={`text-2xs font-medium block mb-0.5 ${isHealed ? 'text-[#0969da]' : 'text-[#cf222e]'}`}>
                                       {isHealed ? 'RESOLVED ELEMENT:' : 'TRIAGE STATUS:'}
                                     </span>
-                                    <code className={`font-semibold text-xs ${isHealed ? 'text-[#1a7f37]' : 'text-[#cf222e]'}`}>
+                                    <code className={`font-medium text-xs ${isHealed ? 'text-[#0969da]' : 'text-[#cf222e]'}`}>
                                       {log.healedSelector}
                                     </code>
                                   </div>

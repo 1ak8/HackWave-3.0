@@ -261,15 +261,15 @@ export default function Dashboard() {
 
                     {/* Selector Transformation */}
                     {isHealed ? (
-                      <div className="bg-surface-raised p-1.5 rounded border border-border font-mono text-2xs flex items-center justify-between flex-wrap gap-2">
-                        <span className="line-through text-[#cf222e]">{log.brokenSelector}</span>
+                      <div className="bg-[#f6f8fa] p-1.5 rounded border border-border font-mono text-2xs flex items-center justify-between flex-wrap gap-2">
+                        <span className="line-through text-[#cf222e] font-normal">{log.brokenSelector}</span>
                         <ArrowRight className="w-3 h-3 text-ink-tertiary" />
-                        <span className="font-semibold text-accent">{log.healedSelector}</span>
+                        <span className="font-medium text-accent">{log.healedSelector}</span>
                       </div>
                     ) : (
-                      <div className="bg-[#ffebe9] p-1.5 rounded border border-[#ff8182] text-[#cf222e] text-2xs font-mono flex items-center justify-between">
-                        <span>{log.brokenSelector}</span>
-                        <span className="font-semibold">HTTP 500 & $0 PRICE (BLOCKED)</span>
+                      <div className="bg-[#f6f8fa] p-1.5 rounded border border-border text-[#cf222e] text-2xs font-mono flex items-center justify-between">
+                        <span className="font-normal">{log.brokenSelector}</span>
+                        <span className="font-medium">HTTP 500 & $0 PRICE (BLOCKED)</span>
                       </div>
                     )}
                   </div>
