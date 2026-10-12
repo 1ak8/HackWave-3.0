@@ -40,9 +40,22 @@ export function TestProvider({ children }) {
         setRuns(runsRes.value.data.runs || []);
         if (runsRes.value.data.runs && runsRes.value.data.runs.length > 0) {
           setActiveRun(prev => {
-            if (!prev) return runsRes.value.data.runs[0];
-            const matching = runsRes.value.data.runs.find(r => r._id === prev._id);
-            return matching || runsRes.value.data.runs[0];
+            const remote = runsRes.value.data.runs.find(r => r._id === prev?._id) || runsRes.value.data.runs[0];
+            if (!prev) return remote;
+            // Never let a background refresh clobber live socket progress:
+            // DB only persists run steps at start (all pending) and completion.
+            const hasLocalProgress = prev.steps && prev.steps.some(s => s.status && s.status !== 'pending');
+            if (remote._id === prev._id && hasLocalProgress) {
+              const mergedSteps = remote.steps.map(remoteStep => {
+                const local = prev.steps.find(s => s.order === remoteStep.order);
+                if (local && local.status && local.status !== 'pending') return local;
+                return remoteStep;
+              });
+              const healedCount = mergedSteps.filter(s => s.status === 'healed' && s.resolvedSelector && s.resolvedSelector !== s.originalSelector).length;
+              const status = prev.status === 'running' ? 'running' : remote.status;
+              return { ...remote, ...prev, status, steps: mergedSteps, healedCount: Math.max(prev.healedCount || 0, healedCount) };
+            }
+            return remote;
           });
         }
       }
@@ -57,6 +70,35 @@ export function TestProvider({ children }) {
   useEffect(() => {
     refreshAll();
   }, []);
+
+  // 🔄 Automatic background sync — keep frontend live-synced with DB at all times
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refreshAll();
+    }, 15000);
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') refreshAll();
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    window.addEventListener('focus', refreshAll);
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', onVisible);
+      window.removeEventListener('focus', refreshAll);
+    };
+  }, []);
+
+  // Refresh stats only (lightweight) after heal/bug events
+  const refreshStats = async () => {
+    try {
+      const [statsRes, logsRes] = await Promise.allSettled([
+        apiClient.get('/reports/stats'),
+        apiClient.get('/reports/healing-logs')
+      ]);
+      if (statsRes.status === 'fulfilled') setStats(statsRes.value.data.stats || stats);
+      if (logsRes.status === 'fulfilled') setHealingLogs(logsRes.value.data.logs || []);
+    } catch (e) {}
+  };
 
   // Socket.io telemetry setup
   useEffect(() => {
@@ -125,8 +167,17 @@ export function TestProvider({ children }) {
       addTerminalLog('healing', `AI Engine analyzing DOM context for intent: "${payload.intent}"`);
     });
 
+    socket.on('healing_log_created', (payload) => {
+      if (payload && payload.log) {
+        setHealingLogs(prev => [payload.log, ...prev].slice(0, 50));
+        addTerminalLog('healing', `Healing log recorded: ${payload.log.stepName || payload.log.userIntent}`);
+      }
+      refreshStats();
+    });
+
     socket.on('healed_successfully', (payload) => {
       addTerminalLog('success', `✔ Healed: [${payload.oldSelector}] -> [${payload.newSelector}] (${payload.confidence}% confidence via ${payload.strategyLayer})`);
+      refreshStats();
       setActiveRun(prev => {
         const currentSteps = prev?.steps ? [...prev.steps] : [];
         const idx = currentSteps.findIndex(s => s.order === payload.stepOrder);
@@ -151,6 +202,7 @@ export function TestProvider({ children }) {
 
     socket.on('bug_detected', (payload) => {
       addTerminalLog('error', `🚨 GENUINE APPLICATION BUG DETECTED: ${payload.reasoning} (Test halted)`);
+      refreshStats();
       setActiveRun(prev => {
         const currentSteps = prev?.steps ? [...prev.steps] : [];
         const idx = currentSteps.findIndex(s => s.order === payload.stepOrder);
@@ -213,6 +265,7 @@ export function TestProvider({ children }) {
       socket.off('step_started');
       socket.off('selector_failed');
       socket.off('healing_in_progress');
+      socket.off('healing_log_created');
       socket.off('healed_successfully');
       socket.off('bug_detected');
       socket.off('step_completed');

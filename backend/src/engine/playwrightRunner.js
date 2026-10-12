@@ -345,7 +345,7 @@ const runE2ETest = async (runId, testCase, options = {}) => {
           step.error = healDecision.reasoning;
           failedCount++;
 
-          await store.createHealingLog({
+          const createdBugLog = await store.createHealingLog({
             runId,
             testId: testCase._id,
             stepOrder: step.order,
@@ -358,6 +358,8 @@ const runE2ETest = async (runId, testCase, options = {}) => {
             classification: 'Genuine_Bug',
             reasoning: healDecision.reasoning
           });
+
+          emitRunTelemetry(runId, 'healing_log_created', { log: createdBugLog });
 
           emitRunTelemetry(runId, 'bug_detected', {
             runId,
@@ -452,7 +454,7 @@ const runE2ETest = async (runId, testCase, options = {}) => {
             };
 
             // Log healing event to database
-            await store.createHealingLog({
+            const createdHealLog = await store.createHealingLog({
               runId,
               testId: testCase._id,
               stepOrder: step.order,
@@ -465,6 +467,8 @@ const runE2ETest = async (runId, testCase, options = {}) => {
               classification: 'Harmless_UI_Change',
               reasoning: healDecision.reasoning
             });
+
+            emitRunTelemetry(runId, 'healing_log_created', { log: createdHealLog });
 
             emitRunTelemetry(runId, 'healed_successfully', {
               runId,

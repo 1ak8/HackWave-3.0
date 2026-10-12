@@ -1,4 +1,5 @@
 const store = require('../models/store');
+const { getIO } = require('../config/socket');
 const logger = require('../utils/logger');
 
 const reportController = {
@@ -27,6 +28,10 @@ const reportController = {
   async createHealingLog(req, res) {
     try {
       const log = await store.createHealingLog(req.body);
+      const io = getIO();
+      if (io) {
+        io.emit('healing_log_created', { log });
+      }
       res.status(201).json({ log, healingLog: log });
     } catch (err) {
       logger.error('Failed to create healing log', err.message);
