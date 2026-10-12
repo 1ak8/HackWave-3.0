@@ -34,24 +34,24 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
       {/* Header and Legend */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-1">
         <div className="flex items-center gap-2">
-          <Zap className="w-4 h-4 text-brand" />
-          <h3 className="text-base font-bold text-ink tracking-tight">Test Step Execution Flow</h3>
+          <Zap className="w-4 h-4 text-accent" />
+          <h3 className="text-sm font-semibold text-ink tracking-tight">Test Step Execution Flow</h3>
           <span className="text-xs text-ink-tertiary">(Click any step to inspect selector diff)</span>
         </div>
 
         {/* Legend */}
-        <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-ink-secondary">
+        <div className="flex flex-wrap items-center gap-3 text-xs font-mono text-ink-secondary">
           <span className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-success"></span> Passed
+            <span className="w-2 h-2 rounded-full bg-[#1a7f37]"></span> Passed
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span> Healing
+            <span className="w-2 h-2 rounded-full bg-[#9a6700] animate-pulse"></span> Healing
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-brand"></span> Auto-Healed
+            <span className="w-2 h-2 rounded-full bg-[#0969da]"></span> Auto-Healed
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-danger"></span> Real Bug
+            <span className="w-2 h-2 rounded-full bg-[#cf222e]"></span> Real Bug
           </span>
         </div>
       </div>
@@ -71,40 +71,40 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
           let statusBadge = null;
 
           if (isHealing) {
-            cardStyle = 'border-warning-border bg-warning-bg/40 ring-1 ring-warning-border';
+            cardStyle = 'border-[#d4a72c] bg-[#fff8c5]/30 ring-1 ring-[#d4a72c]';
             statusBadge = (
-              <span className="badge badge-warning text-2xs py-0.5 font-bold">
+              <span className="badge badge-warning text-2xs py-0.5 font-medium">
                 <Loader2 className="w-3 h-3 animate-spin" />
                 Healing...
               </span>
             );
           } else if (isActuallyHealed) {
-            cardStyle = 'border-brand-border bg-brand-light/40 ring-1 ring-brand/40';
+            cardStyle = 'border-[#54aeff] bg-[#ddf4ff]/30 ring-1 ring-[#54aeff]';
             statusBadge = (
-              <span className="badge badge-brand text-2xs py-0.5 font-bold">
+              <span className="badge badge-info text-2xs py-0.5 font-medium">
                 <Sparkles className="w-3 h-3" />
                 Healed {step.healingDetails?.confidence ? `(${step.healingDetails.confidence}%)` : ''}
               </span>
             );
           } else if (isFailed) {
-            cardStyle = 'border-danger-border bg-danger-bg/50 ring-1 ring-danger-border';
+            cardStyle = 'border-[#ff8182] bg-[#ffebe9]/40 ring-1 ring-[#ff8182]';
             statusBadge = (
-              <span className="badge badge-danger text-2xs py-0.5 font-bold">
+              <span className="badge badge-danger text-2xs py-0.5 font-medium">
                 <ShieldAlert className="w-3 h-3" />
                 Bug Triaged
               </span>
             );
           } else if (isPassed) {
-            cardStyle = 'border-success-border bg-success-bg/50 ring-1 ring-success-border';
+            cardStyle = 'border-[#4ac26b] bg-[#dafbe1]/40 ring-1 ring-[#4ac26b]';
             statusBadge = (
-              <span className="badge badge-success text-2xs py-0.5 font-bold">
+              <span className="badge badge-success text-2xs py-0.5 font-medium">
                 <CheckCircle2 className="w-3 h-3" /> Passed
               </span>
             );
           } else if (isRunning) {
-            cardStyle = 'border-brand bg-brand-light/30 ring-2 ring-brand';
+            cardStyle = 'border-accent bg-[#ddf4ff]/20 ring-1 ring-accent';
             statusBadge = (
-              <span className="badge badge-brand text-2xs py-0.5 font-bold">
+              <span className="badge badge-info text-2xs py-0.5 font-medium">
                 <Loader2 className="w-3 h-3 animate-spin" /> Running
               </span>
             );
@@ -113,19 +113,19 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
           return (
             <motion.div
               key={step.order || idx}
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              whileHover={{ y: -2 }}
-              transition={{ duration: 0.25, delay: idx * 0.04, ease: 'easeOut' }}
+              whileHover={{ y: -1 }}
+              transition={{ duration: 0.2, delay: idx * 0.03, ease: 'easeOut' }}
               onClick={() => onSelectStep && onSelectStep(step)}
-              className={`p-3 rounded-xl border transition-colors cursor-pointer relative space-y-2 ${cardStyle} ${
-                isSelected ? 'ring-2 ring-brand border-brand shadow-card-md' : ''
+              className={`p-3 rounded-md border transition-colors cursor-pointer relative space-y-2 ${cardStyle} ${
+                isSelected ? 'ring-2 ring-accent border-accent shadow-card-md' : ''
               }`}
             >
               {/* Header */}
               <div className="flex items-center justify-between gap-1.5">
                 <div className="flex items-center gap-1.5 min-w-0">
-                  <span className="w-4 h-4 rounded bg-surface border border-border flex items-center justify-center text-2xs font-mono font-bold text-ink-secondary shrink-0">
+                  <span className="w-4 h-4 rounded bg-surface border border-border flex items-center justify-center text-2xs font-mono font-medium text-ink-secondary shrink-0">
                     {step.order}
                   </span>
                   <ActionIcon className="w-3 h-3 text-ink-secondary shrink-0" />

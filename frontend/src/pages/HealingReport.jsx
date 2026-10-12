@@ -58,25 +58,25 @@ export default function HealingReport() {
   return (
     <div className="w-full max-w-7xl mx-auto px-6 sm:px-8 py-8 space-y-6">
       {/* Header Banner */}
-      <div className="card p-6 sm:p-7 flex flex-col md:flex-row md:items-center justify-between gap-5 shadow-card">
+      <div className="card p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-card">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <FileText className="w-4 h-4 text-brand" />
-            <span className="text-xs font-mono text-brand uppercase font-bold tracking-wider">
-              Compliance & Verification
+            <FileText className="w-4 h-4 text-accent" />
+            <span className="text-2xs font-mono text-accent uppercase font-semibold tracking-wider">
+              Security & Compliance Audit
             </span>
           </div>
-          <h1 className="text-2xl font-bold text-ink tracking-tight">Autonomous Repair Audit Log</h1>
-          <p className="text-sm text-ink-secondary">
+          <h1 className="text-xl sm:text-2xl font-bold text-ink tracking-tight">Autonomous Repair Audit Log</h1>
+          <p className="text-xs sm:text-sm text-ink-secondary">
             Permanent, verifiable ledger of all selector repairs, AI confidence scores, and Smart Triage failure reports.
           </p>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-2.5 shrink-0">
           <button
             onClick={exportAuditJSON}
-            className="btn btn-secondary btn-sm flex items-center gap-1.5 font-bold"
+            className="btn btn-secondary btn-sm flex items-center gap-1.5 font-medium"
             title="Export complete SOC-2 compliance audit log as JSON"
           >
             <Download className="w-3.5 h-3.5" />
@@ -86,66 +86,66 @@ export default function HealingReport() {
       </div>
 
       {/* KPI Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
         {/* Total Healed */}
-        <div className="card p-5 bg-success-bg/30 border-success-border flex items-center justify-between">
-          <div className="space-y-1">
-            <span className="text-xs font-bold text-success-text uppercase tracking-wider">Mutations Repaired</span>
-            <p className="text-2xl font-extrabold text-success font-mono">{totalHeals}</p>
-            <span className="text-2xs text-success-text font-medium">Harmless UI shifts healed</span>
+        <div className="card p-4 flex items-center justify-between">
+          <div className="space-y-0.5">
+            <span className="text-2xs font-semibold text-ink-secondary uppercase tracking-wider font-mono">Mutations Repaired</span>
+            <p className="text-2xl font-bold text-ink font-mono">{totalHeals}</p>
+            <span className="text-2xs text-[#1a7f37] font-medium">Harmless UI shifts healed</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-success-bg border border-success-border flex items-center justify-center text-success">
-            <ShieldCheck className="w-5 h-5" />
+          <div className="w-8 h-8 rounded-md bg-[#dafbe1] border border-[#4ac26b] flex items-center justify-center text-[#1a7f37]">
+            <ShieldCheck className="w-4 h-4" />
           </div>
         </div>
 
         {/* Real Bugs Blocked */}
-        <div className="card p-5 bg-danger-bg/30 border-danger-border flex items-center justify-between">
-          <div className="space-y-1">
-            <span className="text-xs font-bold text-danger-text uppercase tracking-wider">Regressions Blocked</span>
-            <p className="text-2xl font-extrabold text-danger font-mono">{totalBugs}</p>
-            <span className="text-2xs text-danger-text font-medium">Smart Triage prevented false release</span>
+        <div className="card p-4 flex items-center justify-between">
+          <div className="space-y-0.5">
+            <span className="text-2xs font-semibold text-ink-secondary uppercase tracking-wider font-mono">Regressions Blocked</span>
+            <p className="text-2xl font-bold text-ink font-mono">{totalBugs}</p>
+            <span className="text-2xs text-[#cf222e] font-medium">Smart Triage prevented false pass</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-danger-bg border border-danger-border flex items-center justify-center text-danger">
-            <AlertTriangle className="w-5 h-5" />
+          <div className="w-8 h-8 rounded-md bg-[#ffebe9] border border-[#ff8182] flex items-center justify-center text-[#cf222e]">
+            <AlertTriangle className="w-4 h-4" />
           </div>
         </div>
 
         {/* Avg Confidence */}
-        <div className="card p-5 flex items-center justify-between">
-          <div className="space-y-1">
-            <span className="text-xs font-bold text-ink-tertiary uppercase tracking-wider">Average Match Confidence</span>
-            <p className="text-2xl font-extrabold text-brand font-mono">98.6%</p>
-            <span className="text-2xs text-ink-secondary">Semantic & accessibility verification</span>
+        <div className="card p-4 flex items-center justify-between">
+          <div className="space-y-0.5">
+            <span className="text-2xs font-semibold text-ink-secondary uppercase tracking-wider font-mono">Match Confidence</span>
+            <p className="text-2xl font-bold text-ink font-mono">98.6%</p>
+            <span className="text-2xs text-accent">Semantic & accessibility precision</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-brand-light border border-brand-border flex items-center justify-center text-brand">
-            <Sparkles className="w-5 h-5" />
+          <div className="w-8 h-8 rounded-md bg-[#ddf4ff] border border-[#54aeff] flex items-center justify-center text-accent">
+            <Sparkles className="w-4 h-4" />
           </div>
         </div>
       </div>
 
       {/* Filter, Search & View Controls Bar */}
-      <div className="card p-4 flex flex-col md:flex-row items-center justify-between gap-4 shadow-card">
+      <div className="card p-3 flex flex-col md:flex-row items-center justify-between gap-3 shadow-card">
         {/* Search Input */}
         <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 text-ink-tertiary absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-3.5 h-3.5 text-ink-tertiary absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search step, selector, or intent..."
-            className="input pl-10 text-xs"
+            className="input pl-8 text-xs"
           />
         </div>
 
-        <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+        <div className="flex items-center gap-2.5 w-full md:w-auto justify-between md:justify-end">
           {/* Filter Pills */}
-          <div className="flex items-center gap-1.5 p-1 bg-surface rounded-xl border border-border">
+          <div className="flex items-center gap-1 p-0.5 bg-surface rounded-md border border-border">
             <button
               onClick={() => setFilter('ALL')}
-              className={`px-3 py-1 rounded-lg text-xs font-bold transition ${
+              className={`px-2.5 py-1 rounded text-xs font-medium transition ${
                 filter === 'ALL'
-                  ? 'bg-surface-raised text-ink shadow-xs border border-border'
+                  ? 'bg-surface-raised text-ink shadow-card border border-border font-semibold'
                   : 'text-ink-secondary hover:text-ink'
               }`}
             >
@@ -153,9 +153,9 @@ export default function HealingReport() {
             </button>
             <button
               onClick={() => setFilter('Harmless_UI_Change')}
-              className={`px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
+              className={`px-2.5 py-1 rounded text-xs font-medium transition flex items-center gap-1.5 ${
                 filter === 'Harmless_UI_Change'
-                  ? 'bg-success text-white shadow-xs'
+                  ? 'bg-[#1f883d] text-white shadow-card font-semibold'
                   : 'text-ink-secondary hover:text-ink'
               }`}
             >
@@ -164,9 +164,9 @@ export default function HealingReport() {
             </button>
             <button
               onClick={() => setFilter('Genuine_Bug')}
-              className={`px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
+              className={`px-2.5 py-1 rounded text-xs font-medium transition flex items-center gap-1.5 ${
                 filter === 'Genuine_Bug'
-                  ? 'bg-danger text-white shadow-xs'
+                  ? 'bg-[#cf222e] text-white shadow-card font-semibold'
                   : 'text-ink-secondary hover:text-ink'
               }`}
             >
@@ -176,7 +176,7 @@ export default function HealingReport() {
           </div>
 
           {/* View Switcher: Table vs Cards */}
-          <div className="flex items-center p-1 bg-surface rounded-xl border border-border shrink-0">
+          <div className="flex items-center p-0.5 bg-surface rounded-md border border-border shrink-0">
             <button
               onClick={() => setViewMode('table')}
               className={`p-1.5 rounded-lg transition ${
@@ -258,22 +258,22 @@ export default function HealingReport() {
                           {/* Selector Transformation (Before ➔ After) */}
                           <td className="font-mono text-xs">
                             {isHealed ? (
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <span className="line-through text-danger text-2xs bg-danger-bg px-1.5 py-0.5 rounded border border-danger-border">
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                <span className="line-through text-[#cf222e] text-2xs bg-[#ffebe9] px-1.5 py-0.5 rounded border border-[#ff8182]/40">
                                   {log.brokenSelector}
                                 </span>
                                 <ArrowRight className="w-3 h-3 text-ink-tertiary" />
-                                <span className="font-bold text-brand bg-brand-light px-1.5 py-0.5 rounded border border-brand-border">
+                                <span className="font-semibold text-accent bg-[#ddf4ff] px-1.5 py-0.5 rounded border border-[#54aeff]/40">
                                   {log.healedSelector}
                                 </span>
                               </div>
                             ) : (
-                              <div className="flex items-center gap-2 text-danger">
-                                <span className="text-2xs bg-danger-bg px-1.5 py-0.5 rounded border border-danger-border font-bold">
+                              <div className="flex items-center gap-1.5 text-[#cf222e]">
+                                <span className="text-2xs bg-[#ffebe9] px-1.5 py-0.5 rounded border border-[#ff8182]/40 font-semibold">
                                   {log.brokenSelector}
                                 </span>
                                 <ArrowRight className="w-3 h-3 text-ink-tertiary" />
-                                <span className="text-2xs font-bold text-danger">HALTED (500 ERROR)</span>
+                                <span className="text-2xs font-semibold text-[#cf222e]">HALTED (500 ERROR)</span>
                               </div>
                             )}
                           </td>
@@ -281,12 +281,12 @@ export default function HealingReport() {
                           {/* Classification Badge */}
                           <td>
                             {isHealed ? (
-                              <span className="badge badge-success text-2xs font-bold font-mono">
+                              <span className="badge badge-success text-2xs font-mono font-medium">
                                 <CheckCircle2 className="w-3 h-3" />
                                 AUTO-HEALED
                               </span>
                             ) : (
-                              <span className="badge badge-danger text-2xs font-bold font-mono">
+                              <span className="badge badge-danger text-2xs font-mono font-medium">
                                 <AlertTriangle className="w-3 h-3" />
                                 BUG TRIAGED
                               </span>
@@ -294,8 +294,8 @@ export default function HealingReport() {
                           </td>
 
                           {/* Confidence */}
-                          <td className="font-mono text-xs font-bold">
-                            <span className={isHealed ? 'text-success-text' : 'text-danger'}>
+                          <td className="font-mono text-xs font-semibold">
+                            <span className={isHealed ? 'text-[#1a7f37]' : 'text-[#cf222e]'}>
                               {log.confidence || 99}%
                             </span>
                           </td>
@@ -307,7 +307,7 @@ export default function HealingReport() {
                                 e.stopPropagation();
                                 setExpandedId(isExpanded ? null : log._id);
                               }}
-                              className="btn btn-ghost btn-xs text-xs font-semibold text-brand flex items-center gap-1 ml-auto"
+                              className="btn btn-ghost btn-xs text-xs font-medium text-accent flex items-center gap-1 ml-auto"
                             >
                               <span>{isExpanded ? 'Hide' : 'Inspect'}</span>
                               {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
@@ -318,12 +318,12 @@ export default function HealingReport() {
                         {/* Inline Expandable Drawer (Reveals AI Reason & Rationale) */}
                         {isExpanded && (
                           <tr className="bg-surface">
-                            <td colSpan="6" className="p-4 sm:p-5">
-                              <div className="bg-surface-raised p-4 rounded-xl border border-border shadow-xs space-y-3">
+                            <td colSpan="6" className="p-3 sm:p-4">
+                              <div className="bg-surface-raised p-3.5 rounded-md border border-border shadow-card space-y-2.5">
                                 <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-border text-xs">
                                   <div className="flex items-center gap-2 font-mono">
-                                    <Sparkles className="w-3.5 h-3.5 text-brand" />
-                                    <span className="font-bold text-ink">AI Reasoning Engine Breakdown</span>
+                                    <Sparkles className="w-3.5 h-3.5 text-accent" />
+                                    <span className="font-semibold text-ink">AI Reasoning Engine Breakdown</span>
                                     <span className="text-ink-tertiary">• Strategy: {log.strategyLayer || 'Semantic Role Matching'}</span>
                                   </div>
                                   <span className="text-2xs font-mono text-ink-tertiary">
@@ -335,17 +335,17 @@ export default function HealingReport() {
                                   {log.reasoning}
                                 </p>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono pt-1">
-                                  <div className="p-2.5 rounded-lg bg-danger-bg/70 border border-danger-border">
-                                    <span className="text-2xs text-danger font-bold block mb-1">ORIGINAL SELECTOR:</span>
-                                    <code className="text-danger font-bold text-xs">{log.brokenSelector}</code>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs font-mono pt-1">
+                                  <div className="p-2 rounded bg-[#ffebe9] border border-[#ff8182]/40">
+                                    <span className="text-2xs text-[#cf222e] font-semibold block mb-0.5">ORIGINAL SELECTOR:</span>
+                                    <code className="text-[#cf222e] font-semibold text-xs">{log.brokenSelector}</code>
                                   </div>
 
-                                  <div className={`p-2.5 rounded-lg border ${isHealed ? 'bg-success-bg/70 border-success-border' : 'bg-danger-bg/70 border-danger-border'}`}>
-                                    <span className={`text-2xs font-bold block mb-1 ${isHealed ? 'text-success-text' : 'text-danger'}`}>
+                                  <div className={`p-2 rounded border ${isHealed ? 'bg-[#dafbe1] border-[#4ac26b]/40' : 'bg-[#ffebe9] border-[#ff8182]/40'}`}>
+                                    <span className={`text-2xs font-semibold block mb-0.5 ${isHealed ? 'text-[#1a7f37]' : 'text-[#cf222e]'}`}>
                                       {isHealed ? 'RESOLVED ELEMENT:' : 'TRIAGE STATUS:'}
                                     </span>
-                                    <code className={`font-bold text-xs ${isHealed ? 'text-success-text' : 'text-danger'}`}>
+                                    <code className={`font-semibold text-xs ${isHealed ? 'text-[#1a7f37]' : 'text-[#cf222e]'}`}>
                                       {log.healedSelector}
                                     </code>
                                   </div>

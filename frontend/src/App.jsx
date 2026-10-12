@@ -14,7 +14,7 @@ export default function App() {
     <BrowserRouter>
       <TestProvider>
         {/* Main App Layout with Fixed Locked Sidebar on All Pages (Including Demo Store) */}
-        <div className="min-h-screen bg-canvas text-ink font-sans selection:bg-brand-light selection:text-brand">
+        <div className="min-h-screen bg-canvas text-ink font-sans selection:bg-[#ddf4ff] selection:text-[#0969da]">
           {/* 100% Fixed Locked Left Sidebar */}
           <Sidebar />
 

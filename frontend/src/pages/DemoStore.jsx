@@ -495,37 +495,37 @@ export default function DemoStore() {
   const getTagBadge = (type) => {
     switch (type) {
       case 'healing':
-        return <span className="text-2xs font-bold px-1.5 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800 font-mono">HEAL</span>;
+        return <span className="text-2xs font-mono font-medium px-1.5 py-0.2 rounded bg-[#1f6feb]/20 text-[#58a6ff] border border-[#388bfd]/40">HEAL</span>;
       case 'success':
-        return <span className="text-2xs font-bold px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 font-mono">PASS</span>;
+        return <span className="text-2xs font-mono font-medium px-1.5 py-0.2 rounded bg-[#238636]/20 text-[#3fb950] border border-[#2ea043]/40">PASS</span>;
       case 'error':
-        return <span className="text-2xs font-bold px-1.5 py-0.5 rounded bg-red-950 text-red-400 border border-red-800 font-mono">FAIL</span>;
+        return <span className="text-2xs font-mono font-medium px-1.5 py-0.2 rounded bg-[#da3633]/20 text-[#f85149] border border-[#f85149]/40">FAIL</span>;
       case 'warn':
-        return <span className="text-2xs font-bold px-1.5 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800 font-mono">WARN</span>;
+        return <span className="text-2xs font-mono font-medium px-1.5 py-0.2 rounded bg-[#9e6a03]/20 text-[#d29922] border border-[#bb8009]/40">WARN</span>;
       case 'chaos':
-        return <span className="text-2xs font-bold px-1.5 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-800 font-mono">CHAOS</span>;
+        return <span className="text-2xs font-mono font-medium px-1.5 py-0.2 rounded bg-[#b62324]/20 text-[#ff7b72] border border-[#ff7b72]/40">CHAOS</span>;
       default:
-        return <span className="text-2xs font-bold px-1.5 py-0.5 rounded bg-stone-900 text-emerald-400 border border-stone-800 font-mono">INFO</span>;
+        return <span className="text-2xs font-mono font-medium px-1.5 py-0.2 rounded bg-[#30363d]/40 text-[#8b949e] border border-[#30363d]">INFO</span>;
     }
   };
 
   return (
     <div className="flex-1 bg-canvas text-ink flex flex-col font-sans">
       {/* Top Header */}
-      <header className="border-b border-border bg-surface-raised sticky top-16 z-20 px-6 py-2.5 flex items-center justify-between gap-4 shadow-xs">
-        <div className="flex items-center gap-2.5 shrink-0">
-          <span className="w-2.5 h-2.5 rounded-full bg-success shrink-0"></span>
-          <span className="font-bold text-sm tracking-tight text-ink whitespace-nowrap">Testing Sandbox</span>
-          <span className="badge badge-brand text-2xs font-mono font-bold whitespace-nowrap">Arena</span>
+      <header className="border-b border-border bg-surface-raised sticky top-14 z-20 px-6 py-2 flex items-center justify-between gap-4 shadow-card">
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="w-2 h-2 rounded-full bg-[#1a7f37] shrink-0"></span>
+          <span className="font-semibold text-xs sm:text-sm tracking-tight text-ink whitespace-nowrap">Testing Sandbox</span>
+          <span className="badge badge-info text-2xs font-mono whitespace-nowrap">Arena</span>
         </div>
 
         {/* 4 Mode Switcher Tabs */}
-        <div className="flex items-center p-1 rounded-xl bg-surface border border-border shrink-0 gap-0.5">
+        <div className="flex items-center p-0.5 rounded-md bg-surface border border-border shrink-0 gap-0.5">
           <button
             onClick={() => handleModeChange('standard')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap shrink-0 ${
+            className={`px-2.5 py-1 rounded text-xs font-medium transition-colors whitespace-nowrap shrink-0 ${
               mode === 'standard' 
-                ? 'bg-surface-raised text-ink font-bold shadow-xs border border-border' 
+                ? 'bg-surface-raised text-ink font-semibold shadow-card border border-border' 
                 : 'text-ink-secondary hover:text-ink'
             }`}
           >
@@ -533,9 +533,9 @@ export default function DemoStore() {
           </button>
           <button
             onClick={() => handleModeChange('mutated')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap shrink-0 ${
+            className={`px-2.5 py-1 rounded text-xs font-medium transition-colors whitespace-nowrap shrink-0 ${
               mode === 'mutated' 
-                ? 'bg-surface-raised text-ink font-bold shadow-xs border border-border' 
+                ? 'bg-surface-raised text-ink font-semibold shadow-card border border-border' 
                 : 'text-ink-secondary hover:text-ink'
             }`}
           >
@@ -543,31 +543,31 @@ export default function DemoStore() {
           </button>
           <button
             onClick={() => handleModeChange('chaos')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
+            className={`px-2.5 py-1 rounded text-xs font-medium transition-colors flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
               mode === 'chaos' 
-                ? 'bg-surface-raised text-ink font-bold shadow-xs border border-border' 
+                ? 'bg-surface-raised text-ink font-semibold shadow-card border border-border' 
                 : 'text-ink-secondary hover:text-ink'
             }`}
           >
-            <Flame className={`w-3.5 h-3.5 shrink-0 ${mode === 'chaos' ? 'text-amber-500 animate-pulse' : 'text-ink-tertiary'}`} />
+            <Flame className={`w-3.5 h-3.5 shrink-0 ${mode === 'chaos' ? 'text-[#9a6700]' : 'text-ink-tertiary'}`} />
             <span>Live Chaos</span>
-            <span className={`text-2xs px-1.5 py-0.5 rounded-full font-mono font-semibold leading-none shrink-0 ${
+            <span className={`text-2xs px-1.5 py-0.2 rounded-full font-mono font-medium leading-none shrink-0 ${
               mode === 'chaos'
-                ? 'bg-amber-50 text-amber-800 border border-amber-200/80'
-                : 'bg-stone-100 text-ink-tertiary'
+                ? 'bg-[#fff8c5] text-[#9a6700] border border-[#d4a72c]'
+                : 'bg-surface text-ink-tertiary border border-border'
             }`}>
               {activeChaosCount} active
             </span>
           </button>
           <button
             onClick={() => handleModeChange('bug_mode')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1 whitespace-nowrap shrink-0 ${
+            className={`px-2.5 py-1 rounded text-xs font-medium transition-colors flex items-center gap-1 whitespace-nowrap shrink-0 ${
               mode === 'bug_mode' 
-                ? 'bg-surface-raised text-ink font-bold shadow-xs border border-border' 
+                ? 'bg-surface-raised text-ink font-semibold shadow-card border border-border' 
                 : 'text-ink-secondary hover:text-ink'
             }`}
           >
-            <AlertTriangle className={`w-3.5 h-3.5 shrink-0 ${mode === 'bug_mode' ? 'text-danger' : 'text-ink-tertiary'}`} />
+            <AlertTriangle className={`w-3.5 h-3.5 shrink-0 ${mode === 'bug_mode' ? 'text-[#cf222e]' : 'text-ink-tertiary'}`} />
             <span>Real Bug</span>
           </button>
         </div>
@@ -577,21 +577,21 @@ export default function DemoStore() {
           <button
             onClick={runAutomatedBot}
             disabled={isBotRunning}
-            className={`btn btn-sm whitespace-nowrap shrink-0 flex items-center gap-1.5 font-bold shadow-sm transition-all ${
+            className={`btn btn-sm whitespace-nowrap shrink-0 flex items-center gap-1.5 font-medium transition-colors ${
               isBotRunning 
-                ? 'bg-amber-500 hover:bg-amber-600 text-white animate-pulse' 
+                ? 'bg-[#9a6700] text-white animate-pulse' 
                 : 'btn-primary'
             }`}
             title="Auto-Run Playwright Robot: Automatically drives browser, clicks elements & executes the full test suite"
           >
             {isBotRunning ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin shrink-0" />
+                <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0" />
                 <span>Running Bot...</span>
               </>
             ) : (
               <>
-                <Bot className="w-4 h-4 shrink-0" />
+                <Bot className="w-3.5 h-3.5 shrink-0" />
                 <span>Auto-Run E2E Bot</span>
               </>
             )}
@@ -599,10 +599,10 @@ export default function DemoStore() {
 
           <button 
             onClick={resetStore}
-            className="btn btn-ghost btn-sm whitespace-nowrap shrink-0 flex items-center gap-1 text-ink-secondary hover:text-ink"
+            className="btn btn-secondary btn-sm whitespace-nowrap shrink-0 flex items-center gap-1 text-ink-secondary hover:text-ink"
             title="Reset Store and Step Pipeline"
           >
-            <RotateCcw className="w-3.5 h-3.5 shrink-0" />
+            <RotateCcw className="w-3 h-3 shrink-0" />
             <span>Reset</span>
           </button>
         </div>
@@ -610,16 +610,16 @@ export default function DemoStore() {
 
       {/* Full-width Top Chaos Banner */}
       {isChaos ? (
-        <div className="w-full bg-surface-raised border-b border-border px-6 py-2.5 shadow-xs">
+        <div className="w-full bg-surface-raised border-b border-border px-6 py-2 shadow-card">
           <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 flex-wrap">
             <div className="flex items-center gap-2">
-              <Flame className="w-4 h-4 text-amber-500 shrink-0" />
-              <span className="text-xs font-bold text-ink whitespace-nowrap">Mutate Step Selectors:</span>
-              <span className="text-2xs text-ink-tertiary hidden sm:inline">Toggle which elements get mutated during execution</span>
+              <Flame className="w-4 h-4 text-[#9a6700] shrink-0" />
+              <span className="text-xs font-semibold text-ink whitespace-nowrap">Mutate Step Selectors:</span>
+              <span className="text-2xs text-ink-secondary hidden sm:inline">Toggle which elements get mutated during execution</span>
             </div>
 
             {/* Clean Segmented Step Switcher */}
-            <div className="inline-flex items-center p-1 rounded-xl bg-surface border border-border gap-1 flex-wrap">
+            <div className="inline-flex items-center p-0.5 rounded-md bg-surface border border-border gap-1 flex-wrap">
               {[
                 { id: 'cart', label: '1. Cart', active: mutateCart, toggle: () => setMutateCart(!mutateCart) },
                 { id: 'bag', label: '2. Bag', active: mutateBag, toggle: () => setMutateBag(!mutateBag) },
@@ -630,15 +630,15 @@ export default function DemoStore() {
                 <button
                   key={step.id}
                   onClick={step.toggle}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap ${
+                  className={`px-2.5 py-1 rounded text-xs font-medium transition-colors flex items-center gap-1.5 whitespace-nowrap ${
                     step.active
-                      ? 'bg-surface-raised text-brand font-bold border-2 border-brand shadow-xs'
-                      : 'bg-surface-raised text-ink-secondary border border-border hover:text-ink hover:border-stone-400'
+                      ? 'bg-surface-raised text-accent font-semibold border border-accent shadow-card'
+                      : 'bg-surface-raised text-ink-secondary border border-border hover:text-ink'
                   }`}
                 >
-                  <span className={`w-1.5 h-1.5 rounded-full ${step.active ? 'bg-brand animate-pulse' : 'bg-stone-300'}`}></span>
+                  <span className={`w-1.5 h-1.5 rounded-full ${step.active ? 'bg-accent animate-pulse' : 'bg-border'}`}></span>
                   <span>{step.label}</span>
-                  {step.active && <span className="text-2xs text-brand font-bold">⚡</span>}
+                  {step.active && <span className="text-2xs text-accent font-semibold">⚡</span>}
                 </button>
               ))}
             </div>
@@ -646,7 +646,7 @@ export default function DemoStore() {
         </div>
       ) : (
         /* Clean Mode Status Indicator for standard/mutated/bug_mode */
-        <div className="bg-surface-raised border-b border-border px-6 py-2 text-xs flex items-center justify-between text-ink-secondary">
+        <div className="bg-surface-raised border-b border-border px-6 py-1.5 text-xs flex items-center justify-between text-ink-secondary">
           <div className="flex items-center gap-2">
             <Info className="w-3.5 h-3.5 text-ink-tertiary shrink-0" />
             {mode === 'standard' && (
@@ -666,100 +666,93 @@ export default function DemoStore() {
       <div className="flex-1 max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
         {/* ================= LEFT PANE: Interactive Store (7 cols) ================= */}
-        <div className="lg:col-span-7 space-y-4">
-          <div className="flex items-center justify-between pb-1">
-            <h2 className="text-base font-bold text-ink flex items-center gap-2">
-              <ShoppingBag className="w-4 h-4 text-brand" />
+        <div className="lg:col-span-7 space-y-3.5">
+          <div className="flex items-center justify-between pb-0.5">
+            <h2 className="text-sm font-semibold text-ink flex items-center gap-2">
+              <ShoppingBag className="w-4 h-4 text-accent" />
               <span>Target Application UI</span>
             </h2>
-            <span className="text-xs text-ink-tertiary">
+            <span className="text-2xs font-mono text-ink-tertiary">
               Step {storeStep} of 3
             </span>
           </div>
 
           {/* STORE STEP 1: Product Showcase */}
           {storeStep === 1 && (
-            <div className="card p-6 md:p-8 space-y-6 shadow-card">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-7 items-center">
+            <div className="card p-5 md:p-6 space-y-5 shadow-card">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                 {/* Product Image / Visual Showcase */}
-                <div className="relative rounded-2xl bg-gradient-to-b from-surface/80 via-surface to-surface-raised border border-border p-6 flex flex-col items-center justify-between min-h-[290px] overflow-hidden group shadow-xs">
-                  {/* Subtle acoustic sound wave rings */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-30">
-                    <div className="w-52 h-52 rounded-full border border-brand/20 animate-pulse"></div>
-                    <div className="w-36 h-36 rounded-full border border-brand/25 absolute"></div>
-                    <div className="w-24 h-24 rounded-full border border-brand/35 absolute"></div>
-                  </div>
-
+                <div className="relative rounded-md bg-surface border border-border p-5 flex flex-col items-center justify-between min-h-[270px] overflow-hidden group shadow-card">
                   {/* Top floating pill */}
                   <div className="w-full flex items-center justify-between z-10">
-                    <span className="badge badge-neutral text-2xs font-mono font-semibold">Model Q-90</span>
-                    <span className="badge badge-success text-2xs font-mono font-bold flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span className="badge badge-neutral text-2xs font-mono">Model Q-90</span>
+                    <span className="badge badge-success text-2xs font-mono font-medium flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#1a7f37] animate-pulse"></span>
                       In Stock
                     </span>
                   </div>
 
                   {/* Center Headphones Illustration */}
-                  <div className="my-auto z-10 relative flex flex-col items-center py-4">
-                    <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-brand-light via-surface-raised to-surface border border-brand-border/70 flex items-center justify-center shadow-card-md group-hover:scale-105 transition-transform duration-300">
-                      <Headphones className="w-12 h-12 text-brand stroke-[1.75]" />
+                  <div className="my-auto z-10 relative flex flex-col items-center py-3">
+                    <div className="w-20 h-20 rounded-md bg-surface-raised border border-border flex items-center justify-center shadow-card group-hover:scale-105 transition-transform duration-200">
+                      <Headphones className="w-10 h-10 text-ink stroke-[1.5]" />
                     </div>
-                    <span className="text-2xs font-mono text-ink-tertiary mt-2.5 font-medium tracking-tight">Spatial Drivers • 40mm Neodymium</span>
+                    <span className="text-2xs font-mono text-ink-tertiary mt-2 font-medium tracking-tight">Spatial Drivers • 40mm Neodymium</span>
                   </div>
 
                   {/* Bottom feature badges */}
-                  <div className="w-full pt-3 border-t border-border/70 flex items-center justify-center gap-2 z-10 text-2xs font-mono text-ink-secondary">
-                    <span className="px-2 py-0.5 rounded-md bg-surface border border-border">Bluetooth 5.4</span>
-                    <span className="px-2 py-0.5 rounded-md bg-surface border border-border">42h Battery</span>
-                    <span className="px-2 py-0.5 rounded-md bg-surface border border-border">ANC 2.0</span>
+                  <div className="w-full pt-2.5 border-t border-border flex items-center justify-center gap-1.5 z-10 text-2xs font-mono text-ink-secondary">
+                    <span className="px-1.5 py-0.5 rounded bg-surface-raised border border-border">Bluetooth 5.4</span>
+                    <span className="px-1.5 py-0.5 rounded bg-surface-raised border border-border">42h Battery</span>
+                    <span className="px-1.5 py-0.5 rounded bg-surface-raised border border-border">ANC 2.0</span>
                   </div>
                 </div>
 
                 {/* Product Info */}
-                <div className="space-y-4">
+                <div className="space-y-3.5">
                   <div>
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-brand-light border border-brand-border/60 text-brand text-2xs font-mono font-bold uppercase tracking-wider mb-2">
+                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#ddf4ff] border border-[#54aeff] text-accent text-2xs font-mono font-medium uppercase tracking-wider mb-1.5">
                       <Sparkles className="w-3 h-3" />
                       <span>Studio Audio Series</span>
                     </div>
-                    <h3 className="text-2xl font-extrabold text-ink tracking-tight">Quantum Studio Headphones</h3>
-                    <p className="text-xs text-ink-secondary mt-1.5 leading-relaxed">
+                    <h3 className="text-xl font-bold text-ink tracking-tight">Quantum Studio Headphones</h3>
+                    <p className="text-xs text-ink-secondary mt-1 leading-relaxed">
                       Spatial acoustic drivers with adaptive algorithmic active noise cancellation and ultra-low latency wireless streaming.
                     </p>
                   </div>
 
                   {/* Price Row */}
-                  <div className="flex items-baseline gap-3">
-                    <span className="text-3xl font-extrabold text-ink font-mono">
+                  <div className="flex items-baseline gap-2.5">
+                    <span className="text-2xl font-bold text-ink font-mono">
                       {isBug ? '$0.00' : '$149.00'}
                     </span>
                     {isBug ? (
-                      <span className="badge badge-danger text-xs font-mono font-bold">
+                      <span className="badge badge-danger text-2xs font-mono font-medium">
                         Pricing Regression ($0)
                       </span>
                     ) : (
                       <>
                         <span className="text-xs text-ink-tertiary line-through font-mono">$229.00</span>
-                        <span className="badge badge-success text-2xs font-mono font-bold">SAVE 35%</span>
+                        <span className="badge badge-success text-2xs font-mono font-medium">SAVE 35%</span>
                       </>
                     )}
                   </div>
 
                   {/* DOM ID Badge Preview — Clean single line */}
-                  <div className="bg-surface/70 px-3 py-2 rounded-lg border border-border flex items-center justify-between text-2xs font-mono">
-                    <span className="text-ink-tertiary flex items-center gap-1.5 font-medium">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                  <div className="bg-surface px-2.5 py-1.5 rounded-md border border-border flex items-center justify-between text-2xs font-mono">
+                    <span className="text-ink-secondary flex items-center gap-1.5 font-medium">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#1a7f37]"></span>
                       <span>Target Selector:</span>
                     </span>
-                    <code className={`font-mono font-bold px-2 py-0.5 rounded ${
-                      isCartMutated ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-surface-raised text-brand border border-border'
+                    <code className={`font-mono font-semibold px-1.5 py-0.2 rounded ${
+                      isCartMutated ? 'bg-[#fff8c5] text-[#9a6700] border border-[#d4a72c]' : 'bg-surface-raised text-accent border border-border'
                     }`}>
                       #{addToCartId}
                     </code>
                   </div>
 
                   {/* Buttons */}
-                  <div className={`space-y-2 pt-1 ${chaosPosition ? 'flex flex-col-reverse' : ''}`}>
+                  <div className={`space-y-2 pt-0.5 ${chaosPosition ? 'flex flex-col-reverse' : ''}`}>
                     <button
                       id={addToCartId}
                       data-testid="add-to-cart-action"
@@ -769,11 +762,11 @@ export default function DemoStore() {
                         triggerStepAction(1);
                         setTimeout(() => setItemAddedToast(false), 2000);
                       }}
-                      className="btn btn-primary w-full py-3 text-sm font-bold shadow-md flex items-center justify-center gap-2"
+                      className="btn btn-primary w-full py-2.5 text-xs sm:text-sm font-medium flex items-center justify-center gap-2"
                     >
                       {itemAddedToast ? (
                         <>
-                          <Check className="w-4 h-4 text-emerald-200" />
+                          <Check className="w-4 h-4 text-white" />
                           <span>Added to Bag! (Step 1 Complete)</span>
                         </>
                       ) : (
@@ -791,10 +784,10 @@ export default function DemoStore() {
                         setStoreStep(2);
                         triggerStepAction(2);
                       }}
-                      className="btn btn-secondary w-full py-2.5 text-xs font-semibold flex items-center justify-between px-4"
+                      className="btn btn-secondary w-full py-2 text-xs font-medium flex items-center justify-between px-3"
                     >
                       <span>{viewCartText}</span>
-                      <span className="text-2xs font-mono font-bold px-2 py-0.5 rounded-full bg-surface border border-border text-ink">
+                      <span className="text-2xs font-mono font-semibold px-1.5 py-0.2 rounded-full bg-surface-raised border border-border text-ink">
                         Bag ({cartCount})
                       </span>
                     </button>
@@ -893,34 +886,32 @@ export default function DemoStore() {
                         }
                       }, 500);
                     }}
-                    className={`btn w-full py-3.5 text-sm font-bold shadow-sm ${
+                    className={`btn w-full py-2.5 text-xs sm:text-sm font-medium shadow-card ${
                       isBug
                         ? 'btn-danger'
-                        : isPayMutated
-                        ? 'btn-primary'
-                        : 'bg-gray-900 hover:bg-black text-white'
+                        : 'btn-primary'
                     }`}
                   >
-                    <Lock className="w-4 h-4" />
+                    <Lock className="w-3.5 h-3.5" />
                     <span>{isBug ? 'Authorize & Pay ($0.00) — Triggers 500 Crash' : checkoutBtnText}</span>
                   </button>
                 </div>
 
                 {bugHaltToast && (
-                  <div className="p-3.5 rounded-lg bg-danger-bg border border-danger-border text-danger text-xs space-y-1">
-                    <p className="font-bold flex items-center gap-1.5">
+                  <div className="p-3 rounded-md bg-[#ffebe9] border border-[#ff8182] text-[#cf222e] text-xs space-y-1">
+                    <p className="font-semibold flex items-center gap-1.5">
                       <AlertTriangle className="w-4 h-4" />
                       HTTP 500 Internal Server Error & Corrupted Price
                     </p>
-                    <p className="leading-relaxed">
+                    <p className="leading-relaxed text-2xs">
                       AI Smart Triage detected that this is a real server crash, not a renamed selector. <strong>AI refused to heal this step!</strong> Check the right panel.
                     </p>
                   </div>
                 )}
 
-                <div className="bg-surface p-2 rounded-lg border border-border text-xs font-mono flex items-center justify-between">
+                <div className="bg-surface p-2 rounded-md border border-border text-xs font-mono flex items-center justify-between">
                   <span className="text-ink-secondary text-2xs">Payment Action ID:</span>
-                  <span className={`font-bold ${isPayMutated ? 'text-amber-600' : 'text-brand'}`}>#{checkoutBtnId}</span>
+                  <span className={`font-semibold ${isPayMutated ? 'text-[#9a6700]' : 'text-accent'}`}>#{checkoutBtnId}</span>
                 </div>
               </div>
             </div>
@@ -928,24 +919,24 @@ export default function DemoStore() {
 
           {/* STORE STEP 3: Order Confirmation */}
           {storeStep === 3 && (
-            <div className="card p-8 text-center space-y-4 shadow-card">
-              <div className="w-14 h-14 rounded-full bg-success-bg border border-success-border flex items-center justify-center mx-auto text-success">
-                <CheckCircle2 className="w-7 h-7" />
+            <div className="card p-6 text-center space-y-3.5 shadow-card">
+              <div className="w-12 h-12 rounded-full bg-[#dafbe1] border border-[#4ac26b] flex items-center justify-center mx-auto text-[#1a7f37]">
+                <CheckCircle2 className="w-6 h-6" />
               </div>
 
               <span 
                 id="order-success-badge" 
-                className="badge badge-success text-xs font-mono font-bold px-3 py-1"
+                className="badge badge-success text-2xs font-mono font-medium px-2.5 py-0.5"
               >
                 Order Confirmed
               </span>
 
-              <h3 className="text-2xl font-bold text-ink">Purchase Completed Successfully</h3>
+              <h3 className="text-xl font-bold text-ink">Purchase Completed Successfully</h3>
               <p className="text-xs text-ink-secondary">
-                Workflow verified end-to-end. Tracking ID: <span className="font-mono text-brand font-bold">#HW-90214-X</span>
+                Workflow verified end-to-end. Tracking ID: <span className="font-mono text-accent font-semibold">#HW-90214-X</span>
               </p>
 
-              <div className="pt-4 border-t border-border flex justify-center gap-3">
+              <div className="pt-3 border-t border-border flex justify-center gap-2.5">
                 <button
                   onClick={resetStore}
                   className="btn btn-secondary btn-sm"
@@ -956,7 +947,7 @@ export default function DemoStore() {
                   onClick={runAutomatedBot}
                   className="btn btn-primary btn-sm flex items-center gap-1.5"
                 >
-                  <Bot className="w-4 h-4" />
+                  <Bot className="w-3.5 h-3.5" />
                   <span>Auto-Run with Bot</span>
                 </button>
               </div>
@@ -965,44 +956,44 @@ export default function DemoStore() {
         </div>
 
         {/* ================= RIGHT PANE: Live Inspector & Telemetry Logs (5 cols) ================= */}
-        <div className="lg:col-span-5 space-y-3 sticky top-20">
+        <div className="lg:col-span-5 space-y-2.5 sticky top-20">
           {/* Active Bot Driving Banner */}
           {isBotRunning && (
-            <div className="p-3 rounded-xl bg-brand text-white text-xs font-bold flex items-center justify-between shadow-md animate-pulse">
+            <div className="p-2.5 rounded-md bg-[#1f883d] text-white text-xs font-medium flex items-center justify-between shadow-card animate-pulse">
               <div className="flex items-center gap-2">
                 <Bot className="w-4 h-4 animate-bounce" />
                 <span>Playwright Bot Driving Browser...</span>
               </div>
-              <span className="text-2xs font-mono bg-surface-raised/20 px-2 py-0.5 rounded">
+              <span className="text-2xs font-mono bg-white/20 px-2 py-0.5 rounded">
                 Mode: {mode.toUpperCase()}
               </span>
             </div>
           )}
 
           {/* Tab Switcher */}
-          <div className="p-1 rounded-xl flex items-center justify-between bg-surface border border-border shadow-xs">
-            <div className="flex items-center gap-1">
+          <div className="p-0.5 rounded-md flex items-center justify-between bg-surface border border-border shadow-card">
+            <div className="flex items-center gap-0.5">
               <button
                 onClick={() => setInspectorTab('pipeline')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 ${
+                className={`px-2.5 py-1 rounded text-xs font-medium transition-colors flex items-center gap-1.5 ${
                   inspectorTab === 'pipeline'
-                    ? 'bg-surface-raised text-ink font-bold shadow-xs border border-border'
+                    ? 'bg-surface-raised text-ink font-semibold shadow-card border border-border'
                     : 'text-ink-secondary hover:text-ink'
                 }`}
               >
-                <Zap className={`w-3.5 h-3.5 ${inspectorTab === 'pipeline' ? 'text-brand' : 'text-ink-tertiary'}`} />
+                <Zap className={`w-3.5 h-3.5 ${inspectorTab === 'pipeline' ? 'text-accent' : 'text-ink-tertiary'}`} />
                 <span>Live Test Pipeline</span>
               </button>
 
               <button
                 onClick={() => setInspectorTab('terminal')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 ${
+                className={`px-2.5 py-1 rounded text-xs font-medium transition-colors flex items-center gap-1.5 ${
                   inspectorTab === 'terminal'
-                    ? 'bg-surface-raised text-ink font-bold shadow-xs border border-border'
+                    ? 'bg-surface-raised text-ink font-semibold shadow-card border border-border'
                     : 'text-ink-secondary hover:text-ink'
                 }`}
               >
-                <Terminal className={`w-3.5 h-3.5 ${inspectorTab === 'terminal' ? 'text-brand' : 'text-ink-tertiary'}`} />
+                <Terminal className={`w-3.5 h-3.5 ${inspectorTab === 'terminal' ? 'text-accent' : 'text-ink-tertiary'}`} />
                 <span>Real-Time Logs ({terminalLogs.length})</span>
               </button>
             </div>
@@ -1020,26 +1011,24 @@ export default function DemoStore() {
 
           {/* TAB 1: Live Step Pipeline & AI Diff */}
           {inspectorTab === 'pipeline' && (
-            <div className="card p-5 space-y-3 shadow-card max-h-[620px] overflow-y-auto scrollbar-thin">
+            <div className="card p-4 space-y-2.5 shadow-card max-h-[620px] overflow-y-auto scrollbar-thin">
               <div className="flex items-center justify-between pb-2 border-b border-border">
                 <div>
-                  <h3 className="text-sm font-bold text-ink">E2E Test Steps & Healing State</h3>
-                  <p className="text-xs text-ink-secondary">
+                  <h3 className="text-xs sm:text-sm font-semibold text-ink">E2E Test Steps & Healing State</h3>
+                  <p className="text-2xs text-ink-secondary">
                     {activeSource === 'bot' ? 'Streaming live from automated Playwright bot' : 'Live state as you click store buttons'}
                   </p>
                 </div>
-                <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-surface border border-border">
+                <span className="text-2xs font-mono font-semibold px-2 py-0.5 rounded bg-surface border border-border">
                   {mode.toUpperCase()}
                 </span>
               </div>
 
               {/* Steps List */}
-              <div className="space-y-2.5">
+              <div className="space-y-2">
                 {displayedSteps.map((s) => {
                   const isHealing = s.status === 'healing';
-                  // A step is only healed if the resolved selector is ACTUALLY DIFFERENT from original!
                   const isActuallyHealed = s.status === 'healed' && s.healed && s.healed !== s.orig;
-                  // If s.status is healed but s.orig === s.healed, treat as clean pass
                   const isPassed = (s.status === 'passed') || (s.status === 'healed' && (!s.healed || s.healed === s.orig));
                   const isFailed = s.status === 'failed';
                   const isPending = s.status === 'pending';
@@ -1048,58 +1037,58 @@ export default function DemoStore() {
                     return (
                       <div
                         key={s.order}
-                        className={`p-3 rounded-xl border transition-all text-xs space-y-2 ${
-                          isHealing ? 'border-amber-400 bg-warning-bg/40 ring-1 ring-amber-400' :
-                          isRunning ? 'border-brand-border bg-brand-light/20 ring-1 ring-brand/30' :
-                          isActuallyHealed ? 'border-brand-border bg-brand-light/30' :
-                          isPassed ? 'border-success-border bg-success-bg/30' :
-                          isFailed ? 'border-danger-border bg-danger-bg/40' :
+                        className={`p-2.5 rounded-md border transition-colors text-xs space-y-1.5 ${
+                          isHealing ? 'border-[#d4a72c] bg-[#fff8c5]/40 ring-1 ring-[#d4a72c]' :
+                          isRunning ? 'border-accent bg-[#ddf4ff]/30 ring-1 ring-accent' :
+                          isActuallyHealed ? 'border-[#54aeff] bg-[#ddf4ff]/30' :
+                          isPassed ? 'border-[#4ac26b] bg-[#dafbe1]/30' :
+                          isFailed ? 'border-[#ff8182] bg-[#ffebe9]/40' :
                           'border-border bg-surface'
                         }`}
                       >
                         {/* Step Header */}
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <span className="w-5 h-5 rounded-md bg-surface-raised border border-border flex items-center justify-center font-mono font-bold text-2xs text-ink-secondary">
+                            <span className="w-4 h-4 rounded bg-surface-raised border border-border flex items-center justify-center font-mono font-semibold text-2xs text-ink-secondary">
                               {s.order}
                             </span>
-                            <span className="font-bold text-ink text-xs">{s.name}</span>
+                            <span className="font-semibold text-ink text-xs">{s.name}</span>
                           </div>
 
                           {/* Status Badges */}
                           <div>
                             {isHealing && (
-                              <span className="badge badge-warning text-2xs font-bold animate-pulse">
+                              <span className="badge badge-warning text-2xs font-medium animate-pulse">
                                 <Loader2 className="w-3 h-3 animate-spin" />
-                                AI HEALING...
+                                HEALING...
                               </span>
                             )}
                             {isRunning && !isHealing && (
-                              <span className="badge badge-neutral text-2xs font-bold font-mono animate-pulse">
-                                <Loader2 className="w-3 h-3 animate-spin text-brand" />
+                              <span className="badge badge-info text-2xs font-medium font-mono animate-pulse">
+                                <Loader2 className="w-3 h-3 animate-spin text-accent" />
                                 RUNNING...
                               </span>
                             )}
                             {isActuallyHealed && !isHealing && !isRunning && (
-                              <span className="badge badge-brand text-2xs font-bold">
+                              <span className="badge badge-info text-2xs font-medium">
                                 <Sparkles className="w-3 h-3" />
                                 AUTO-HEALED {s.confidence ? `(${s.confidence}%)` : ''}
                               </span>
                             )}
                             {isPassed && !isHealing && !isRunning && (
-                              <span className="badge badge-success text-2xs font-bold">
+                              <span className="badge badge-success text-2xs font-medium">
                                 <CheckCircle2 className="w-3 h-3" />
                                 PASSED (Direct)
                               </span>
                             )}
                             {isFailed && (
-                              <span className="badge badge-danger text-2xs font-bold">
+                              <span className="badge badge-danger text-2xs font-medium">
                                 <AlertTriangle className="w-3 h-3" />
                                 BUG HALTED
                               </span>
                             )}
                             {isPending && !isRunning && (
-                              <span className="badge badge-neutral text-2xs">
+                              <span className="badge badge-neutral text-2xs font-mono">
                                 Waiting...
                               </span>
                             )}
@@ -1108,50 +1097,50 @@ export default function DemoStore() {
 
                         {/* Goal */}
                         <p className="text-2xs text-ink-secondary">
-                          Goal: <span className="text-ink font-semibold">{s.intent}</span>
+                          Goal: <span className="text-ink font-medium">{s.intent}</span>
                         </p>
 
                         {/* State indicator when actively running or healing */}
                         {isHealing && (
-                          <div className="bg-warning-bg p-2 rounded-lg border border-warning-border text-warning-text font-mono text-2xs flex items-center gap-2">
-                            <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0 text-warning-text" />
+                          <div className="bg-[#fff8c5] p-1.5 rounded border border-[#d4a72c] text-[#9a6700] font-mono text-2xs flex items-center gap-1.5">
+                            <Loader2 className="w-3 h-3 animate-spin shrink-0 text-[#9a6700]" />
                             <span>Selector mutated! Scanning accessibility tree & semantic intent...</span>
                           </div>
                         )}
                         {isRunning && !isHealing && (
-                          <div className="bg-surface-raised p-2 rounded-lg border border-border text-ink-secondary font-mono text-2xs flex items-center gap-2">
-                            <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0 text-brand" />
+                          <div className="bg-surface-raised p-1.5 rounded border border-border text-ink-secondary font-mono text-2xs flex items-center gap-1.5">
+                            <Loader2 className="w-3 h-3 animate-spin shrink-0 text-accent" />
                             <span>Playwright executing direct action on baseline selector...</span>
                           </div>
                         )}
 
                       {/* Selector Diff Box: ONLY SHOWN WHEN ACTUALLY HEALED & DIFFERENT! */}
                       {isActuallyHealed && !isHealing && !isRunning && (
-                        <div className="bg-surface-raised p-2 rounded-lg border border-brand-border font-mono text-2xs space-y-1">
-                          <div className="flex items-center justify-between text-danger">
+                        <div className="bg-surface-raised p-1.5 rounded border border-border font-mono text-2xs space-y-0.5">
+                          <div className="flex items-center justify-between text-[#cf222e]">
                             <span>- Broken:</span>
-                            <span className="line-through font-bold">{s.orig}</span>
+                            <span className="line-through font-semibold">{s.orig}</span>
                           </div>
-                          <div className="flex items-center justify-between text-success-text font-bold">
+                          <div className="flex items-center justify-between text-[#1a7f37] font-semibold">
                             <span>+ Healed:</span>
                             <span>{s.healed}</span>
                           </div>
                         </div>
                       )}
 
-                      {/* Passed Clean Selector (No diff box because nothing broke!) */}
+                      {/* Passed Clean Selector */}
                       {isPassed && !isHealing && !isRunning && (
-                        <div className="bg-surface-raised p-1.5 rounded border border-border font-mono text-2xs text-ink-secondary flex items-center justify-between">
+                        <div className="bg-surface-raised p-1 rounded border border-border font-mono text-2xs text-ink-secondary flex items-center justify-between">
                           <span>Baseline:</span>
-                          <span className="font-bold text-success-text">{s.orig} (Passed directly)</span>
+                          <span className="font-semibold text-[#1a7f37]">{s.orig} (Passed directly)</span>
                         </div>
                       )}
 
                       {/* Bug Triage Explanation */}
                       {isFailed && (
-                        <div className="bg-danger-bg p-2.5 rounded-lg border border-danger-border text-danger text-2xs space-y-1">
-                          <p className="font-bold flex items-center gap-1">
-                            <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
+                        <div className="bg-[#ffebe9] p-2 rounded border border-[#ff8182] text-[#cf222e] text-2xs space-y-0.5">
+                          <p className="font-semibold flex items-center gap-1">
+                            <ShieldAlert className="w-3 h-3 shrink-0" />
                             Smart Triage: Refused to False-Heal
                           </p>
                           <p className="leading-relaxed">
@@ -1168,41 +1157,37 @@ export default function DemoStore() {
 
           {/* TAB 2: Real-Time Playwright Telemetry Logs Terminal */}
           {inspectorTab === 'terminal' && (
-            <div className="card bg-gray-950 border-gray-800 text-gray-200 font-mono shadow-card overflow-hidden flex flex-col h-[580px]">
+            <div className="card bg-[#0d1117] border-[#30363d] text-[#c9d1d9] font-mono shadow-card overflow-hidden flex flex-col h-[580px]">
               {/* Terminal Title Bar */}
-              <div className="bg-gray-900/90 px-4 py-2.5 border-b border-gray-800 flex items-center justify-between select-none">
+              <div className="bg-[#161b22] px-3.5 py-2 border-b border-[#30363d] flex items-center justify-between select-none">
                 <div className="flex items-center gap-2">
-                  <div className="flex gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-500"></span>
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                    <span className="w-2.5 h-2.5 rounded-full bg-green-500"></span>
-                  </div>
-                  <span className="text-xs text-ink-secondary font-bold font-sans ml-2">
+                  <Terminal className="w-3.5 h-3.5 text-[#58a6ff]" />
+                  <span className="text-xs text-[#e6edf3] font-semibold font-sans">
                     Live Telemetry Stream
                   </span>
                 </div>
-                <span className="text-2xs text-ink-tertiary font-mono">{terminalLogs.length} events</span>
+                <span className="text-2xs text-[#8b949e] font-mono">{terminalLogs.length} events</span>
               </div>
 
               {/* Logs Stream */}
-              <div className="p-3.5 overflow-y-auto flex-1 space-y-2 text-xs leading-relaxed scrollbar-thin">
+              <div className="p-3 overflow-y-auto flex-1 space-y-1.5 text-xs leading-relaxed scrollbar-thin">
                 {terminalLogs.length === 0 ? (
-                  <div className="text-ink-secondary text-center py-16 italic font-sans text-xs">
+                  <div className="text-[#8b949e] text-center py-16 italic font-sans text-xs">
                     Listening for browser events... Click buttons in the store or click "Auto-Run E2E Bot" to stream live logs.
                   </div>
                 ) : (
                   terminalLogs.map((log, index) => (
-                    <div key={index} className="flex items-start gap-2 hover:bg-gray-900/60 p-1 rounded font-mono text-2xs">
-                      <span className="text-ink-tertiary select-none shrink-0 font-mono pt-0.5">
+                    <div key={index} className="flex items-start gap-2 hover:bg-[#161b22]/70 px-1 py-0.5 rounded font-mono text-2xs">
+                      <span className="text-[#6e7681] select-none shrink-0 font-mono pt-0.5">
                         {log.timestamp}
                       </span>
                       <span className="shrink-0">
                         {getTagBadge(log.type)}
                       </span>
                       <span className={`break-all ${
-                        log.type === 'error' ? 'text-red-400 font-semibold' :
-                        log.type === 'healing' ? 'text-amber-300 font-semibold' :
-                        log.type === 'success' ? 'text-emerald-400 font-semibold' : 'text-ink-secondary'
+                        log.type === 'error' ? 'text-[#f85149] font-medium' :
+                        log.type === 'healing' ? 'text-[#e3b341] font-medium' :
+                        log.type === 'success' ? 'text-[#3fb950] font-medium' : 'text-[#c9d1d9]'
                       }`}>
                         {log.message}
                       </span>

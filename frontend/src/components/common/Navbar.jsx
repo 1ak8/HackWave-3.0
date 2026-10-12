@@ -6,11 +6,9 @@ import {
   Layers, 
   FileText, 
   ShoppingBag, 
-  Radio, 
   Database,
   ExternalLink,
-  ShieldCheck,
-  CheckCircle2
+  GitBranch
 } from 'lucide-react';
 import { useTests } from '../../context/TestContext';
 
@@ -26,25 +24,22 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="border-b border-border bg-surface-raised/95 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+    <nav className="border-b border-border bg-surface-raised sticky top-0 z-50 shadow-card">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-14">
           {/* Brand Logo */}
           <div className="flex items-center gap-6">
             <Link to="/" className="flex items-center gap-2.5 group">
-              <div className="w-9 h-9 rounded-xl bg-brand flex items-center justify-center text-white shadow-md shadow-brand/25 group-hover:scale-105 transition-transform">
-                <Zap className="w-5 h-5 fill-current" />
+              <div className="w-8 h-8 rounded-md bg-[#24292f] text-white flex items-center justify-center shadow-card group-hover:scale-105 transition-transform">
+                <GitBranch className="w-4 h-4" />
               </div>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-1.5">
-                  <span className="font-extrabold text-base tracking-tight text-ink">
-                    NexHeal
-                  </span>
-                  <span className="text-2xs font-mono font-bold px-1.5 py-0.5 rounded bg-brand-light text-brand border border-brand-border">
-                    STUDIO
-                  </span>
-                </div>
-                <span className="text-2xs text-ink-tertiary -mt-0.5 font-medium">Intent-Aware E2E Testing</span>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-sm tracking-tight text-ink">
+                  NexHeal
+                </span>
+                <span className="text-2xs font-mono px-1.5 py-0.2 rounded-full border border-border text-ink-secondary bg-surface">
+                  public
+                </span>
               </div>
             </Link>
 
@@ -57,9 +52,9 @@ export default function Navbar() {
                     key={item.to}
                     to={item.to}
                     className={({ isActive }) =>
-                      `flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                      `flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors ${
                         isActive
-                          ? 'bg-brand-light text-brand border border-brand-border shadow-xs'
+                          ? 'bg-surface text-ink font-semibold border border-border shadow-card'
                           : 'text-ink-secondary hover:text-ink hover:bg-surface'
                       }`
                     }
@@ -73,25 +68,25 @@ export default function Navbar() {
           </div>
 
           {/* Right Status Indicators */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             {/* Live Socket Stream Indicator */}
-            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-surface border border-border text-xs font-mono">
-              <span className={`w-2 h-2 rounded-full ${socketConnected ? 'bg-emerald-500 animate-pulse' : 'bg-red-400'}`}></span>
-              <span className={socketConnected ? 'text-emerald-700 font-semibold' : 'text-red-600'}>
+            <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface border border-border text-2xs font-mono">
+              <span className={`w-1.5 h-1.5 rounded-full ${socketConnected ? 'bg-[#1a7f37] animate-pulse' : 'bg-[#cf222e]'}`}></span>
+              <span className={socketConnected ? 'text-[#1a7f37] font-medium' : 'text-[#cf222e]'}>
                 {socketConnected ? 'Live Socket Stream' : 'Connecting...'}
               </span>
             </div>
 
             {/* DB Status Badge */}
-            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface border border-border text-xs font-mono text-ink-secondary">
-              <Database className="w-3 h-3 text-brand" />
+            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface border border-border text-2xs font-mono text-ink-secondary">
+              <Database className="w-3 h-3 text-accent" />
               <span>{systemHealth?.db?.connected ? 'MongoDB Active' : 'Zero-Setup Engine'}</span>
             </div>
 
             {/* Target App Sandbox Link */}
             <Link
               to="/demo-store"
-              className="flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-lg bg-brand hover:bg-brand-hover text-white transition shadow-sm"
+              className="btn btn-primary btn-sm flex items-center gap-1"
             >
               <span>Sandbox Store</span>
               <ExternalLink className="w-3 h-3" />

@@ -65,15 +65,15 @@ export default function LiveRunView() {
   return (
     <div className="w-full max-w-6xl mx-auto px-6 py-8 space-y-6">
       {/* Top Controller Header */}
-      <div className="card p-5 flex flex-col xl:flex-row xl:items-center justify-between gap-5 shadow-card">
+      <div className="card p-4 sm:p-5 flex flex-col xl:flex-row xl:items-center justify-between gap-4 shadow-card">
         <div className="space-y-1 min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className={`w-2 h-2 rounded-full ${activeRun?.status === 'running' ? 'bg-brand animate-pulse' : 'bg-success'}`}></span>
-            <span className="text-2xs font-mono text-ink-tertiary uppercase font-bold tracking-wider">
-              {activeRun?.status === 'running' ? 'Running Live Test' : 'Test Runner Ready'}
+            <span className={`w-2 h-2 rounded-full ${activeRun?.status === 'running' ? 'bg-[#9a6700] animate-pulse' : 'bg-[#1a7f37]'}`}></span>
+            <span className="text-2xs font-mono text-ink-secondary uppercase font-semibold tracking-wider">
+              {activeRun?.status === 'running' ? 'Workflow Executing...' : 'Runner Ready'}
             </span>
           </div>
-          <h1 className="text-xl font-bold text-ink truncate">
+          <h1 className="text-lg sm:text-xl font-bold text-ink truncate">
             {activeRun?.testTitle || defaultTest?.title || 'E-Commerce End-to-End Test Suite'}
           </h1>
           <p className="text-xs text-ink-secondary truncate flex items-center gap-1.5">
@@ -88,19 +88,19 @@ export default function LiveRunView() {
         <div className="flex items-center gap-2 flex-wrap shrink-0">
           {/* Visual Browser Checkbox */}
           <label 
-            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg border text-2xs font-mono cursor-pointer transition font-medium whitespace-nowrap shrink-0 ${
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border text-2xs font-mono cursor-pointer transition select-none whitespace-nowrap shrink-0 ${
               !headless 
-                ? 'bg-brand-light border-brand-border text-brand shadow-xs' 
-                : 'bg-surface border-border text-ink-secondary hover:bg-surface/80'
+                ? 'bg-[#ddf4ff] border-[#54aeff] text-[#0969da]' 
+                : 'bg-surface border-border text-ink-secondary hover:bg-surface-raised'
             }`}
             title="When ON: Launches a real Chromium browser window on your desktop so you can watch Playwright physically click buttons and fill inputs live!"
           >
-            <Monitor className={`w-3.5 h-3.5 ${!headless ? 'text-brand' : 'text-ink-tertiary'}`} />
+            <Monitor className={`w-3.5 h-3.5 ${!headless ? 'text-accent' : 'text-ink-tertiary'}`} />
             <input
               type="checkbox"
               checked={!headless}
               onChange={(e) => setHeadless(!e.target.checked)}
-              className="accent-brand rounded w-3 h-3"
+              className="accent-[#0969da] rounded w-3 h-3"
             />
             <span>{!headless ? 'Desktop Chrome: ON' : 'Desktop: OFF'}</span>
           </label>
@@ -108,7 +108,7 @@ export default function LiveRunView() {
           <button
             onClick={() => handleExecute('mutated')}
             disabled={isRunning}
-            className="btn btn-primary btn-sm px-4 py-2 text-xs font-bold whitespace-nowrap shrink-0"
+            className="btn btn-primary btn-sm px-3.5 py-1.5 text-xs font-medium whitespace-nowrap shrink-0"
             title="Run test against mutated elements with auto-healing"
           >
             <Zap className={`w-3.5 h-3.5 fill-current ${isRunning ? 'animate-spin' : ''}`} />
@@ -118,7 +118,7 @@ export default function LiveRunView() {
           <button
             onClick={() => handleExecute('standard')}
             disabled={isRunning}
-            className="btn btn-secondary btn-sm px-3 py-2 text-xs font-semibold whitespace-nowrap shrink-0"
+            className="btn btn-secondary btn-sm px-3 py-1.5 text-xs font-medium whitespace-nowrap shrink-0"
             title="Run standard test"
           >
             <Play className="w-3.5 h-3.5 fill-current text-ink-secondary" />
@@ -128,20 +128,20 @@ export default function LiveRunView() {
           <button
             onClick={() => handleExecute('chaos')}
             disabled={isRunning}
-            className="btn btn-secondary btn-sm px-3 py-2 text-xs font-semibold text-amber-800 hover:text-amber-900 border-amber-200/80 hover:bg-amber-50 whitespace-nowrap shrink-0 flex items-center gap-1"
+            className="btn btn-secondary btn-sm px-3 py-1.5 text-xs font-medium text-[#9a6700] hover:bg-[#fff8c5] border-[#d4a72c] whitespace-nowrap shrink-0 flex items-center gap-1"
             title="Randomize UI elements during run"
           >
-            <Flame className="w-3.5 h-3.5 text-amber-500" />
+            <Flame className="w-3.5 h-3.5 text-[#9a6700]" />
             <span>Chaos</span>
           </button>
 
           <button
             onClick={() => handleExecute('bug_mode')}
             disabled={isRunning}
-            className="btn btn-secondary btn-sm px-3 py-2 text-xs font-semibold text-red-800 hover:text-red-900 border-red-200/80 hover:bg-red-50 whitespace-nowrap shrink-0 flex items-center gap-1"
+            className="btn btn-secondary btn-sm px-3 py-1.5 text-xs font-medium text-[#cf222e] hover:bg-[#ffebe9] border-[#ff8182] whitespace-nowrap shrink-0 flex items-center gap-1"
             title="Trigger a genuine bug to test Smart Triage"
           >
-            <AlertTriangle className="w-3.5 h-3.5 text-danger" />
+            <AlertTriangle className="w-3.5 h-3.5 text-[#cf222e]" />
             <span>Real Bug</span>
           </button>
 
@@ -162,13 +162,13 @@ export default function LiveRunView() {
       </div>
 
       {/* Progress & Live Telemetry Bar */}
-      <div className="card p-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm font-mono shadow-card">
-        <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
-          <div className="flex items-center gap-2">
-            <span className="text-ink-secondary text-xs font-semibold">Mode:</span>
-            <span className={`badge text-xs font-bold ${
+      <div className="card p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono shadow-card">
+        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+          <div className="flex items-center gap-1.5">
+            <span className="text-ink-secondary text-xs">Mode:</span>
+            <span className={`badge text-2xs font-mono ${
               activeRun?.mode === 'chaos' ? 'badge-warning' :
-              activeRun?.mode === 'mutated' ? 'badge-brand' :
+              activeRun?.mode === 'mutated' ? 'badge-info' :
               activeRun?.mode === 'bug_mode' ? 'badge-danger' :
               'badge-neutral'
             }`}>
@@ -176,17 +176,17 @@ export default function LiveRunView() {
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-ink-secondary text-xs font-semibold">Healed:</span>
-            <span className="badge badge-success font-bold font-mono text-xs">
+          <div className="flex items-center gap-1.5">
+            <span className="text-ink-secondary text-xs">Healed:</span>
+            <span className="badge badge-success font-mono text-2xs">
               {activeRun?.healedCount || 0} repaired
             </span>
           </div>
 
           {activeRun?.triageClassification && activeRun.triageClassification !== 'Clean' && (
-            <div className="flex items-center gap-2">
-              <span className="text-ink-secondary text-xs font-semibold">Triage:</span>
-              <span className={`badge text-xs font-bold ${
+            <div className="flex items-center gap-1.5">
+              <span className="text-ink-secondary text-xs">Triage:</span>
+              <span className={`badge text-2xs font-mono ${
                 activeRun.triageClassification === 'Genuine_Bug_Halted' 
                   ? 'badge-danger' 
                   : 'badge-success'
@@ -198,19 +198,19 @@ export default function LiveRunView() {
         </div>
 
         {/* Clean Progress Bar */}
-        <div className="flex items-center gap-3 w-full sm:w-60">
-          <div className="flex-1 bg-border h-2.5 rounded-full overflow-hidden">
+        <div className="flex items-center gap-2.5 w-full sm:w-56">
+          <div className="flex-1 bg-border h-2 rounded-full overflow-hidden">
             <div 
-              className="bg-brand h-full rounded-full transition-all duration-300"
+              className="bg-[#1a7f37] h-full rounded-full transition-all duration-300"
               style={{ width: `${percentComplete}%` }}
             ></div>
           </div>
-          <span className="text-ink font-bold font-mono text-sm">{completedCount}/{total}</span>
+          <span className="text-ink font-semibold font-mono text-xs">{completedCount}/{total}</span>
         </div>
       </div>
 
       {/* Interactive Intent Graph */}
-      <div className="card p-6 shadow-card">
+      <div className="card p-5 shadow-card">
         <IntentGraph
           steps={stepsToDisplay}
           selectedStep={selectedStep}

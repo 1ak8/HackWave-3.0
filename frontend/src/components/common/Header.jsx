@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { RefreshCw, Zap, ChevronRight } from 'lucide-react';
+import { RefreshCw, Zap } from 'lucide-react';
 import { useTests } from '../../context/TestContext';
 
 export default function Header() {
@@ -10,37 +10,39 @@ export default function Header() {
   const getPageInfo = (pathname) => {
     switch (pathname) {
       case '/':
-        return { section: 'Dashboard', title: 'Test Orchestration Overview' };
+        return { section: 'dashboard', title: 'Test Orchestration Overview' };
       case '/live':
-        return { section: 'Execution', title: 'Real-time Autonomous Runner' };
+        return { section: 'actions', title: 'Real-time Autonomous Runner' };
       case '/studio':
-        return { section: 'Authoring', title: 'Intent Specification Studio' };
+        return { section: 'authoring', title: 'Intent Specification Studio' };
       case '/audit':
-        return { section: 'Compliance', title: 'Repair Audit Log & Triage' };
+        return { section: 'security', title: 'Repair Audit Log & Triage' };
       case '/demo-store':
-        return { section: 'Sandbox', title: 'Target E-Commerce Testing Ground' };
+        return { section: 'sandbox', title: 'Target E-Commerce Testing Ground' };
       default:
-        return { section: 'App', title: 'NexHeal' };
+        return { section: 'app', title: 'NexHeal' };
     }
   };
 
   const { section, title } = getPageInfo(location.pathname);
 
   return (
-    <header className="h-16 bg-surface-raised border-b border-border sticky top-0 z-30 px-6 sm:px-8 flex items-center justify-between shadow-xs">
-      {/* Breadcrumb Navigation */}
-      <div className="flex items-center gap-2.5">
-        <span className="font-bold text-ink-tertiary uppercase tracking-wider text-xs">{section}</span>
-        <ChevronRight className="w-4 h-4 text-ink-tertiary" />
-        <span className="font-bold text-ink text-base tracking-tight">{title}</span>
+    <header className="h-14 bg-surface-raised border-b border-border sticky top-0 z-30 px-6 sm:px-8 flex items-center justify-between shadow-card">
+      {/* GitHub Repository Breadcrumb Navigation */}
+      <div className="flex items-center gap-2 text-xs sm:text-sm">
+        <span className="font-semibold text-accent hover:underline cursor-default">nexheal</span>
+        <span className="text-ink-tertiary">/</span>
+        <span className="font-medium text-ink-secondary">{section}</span>
+        <span className="text-ink-tertiary">/</span>
+        <span className="font-semibold text-ink">{title}</span>
       </div>
 
       {/* Right Controls */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2.5">
         {activeRun && activeRun.status === 'running' && (
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-brand-light border border-brand-border text-xs font-mono font-semibold text-brand animate-pulse">
-            <Zap className="w-3.5 h-3.5 fill-current" />
-            <span>Test In Flight...</span>
+          <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#fff8c5] border border-[#d4a72c] text-2xs font-mono font-medium text-[#9a6700]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#9a6700] animate-pulse" />
+            <span>Workflow Active</span>
           </div>
         )}
 
@@ -49,7 +51,7 @@ export default function Header() {
           className="btn btn-secondary btn-sm"
           title="Refresh Data"
         >
-          <RefreshCw className="w-4 h-4 text-ink-secondary" />
+          <RefreshCw className="w-3.5 h-3.5 text-ink-secondary" />
           <span>Sync</span>
         </button>
       </div>

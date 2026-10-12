@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -15,14 +13,16 @@
   }
 
   body {
-    @apply bg-canvas text-ink font-sans text-base antialiased;
+    @apply bg-canvas text-ink font-sans text-sm antialiased;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: #f6f8fa;
+    color: #1f2328;
   }
 
   ::selection {
-    background: rgba(234, 88, 12, 0.2);
-    color: #1c1917;
+    background: rgba(9, 105, 218, 0.2);
+    color: #1f2328;
   }
 
   ::-webkit-scrollbar {
@@ -33,150 +33,146 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: #d6d0c4;
+    background: #d0d7de;
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #b5aca4;
+    background: #afb8c1;
   }
 }
 
 @layer components {
-  /* --- Buttons --- */
+  /* --- GitHub Primer Style Buttons --- */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 font-semibold text-sm rounded-lg px-4 py-2.5 transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-canvas disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.97];
+    @apply inline-flex items-center justify-center gap-1.5 font-medium text-xs sm:text-sm rounded-md px-3 py-1.5 transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none;
   }
   .btn-primary {
-    @apply btn text-white shadow-glow hover:shadow-glow-lg;
-    background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
-  }
-  .btn-primary:hover {
-    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    @apply btn text-white font-medium border border-[rgba(27,31,36,0.15)] bg-[#1f883d] hover:bg-[#1a7f37] active:bg-[#187733] shadow-card;
   }
   .btn-secondary {
-    @apply btn bg-surface-raised text-ink border border-border hover:border-border-strong hover:bg-surface shadow-card;
+    @apply btn bg-[#f6f8fa] text-[#1f2328] border border-[#d0d7de] hover:bg-[#f3f4f6] hover:border-[#afb8c1] active:bg-[#ebecf0] shadow-card;
   }
   .btn-ghost {
-    @apply btn text-ink-secondary hover:text-ink hover:bg-surface;
+    @apply btn text-[#656d76] hover:text-[#1f2328] hover:bg-[#f3f4f6] border border-transparent;
   }
   .btn-danger {
-    @apply btn bg-danger text-white hover:bg-red-600 shadow-sm;
+    @apply btn bg-[#f6f8fa] text-[#cf222e] border border-[#d0d7de] hover:bg-[#ffebe9] hover:border-[#cf222e] active:bg-[#ffcecb];
   }
   .btn-sm {
-    @apply text-sm px-3.5 py-2 rounded-lg;
+    @apply text-xs px-2.5 py-1 rounded-md;
   }
   .btn-xs {
-    @apply text-xs px-3 py-1.5 rounded-md;
+    @apply text-2xs px-2 py-0.5 rounded-md;
   }
 
-  /* --- Cards --- */
+  /* --- GitHub Primer Style Boxes / Cards --- */
   .card {
-    @apply bg-surface-raised border border-border rounded-xl shadow-card;
+    @apply bg-surface-raised border border-border rounded-md shadow-card;
   }
   .card-section {
-    @apply p-6;
+    @apply p-4 sm:p-5;
   }
   .card-header {
-    @apply flex items-center justify-between px-6 py-4 border-b border-border;
+    @apply flex items-center justify-between px-4 py-3 border-b border-border bg-surface text-ink font-semibold rounded-t-md;
   }
 
-  /* --- Badges / Pills --- */
+  /* --- GitHub Primer Badges / Status Labels --- */
   .badge {
-    @apply inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-md;
+    @apply inline-flex items-center gap-1 text-2xs font-medium px-2 py-0.5 rounded-full border leading-tight;
   }
   .badge-success {
-    @apply badge bg-success-bg text-success-text border border-success-border;
+    @apply badge bg-[#dafbe1] text-[#1a7f37] border-[#4ac26b];
   }
   .badge-warning {
-    @apply badge bg-warning-bg text-warning-text border border-warning-border;
+    @apply badge bg-[#fff8c5] text-[#9a6700] border-[#d4a72c];
   }
   .badge-danger {
-    @apply badge bg-danger-bg text-danger-text border border-danger-border;
+    @apply badge bg-[#ffebe9] text-[#cf222e] border-[#ff8182];
   }
   .badge-info {
-    @apply badge bg-info-bg text-info-text border border-info-border;
+    @apply badge bg-[#ddf4ff] text-[#0969da] border-[#54aeff];
   }
   .badge-brand {
-    @apply badge bg-brand-light text-brand border border-brand-border;
+    @apply badge bg-[#dafbe1] text-[#1a7f37] border-[#4ac26b];
   }
   .badge-neutral {
-    @apply badge bg-surface text-ink-secondary border border-border;
+    @apply badge bg-[#f6f8fa] text-[#656d76] border-[#d0d7de];
+  }
+  .badge-purple {
+    @apply badge bg-[#fbefff] text-[#8250df] border-[#d8b9ff];
   }
 
-  /* --- Input Fields --- */
+  /* --- GitHub Primer Inputs --- */
   .input {
-    @apply w-full bg-surface-raised border border-border rounded-lg px-4 py-2.5 text-sm text-ink placeholder:text-ink-tertiary
-           focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition-all duration-150;
+    @apply w-full bg-surface-raised border border-border rounded-md px-3 py-1.5 text-xs sm:text-sm text-ink placeholder:text-ink-tertiary
+           focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors shadow-card;
   }
   .input-mono {
-    @apply input font-mono text-sm;
+    @apply input font-mono text-xs;
   }
 
-  /* --- Table --- */
+  /* --- GitHub Primer Table --- */
   .data-table {
-    @apply w-full text-sm;
+    @apply w-full text-xs sm:text-sm;
   }
   .data-table th {
-    @apply py-3.5 px-5 text-left text-xs font-bold text-ink-tertiary uppercase tracking-wider border-b border-border bg-surface;
+    @apply py-2.5 px-4 text-left text-xs font-semibold text-ink-secondary border-b border-border bg-surface;
   }
   .data-table td {
-    @apply py-4 px-5 text-sm border-b border-border;
+    @apply py-3 px-4 text-xs sm:text-sm border-b border-border text-ink;
   }
   .data-table tr:hover td {
-    @apply bg-surface;
+    @apply bg-surface/70;
   }
   .data-table tr:last-child td {
     @apply border-b-0;
   }
 
-  /* --- Stat/Metric cards --- */
+  /* --- Stat / Metric Box --- */
   .stat-card {
-    @apply card p-6 flex flex-col gap-2;
+    @apply card p-4 flex flex-col gap-1;
   }
   .stat-label {
-    @apply text-xs font-bold text-ink-tertiary uppercase tracking-wider;
+    @apply text-2xs font-semibold text-ink-secondary uppercase tracking-wider font-mono;
   }
   .stat-value {
-    @apply text-3xl font-extrabold text-ink font-mono tracking-tight;
+    @apply text-2xl font-bold text-ink font-mono tracking-tight;
   }
   .stat-meta {
-    @apply text-xs font-medium text-ink-secondary;
+    @apply text-2xs text-ink-tertiary;
   }
 
   /* --- Staggered list animation --- */
   .stagger-children > * {
-    animation: fade-in-up 0.4s ease-out both;
+    animation: fade-in-up 0.25s ease-out both;
   }
   .stagger-children > *:nth-child(1) { animation-delay: 0ms; }
-  .stagger-children > *:nth-child(2) { animation-delay: 50ms; }
-  .stagger-children > *:nth-child(3) { animation-delay: 100ms; }
-  .stagger-children > *:nth-child(4) { animation-delay: 150ms; }
-  .stagger-children > *:nth-child(5) { animation-delay: 200ms; }
-  .stagger-children > *:nth-child(6) { animation-delay: 250ms; }
-  .stagger-children > *:nth-child(7) { animation-delay: 300ms; }
-  .stagger-children > *:nth-child(8) { animation-delay: 350ms; }
+  .stagger-children > *:nth-child(2) { animation-delay: 30ms; }
+  .stagger-children > *:nth-child(3) { animation-delay: 60ms; }
+  .stagger-children > *:nth-child(4) { animation-delay: 90ms; }
+  .stagger-children > *:nth-child(5) { animation-delay: 120ms; }
+  .stagger-children > *:nth-child(6) { animation-delay: 150ms; }
+  .stagger-children > *:nth-child(7) { animation-delay: 180ms; }
+  .stagger-children > *:nth-child(8) { animation-delay: 210ms; }
 }
 
 @layer utilities {
   .scrollbar-thin::-webkit-scrollbar { width: 5px; height: 5px; }
   .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
-  .scrollbar-thin::-webkit-scrollbar-thumb { background: #d6d0c4; border-radius: 9999px; }
-  .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: #b5aca4; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: #d0d7de; border-radius: 9999px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: #afb8c1; }
 
   .scrollbar-sidebar::-webkit-scrollbar { width: 4px; }
   .scrollbar-sidebar::-webkit-scrollbar-track { background: transparent; }
-  .scrollbar-sidebar::-webkit-scrollbar-thumb { background: #d6d0c4; border-radius: 9999px; }
+  .scrollbar-sidebar::-webkit-scrollbar-thumb { background: #d0d7de; border-radius: 9999px; }
 
   .text-gradient-brand {
-    background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #1f883d;
   }
 
   .glass-surface {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 }
