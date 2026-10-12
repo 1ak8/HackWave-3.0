@@ -67,11 +67,11 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
           const isFailed = step.status === 'failed';
           const isRunning = step.status === 'running';
 
-          let cardStyle = 'border-border bg-surface-raised hover:border-border-strong shadow-card';
+          let cardStyle = 'border-border bg-[#f6f8fa] hover:bg-[#f3f4f6] hover:border-border-strong shadow-card';
           let statusBadge = null;
 
           if (isHealing) {
-            cardStyle = 'border-[#d4a72c] bg-[#fff8c5]/30 ring-1 ring-[#d4a72c]';
+            cardStyle = 'border-[#d4a72c] bg-[#fff8c5]/40 ring-1 ring-[#d4a72c]';
             statusBadge = (
               <span className="badge badge-warning text-2xs py-0.5 font-medium">
                 <Loader2 className="w-3 h-3 animate-spin" />
@@ -79,7 +79,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
               </span>
             );
           } else if (isActuallyHealed) {
-            cardStyle = 'border-[#54aeff] bg-[#ddf4ff]/30 ring-1 ring-[#54aeff]';
+            cardStyle = 'border-[#54aeff] bg-[#ddf4ff]/40 ring-1 ring-[#54aeff]';
             statusBadge = (
               <span className="badge badge-info text-2xs py-0.5 font-medium">
                 <Sparkles className="w-3 h-3" />
@@ -87,7 +87,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
               </span>
             );
           } else if (isFailed) {
-            cardStyle = 'border-[#ff8182] bg-[#ffebe9]/40 ring-1 ring-[#ff8182]';
+            cardStyle = 'border-[#ff8182] bg-[#ffebe9]/50 ring-1 ring-[#ff8182]';
             statusBadge = (
               <span className="badge badge-danger text-2xs py-0.5 font-medium">
                 <ShieldAlert className="w-3 h-3" />
@@ -102,7 +102,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
               </span>
             );
           } else if (isRunning) {
-            cardStyle = 'border-accent bg-[#ddf4ff]/20 ring-1 ring-accent';
+            cardStyle = 'border-accent bg-[#ddf4ff]/25 ring-1 ring-accent';
             statusBadge = (
               <span className="badge badge-info text-2xs py-0.5 font-medium">
                 <Loader2 className="w-3 h-3 animate-spin" /> Running
@@ -125,7 +125,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
               {/* Header */}
               <div className="flex items-center justify-between gap-1.5">
                 <div className="flex items-center gap-1.5 min-w-0">
-                  <span className="w-4 h-4 rounded bg-surface border border-border flex items-center justify-center text-2xs font-mono font-medium text-ink-secondary shrink-0">
+                  <span className="w-4 h-4 rounded bg-surface-raised border border-border flex items-center justify-center text-2xs font-mono font-medium text-ink-secondary shrink-0">
                     {step.order}
                   </span>
                   <ActionIcon className="w-3 h-3 text-ink-secondary shrink-0" />
@@ -147,7 +147,7 @@ export default function IntentGraph({ steps = [], onSelectStep = null, selectedS
                   {isActuallyHealed ? (
                     <span className="line-through text-danger mr-1">{step.originalSelector}</span>
                   ) : null}
-                  <span className={isActuallyHealed ? 'text-brand font-bold' : 'text-ink-secondary'}>
+                  <span className={isActuallyHealed ? 'text-brand font-medium' : 'text-ink-secondary'}>
                     {step.resolvedSelector || step.originalSelector}
                   </span>
                 </span>
