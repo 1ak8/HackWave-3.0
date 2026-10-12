@@ -68,7 +68,8 @@ const runController = {
         message: 'Test run initiated successfully',
         runId: initialRun._id,
         testTitle: targetTest.title,
-        mode
+        mode,
+        run: initialRun
       });
     } catch (err) {
       logger.error('Failed to trigger run', err.message);

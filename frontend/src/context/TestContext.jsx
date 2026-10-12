@@ -235,26 +235,25 @@ export function TestProvider({ children }) {
         ...extraOptions
       });
       const runId = res.data.runId;
-      // Fetch initial run and merge with any real-time socket events that already arrived!
-      try {
-        const runRes = await apiClient.get(`/runs/${runId}`);
-        if (runRes.data && runRes.data.run) {
-          setActiveRun(prev => {
-            if (prev && (prev._id === runId || prev._id === 'pending_run') && prev.steps && prev.steps.length > 0) {
-              const mergedSteps = runRes.data.run.steps.map(remoteStep => {
-                const local = prev.steps.find(s => s.order === remoteStep.order);
-                if (local && (local.status === 'running' || local.status === 'healed' || local.status === 'passed' || local.status === 'failed')) {
-                  return local; // keep live socket progress!
-                }
-                return remoteStep;
-              });
-              const healedCount = mergedSteps.filter(s => s.status === 'healed' && s.resolvedSelector && s.resolvedSelector !== s.originalSelector).length;
-              return { ...runRes.data.run, steps: mergedSteps, healedCount: Math.max(prev.healedCount || 0, healedCount) };
-            }
-            return runRes.data.run;
-          });
-        }
-      } catch (getErr) {}
+      const initialRun = res.data.run;
+
+      if (initialRun) {
+        setActiveRun(prev => {
+          if (prev && prev.steps && prev.steps.length > 0) {
+            const mergedSteps = initialRun.steps.map(remoteStep => {
+              const local = prev.steps.find(s => s.order === remoteStep.order);
+              // Preserve ANY status that has progressed from pending (running, healing, healed, passed, failed)!
+              if (local && local.status && local.status !== 'pending') {
+                return local;
+              }
+              return remoteStep;
+            });
+            const healedCount = mergedSteps.filter(s => s.status === 'healed' && s.resolvedSelector && s.resolvedSelector !== s.originalSelector).length;
+            return { ...initialRun, steps: mergedSteps, healedCount: Math.max(prev.healedCount || 0, healedCount) };
+          }
+          return initialRun;
+        });
+      }
       return res.data;
     } catch (err) {
       addTerminalLog('error', `Failed to initiate test run: ${err.message}`);
